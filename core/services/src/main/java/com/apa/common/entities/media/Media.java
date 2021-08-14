@@ -1,4 +1,4 @@
-package com.apa.common.entities;
+package com.apa.common.entities.media;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

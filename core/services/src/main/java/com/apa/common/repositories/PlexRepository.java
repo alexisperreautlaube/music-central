@@ -1,6 +1,6 @@
 package com.apa.common.repositories;
 
-import com.apa.common.entities.PlexMedia;
+import com.apa.common.entities.media.PlexMedia;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

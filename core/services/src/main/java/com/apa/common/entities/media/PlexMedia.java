@@ -1,4 +1,4 @@
-package com.apa.common.entities;
+package com.apa.common.entities.media;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class LocalMedia extends Media {
-    private String localId;
+public class PlexMedia extends Media {
+    private String plexId;
 }

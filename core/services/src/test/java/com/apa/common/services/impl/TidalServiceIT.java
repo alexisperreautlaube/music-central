@@ -1,7 +1,7 @@
-package com.apa.common.services;
+package com.apa.common.services.impl;
 
 import com.apa.common.AbstractCommonIT;
-import com.apa.common.entities.TidalMedia;
+import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.repositories.TidalRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 class TidalServiceIT extends AbstractCommonIT {
-
-    @Autowired
-    private TidalRepository tidalRepository;
 
     @Autowired
     private TidalService tidalService;
@@ -29,7 +26,7 @@ class TidalServiceIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        TidalMedia tidalMedia = tidalService.save(media);
+        TidalMedia tidalMedia = tidalService.save(media).getMedia();
         assertNotNull(tidalMedia);
         log.info("patate");
     }

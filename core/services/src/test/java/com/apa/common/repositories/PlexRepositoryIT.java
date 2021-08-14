@@ -1,6 +1,6 @@
 package com.apa.common.repositories;
 
-import com.apa.common.entities.PlexMedia;
+import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.AbstractCommonIT;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
