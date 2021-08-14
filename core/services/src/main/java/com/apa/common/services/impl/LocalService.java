@@ -4,14 +4,13 @@ import com.apa.common.entities.VersionMedia;
 import com.apa.common.entities.media.LocalMedia;
 import com.apa.common.repositories.LocalRepository;
 import com.apa.common.services.AbstractMediaServices;
-import com.apa.common.services.MediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class LocalService extends AbstractMediaServices<LocalMedia> implements MediaService<LocalMedia> {
+public class LocalService extends AbstractMediaServices<LocalMedia>  {
 
     private final LocalRepository localRepository;
 

@@ -12,6 +12,10 @@
 
     <groupId>com.apa</groupId>
     <artifactId>core</artifactId>
+    <packaging>pom</packaging>
 
+    <modules>
+        <module>services</module>
+    </modules>
 
 </project>
