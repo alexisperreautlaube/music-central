@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class PlexService extends AbstractMediaServices<PlexMedia> {
@@ -18,5 +20,10 @@ public class PlexService extends AbstractMediaServices<PlexMedia> {
     public VersionMedia<PlexMedia> save(PlexMedia plexMedia) {
         PlexMedia save = plexRepository.save(plexMedia);
         return new VersionMedia(getEntityVersion(save), save);
+    }
+
+    @Override
+    public void delete(UUID uuid) {
+        plexRepository.deleteById(uuid);
     }
 }

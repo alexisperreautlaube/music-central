@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public abstract class AbstractMediaServices<E extends Media> implements MediaService<E> {
     @Autowired
@@ -22,6 +23,10 @@ public abstract class AbstractMediaServices<E extends Media> implements MediaSer
     }
 
     public VersionMedia<E> restore(E media, int i) {
+        if (i == 0) {
+            delete(media.getUuid());
+            return new VersionMedia(0, null);
+        }
         JqlQuery jqlQuery = QueryBuilder.byClass(media.getClass()).withVersion(i).build();
         List<Shadow<E>> shadows = javers.findShadows(jqlQuery);
         return save(shadows.get(0).get());
@@ -29,4 +34,8 @@ public abstract class AbstractMediaServices<E extends Media> implements MediaSer
 
     @Override
     public abstract VersionMedia<E> save(E media);
+
+    @Override
+    public abstract void delete(UUID uuid);
+
 }

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class LocalService extends AbstractMediaServices<LocalMedia>  {
@@ -19,5 +21,10 @@ public class LocalService extends AbstractMediaServices<LocalMedia>  {
     public VersionMedia<LocalMedia> save(LocalMedia localMedia) {
         LocalMedia save = localRepository.save(localMedia);
         return new VersionMedia(getEntityVersion(save), save);
+    }
+
+    @Override
+    public void delete(UUID uuid) {
+        localRepository.deleteById(uuid);
     }
 }

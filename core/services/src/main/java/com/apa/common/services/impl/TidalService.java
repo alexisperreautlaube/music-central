@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class TidalService extends AbstractMediaServices<TidalMedia> {
@@ -19,5 +21,10 @@ public class TidalService extends AbstractMediaServices<TidalMedia> {
     public VersionMedia<TidalMedia> save(TidalMedia tidalMedia) {
         TidalMedia save = tidalRepository.save(tidalMedia);
         return new VersionMedia(getEntityVersion(save), save);
+    }
+
+    @Override
+    public void delete(UUID uuid) {
+        tidalRepository.deleteById(uuid);
     }
 }
