@@ -190,5 +190,6 @@
     </build>
     <modules>
         <module>event-consumer</module>
+        <module>core</module>
     </modules>
 </project>
