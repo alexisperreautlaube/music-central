@@ -17,6 +17,7 @@
     <modules>
         <module>services</module>
         <module>events</module>
+        <module>models</module>
     </modules>
 
 </project>

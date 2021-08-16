@@ -51,10 +51,16 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
             <!-- com.apa -->
             <dependency>
                 <groupId>com.apa</groupId>
                 <artifactId>services</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.apa</groupId>
+                <artifactId>models</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class LocalMediaImporterTest extends AbstractEventIT {
+class LocalMediaImporterIT extends AbstractEventIT {
 
     @Autowired
     private LocalMediaImporter localMediaImporter;

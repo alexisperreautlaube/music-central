@@ -1,10 +1,11 @@
 package com.apa.common.repositories;
 
-import com.apa.common.entities.media.LocalMedia;
-import com.apa.common.AbstractCommonIT;
+import com.apa.common.AbstractModelsIT;
+import com.apa.common.entities.media.TidalMedia;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,33 +16,33 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class LocalMediaRepositoryIT extends AbstractCommonIT {
+class TidalMediaRepositoryIT extends AbstractModelsIT {
 
     @Autowired
-    private LocalMediaRepository localMediaRepository;
+    private TidalMediaRepository tidalMediaRepository;
 
     @Autowired
     private Javers javers;
 
     @Test
     public void reloadPreviousVersionTestTest() {
-        LocalMedia media = LocalMedia.builder()
+        TidalMedia media = TidalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .localId(UUID.randomUUID().toString())
+                .tidalId(UUID.randomUUID().toString())
                 .title("title")
                 .album("album")
                 .artist("artist")
                 .build();
-        LocalMedia localMedia = localMediaRepository.save(media);
-        assertNotNull(localMedia);
+        TidalMedia tidalMedia = tidalMediaRepository.save(media);
+        assertNotNull(tidalMedia);
         media.setTitle("title2");
-        localMediaRepository.save(media);
-        Optional<LocalMedia> byId = localMediaRepository.findById(media.getUuid());
+        tidalMediaRepository.save(media);
+        Optional<TidalMedia> byId = tidalMediaRepository.findById(media.getUuid());
         assertEquals("title2", byId.get().getTitle());
-        QueryBuilder jqlQuery = QueryBuilder.byClass(LocalMedia.class);
+        QueryBuilder jqlQuery = QueryBuilder.byClass(TidalMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
-        assertEquals("title", snapshots.get(1).getPropertyValue("title"));
-        assertEquals("title2", snapshots.get(0).getPropertyValue("title"));
+        Assertions.assertEquals("title", snapshots.get(1).getPropertyValue("title"));
+        Assertions.assertEquals("title2", snapshots.get(0).getPropertyValue("title"));
         assertNotNull(snapshots);
     }
 }

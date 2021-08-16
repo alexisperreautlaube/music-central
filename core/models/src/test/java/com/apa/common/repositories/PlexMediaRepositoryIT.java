@@ -1,10 +1,11 @@
 package com.apa.common.repositories;
 
-import com.apa.common.entities.media.TidalMedia;
-import com.apa.common.AbstractCommonIT;
+import com.apa.common.AbstractModelsIT;
+import com.apa.common.entities.media.PlexMedia;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,33 +16,33 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class TidalMediaRepositoryIT extends AbstractCommonIT {
+class PlexMediaRepositoryIT extends AbstractModelsIT {
 
     @Autowired
-    private TidalMediaRepository tidalMediaRepository;
+    private PlexMediaRepository plexMediaRepository;
 
     @Autowired
     private Javers javers;
 
     @Test
     public void reloadPreviousVersionTestTest() {
-        TidalMedia media = TidalMedia.builder()
+        PlexMedia media = PlexMedia.builder()
                 .uuid(UUID.randomUUID())
-                .tidalId(UUID.randomUUID().toString())
+                .plexId(UUID.randomUUID().toString())
                 .title("title")
                 .album("album")
                 .artist("artist")
                 .build();
-        TidalMedia tidalMedia = tidalMediaRepository.save(media);
-        assertNotNull(tidalMedia);
+        PlexMedia plexMedia = plexMediaRepository.save(media);
+        assertNotNull(plexMedia);
         media.setTitle("title2");
-        tidalMediaRepository.save(media);
-        Optional<TidalMedia> byId = tidalMediaRepository.findById(media.getUuid());
+        plexMediaRepository.save(media);
+        Optional<PlexMedia> byId = plexMediaRepository.findById(media.getUuid());
         assertEquals("title2", byId.get().getTitle());
-        QueryBuilder jqlQuery = QueryBuilder.byClass(TidalMedia.class);
+        QueryBuilder jqlQuery = QueryBuilder.byClass(PlexMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
-        assertEquals("title", snapshots.get(1).getPropertyValue("title"));
-        assertEquals("title2", snapshots.get(0).getPropertyValue("title"));
+        Assertions.assertEquals("title", snapshots.get(1).getPropertyValue("title"));
+        Assertions.assertEquals("title2", snapshots.get(0).getPropertyValue("title"));
         assertNotNull(snapshots);
     }
 }
