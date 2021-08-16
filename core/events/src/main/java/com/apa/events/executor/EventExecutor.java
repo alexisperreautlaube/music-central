@@ -1,4 +1,4 @@
-package com.apa.events.executer;
+package com.apa.events.executor;
 
 import com.apa.common.entities.media.MusicCentralMedia;
 import com.apa.common.services.AbstractMediaService;
@@ -24,22 +24,19 @@ public abstract class EventExecutor<M extends MusicCentralMedia> {
 
     private Class<EventExecutor> executerClass;
 
-    private Class<MusicCentralEvent> musicCentralEventClass;
-
     private Class<MusicCentralMedia> musicCentralMediaClass;
 
     public EventExecutor() {
         this.executerClass = (Class<EventExecutor>) this.getClass();
-        this.musicCentralEventClass = (Class<MusicCentralEvent>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        this.musicCentralMediaClass = (Class<MusicCentralMedia>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        this.musicCentralMediaClass = (Class<MusicCentralMedia>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public MusicCentralEvent execute(M m) {
         MusicCentralEvent e = new MusicCentralEvent();
-        e.setExecuterClass(executerClass);
-        e.setMediaClass(musicCentralMediaClass);
+        e.setExecutorClassName(executerClass.getName());
+        e.setMediaClassName(musicCentralMediaClass.getName());
         try {
-            doExecute(e, m);
+            e.setEventAudits(doExecute(e, m));
         } catch (Throwable t) {
             e.setState(MusicCentralEventStates.EXECUTE_FAILED);
             throw t;
@@ -65,7 +62,12 @@ public abstract class EventExecutor<M extends MusicCentralMedia> {
 
     private void doRollback(MusicCentralEvent e) {
         e.getEventAudits().forEach(eventAudit -> {
-            Optional<AbstractMediaService> mediaService = mediaServiceProvider.provideMediaService(eventAudit.getClazz());
+            Optional<AbstractMediaService> mediaService = null;
+            try {
+                mediaService = mediaServiceProvider.provideMediaService(Class.forName(eventAudit.getEventClassName()));
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex.getMessage(), ex);
+            }
             mediaService.get().restore(eventAudit.getUuid(), eventAudit.getVersion() - 1);
         });
     }

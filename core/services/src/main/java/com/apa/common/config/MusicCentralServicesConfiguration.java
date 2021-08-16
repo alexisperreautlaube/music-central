@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 })
 @ComponentScan(basePackages = "com.apa.common.services")
 @EnableMongoRepositories(basePackages = "com.apa.common.repositories")
-public class MusicCentralConfig {
+public class MusicCentralServicesConfiguration {
 }

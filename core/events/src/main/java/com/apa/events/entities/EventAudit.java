@@ -9,6 +9,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EventAudit {
     private UUID uuid;
-    private Class clazz;
+    private String eventClassName;
     private long version;
 }

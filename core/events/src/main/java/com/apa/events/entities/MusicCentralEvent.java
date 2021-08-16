@@ -1,8 +1,6 @@
 package com.apa.events.entities;
 
-import com.apa.common.entities.media.MusicCentralMedia;
 import com.apa.events.entities.enums.MusicCentralEventStates;
-import com.apa.events.executer.EventExecutor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ public class MusicCentralEvent {
 
     private List<EventAudit> eventAudits = new ArrayList<>();
 
-    private Class<EventExecutor> executerClass;
+    private String executorClassName;
 
-    private Class<MusicCentralMedia> mediaClass;
+    private String mediaClassName;
 }
