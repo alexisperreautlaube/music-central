@@ -15,10 +15,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class TidalRepositoryIT extends AbstractCommonIT {
+class TidalMediaRepositoryIT extends AbstractCommonIT {
 
     @Autowired
-    private TidalRepository tidalRepository;
+    private TidalMediaRepository tidalMediaRepository;
 
     @Autowired
     private Javers javers;
@@ -32,11 +32,11 @@ class TidalRepositoryIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        TidalMedia tidalMedia = tidalRepository.save(media);
+        TidalMedia tidalMedia = tidalMediaRepository.save(media);
         assertNotNull(tidalMedia);
         media.setTitle("title2");
-        tidalRepository.save(media);
-        Optional<TidalMedia> byId = tidalRepository.findById(media.getUuid());
+        tidalMediaRepository.save(media);
+        Optional<TidalMedia> byId = tidalMediaRepository.findById(media.getUuid());
         assertEquals("title2", byId.get().getTitle());
         QueryBuilder jqlQuery = QueryBuilder.byClass(TidalMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());

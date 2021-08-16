@@ -49,6 +49,13 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <!-- com.apa -->
+            <dependency>
+                <groupId>com.apa</groupId>
+                <artifactId>services</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -75,6 +82,7 @@
                 <artifactId>javers-spring-boot-starter-mongo</artifactId>
                 <version>${javers-spring-boot-starter-mongo.version}</version>
             </dependency>
+
             <!-- other -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -189,7 +197,7 @@
         </plugins>
     </build>
     <modules>
-        <module>event-consumer</module>
+        <module>message-consumer</module>
         <module>core</module>
     </modules>
 </project>

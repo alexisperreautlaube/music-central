@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class LocalMedia extends Media {
+public class LocalMedia extends MusicCentralMedia {
     private String localId;
 }

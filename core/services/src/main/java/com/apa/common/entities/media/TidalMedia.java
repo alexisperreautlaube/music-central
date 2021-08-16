@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class TidalMedia extends Media {
+public class TidalMedia extends MusicCentralMedia {
     private String tidalId;
 }

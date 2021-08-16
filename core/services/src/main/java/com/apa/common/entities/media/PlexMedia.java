@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class PlexMedia extends Media {
+public class PlexMedia extends MusicCentralMedia {
     private String plexId;
 }

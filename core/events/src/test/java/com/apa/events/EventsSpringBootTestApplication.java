@@ -1,4 +1,4 @@
-package com.apa;
+package com.apa.events;
 
 import com.apa.common.config.MusicCentralConfig;
 import org.springframework.boot.SpringApplication;
@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import(MusicCentralConfig.class)
-public class SpringBootTestApplication {
+public class EventsSpringBootTestApplication {
     public static void main(String ... args) {
-        SpringApplication.run(SpringBootTestApplication.class, args);
+        SpringApplication.run(EventsSpringBootTestApplication.class, args);
     }
-}
 
+}

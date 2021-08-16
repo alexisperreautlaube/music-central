@@ -1,9 +1,8 @@
 package com.apa.common.services.impl;
 
 import com.apa.common.AbstractCommonIT;
-import com.apa.common.entities.media.PlexMedia;
-import com.apa.common.repositories.PlexRepository;
-import com.apa.common.services.impl.PlexService;
+import com.apa.common.entities.media.TidalMedia;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,21 +10,23 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PlexServiceIT extends AbstractCommonIT {
+@Slf4j
+class TidalMediaServiceIT extends AbstractCommonIT {
 
     @Autowired
-    private PlexService plexService;
+    private TidalMediaService tidalMediaService;
 
     @Test
     public void saveTest() {
-        PlexMedia media = PlexMedia.builder()
+        TidalMedia media = TidalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .plexId(UUID.randomUUID().toString())
+                .tidalId(UUID.randomUUID().toString())
                 .title("title")
                 .album("album")
                 .artist("artist")
                 .build();
-        PlexMedia plexMedia = plexService.save(media).getMedia();
-        assertNotNull(plexMedia);
+        TidalMedia tidalMedia = tidalMediaService.save(media).getMedia();
+        assertNotNull(tidalMedia);
+        log.info("patate");
     }
 }

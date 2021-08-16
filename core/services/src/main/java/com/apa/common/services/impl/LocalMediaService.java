@@ -2,8 +2,8 @@ package com.apa.common.services.impl;
 
 import com.apa.common.entities.VersionMedia;
 import com.apa.common.entities.media.LocalMedia;
-import com.apa.common.repositories.LocalRepository;
-import com.apa.common.services.AbstractMediaServices;
+import com.apa.common.repositories.LocalMediaRepository;
+import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,19 +12,19 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class LocalService extends AbstractMediaServices<LocalMedia>  {
+public class LocalMediaService extends AbstractMediaService<LocalMedia> {
 
-    private final LocalRepository localRepository;
+    private final LocalMediaRepository localMediaRepository;
 
     @Override
     @Transactional
     public VersionMedia<LocalMedia> save(LocalMedia localMedia) {
-        LocalMedia save = localRepository.save(localMedia);
+        LocalMedia save = localMediaRepository.save(localMedia);
         return new VersionMedia(getEntityVersion(save), save);
     }
 
     @Override
     public void delete(UUID uuid) {
-        localRepository.deleteById(uuid);
+        localMediaRepository.deleteById(uuid);
     }
 }

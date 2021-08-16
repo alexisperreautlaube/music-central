@@ -1,6 +1,6 @@
 package com.apa.common.repositories;
 
-import com.apa.common.entities.media.PlexMedia;
+import com.apa.common.entities.media.LocalMedia;
 import com.apa.common.AbstractCommonIT;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
@@ -15,30 +15,30 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PlexRepositoryIT extends AbstractCommonIT {
+class LocalMediaRepositoryIT extends AbstractCommonIT {
 
     @Autowired
-    private PlexRepository plexRepository;
+    private LocalMediaRepository localMediaRepository;
 
     @Autowired
     private Javers javers;
 
     @Test
     public void reloadPreviousVersionTestTest() {
-        PlexMedia media = PlexMedia.builder()
+        LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .plexId(UUID.randomUUID().toString())
+                .localId(UUID.randomUUID().toString())
                 .title("title")
                 .album("album")
                 .artist("artist")
                 .build();
-        PlexMedia plexMedia = plexRepository.save(media);
-        assertNotNull(plexMedia);
+        LocalMedia localMedia = localMediaRepository.save(media);
+        assertNotNull(localMedia);
         media.setTitle("title2");
-        plexRepository.save(media);
-        Optional<PlexMedia> byId = plexRepository.findById(media.getUuid());
+        localMediaRepository.save(media);
+        Optional<LocalMedia> byId = localMediaRepository.findById(media.getUuid());
         assertEquals("title2", byId.get().getTitle());
-        QueryBuilder jqlQuery = QueryBuilder.byClass(PlexMedia.class);
+        QueryBuilder jqlQuery = QueryBuilder.byClass(LocalMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
         assertEquals("title", snapshots.get(1).getPropertyValue("title"));
         assertEquals("title2", snapshots.get(0).getPropertyValue("title"));

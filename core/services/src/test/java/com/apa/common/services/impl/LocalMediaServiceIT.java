@@ -3,7 +3,7 @@ package com.apa.common.services.impl;
 import com.apa.common.AbstractCommonIT;
 import com.apa.common.entities.VersionMedia;
 import com.apa.common.entities.media.LocalMedia;
-import com.apa.common.repositories.LocalRepository;
+import com.apa.common.repositories.LocalMediaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,13 +12,13 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LocalServiceIT extends AbstractCommonIT {
+class LocalMediaServiceIT extends AbstractCommonIT {
 
     @Autowired
-    private LocalService localService;
+    private LocalMediaService localMediaService;
 
     @Autowired
-    private LocalRepository localRepository;
+    private LocalMediaRepository localMediaRepository;
 
     @Test
     public void saveTest() {
@@ -29,7 +29,7 @@ class LocalServiceIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        VersionMedia<LocalMedia> versionMedia = localService.save(media);
+        VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
@@ -44,12 +44,12 @@ class LocalServiceIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        VersionMedia<LocalMedia> versionMedia = localService.save(media);
+        VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
         localMedia.setTitle("title2");
-        versionMedia = localService.save(localMedia);
+        versionMedia = localMediaService.save(localMedia);
         assertEquals(2, versionMedia.getVersion());
     }
 
@@ -62,15 +62,15 @@ class LocalServiceIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        VersionMedia<LocalMedia> versionMedia = localService.save(media);
+        VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
         localMedia.setTitle("title2");
-        versionMedia = localService.save(localMedia);
+        versionMedia = localMediaService.save(localMedia);
         assertEquals(2, versionMedia.getVersion());
         assertEquals("title2", versionMedia.getMedia().getTitle());
-        versionMedia = localService.restore(versionMedia.getMedia(), 1);
+        versionMedia = localMediaService.restore(versionMedia.getMedia().getUuid(), 1);
         assertEquals("title", versionMedia.getMedia().getTitle());
     }
 
@@ -83,12 +83,12 @@ class LocalServiceIT extends AbstractCommonIT {
                 .album("album")
                 .artist("artist")
                 .build();
-        VersionMedia<LocalMedia> versionMedia = localService.save(media);
+        VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
-        versionMedia = localService.restore(versionMedia.getMedia(), 0);
+        versionMedia = localMediaService.restore(versionMedia.getMedia().getUuid(), 0);
         assertNull(versionMedia.getMedia());
-        assertEquals(localRepository.findById(media.getUuid()), Optional.empty());
+        assertEquals(localMediaRepository.findById(media.getUuid()), Optional.empty());
     }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class Media {
+public class MusicCentralMedia {
     @Id
     private UUID uuid;
     private String title;
