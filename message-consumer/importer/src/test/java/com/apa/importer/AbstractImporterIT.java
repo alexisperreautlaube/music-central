@@ -1,4 +1,4 @@
-package com.apa;
+package com.apa.importer;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;

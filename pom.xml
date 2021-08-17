@@ -63,6 +63,11 @@
                 <artifactId>models</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.apa</groupId>
+                <artifactId>events</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- spring -->
             <dependency>
