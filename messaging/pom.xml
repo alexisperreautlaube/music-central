@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>importer</module>
+        <module>consumer</module>
     </modules>
 
 </project>
