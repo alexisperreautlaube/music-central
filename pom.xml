@@ -55,22 +55,22 @@
             <!-- com.apa -->
             <dependency>
                 <groupId>com.apa</groupId>
-                <artifactId>services</artifactId>
+                <artifactId>mc-services</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.apa</groupId>
-                <artifactId>models</artifactId>
+                <artifactId>mc-models</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.apa</groupId>
-                <artifactId>events</artifactId>
+                <artifactId>mc-events</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.apa</groupId>
-                <artifactId>dtos</artifactId>
+                <artifactId>mc-dtos</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -215,8 +215,8 @@
     </build>
 
     <modules>
-        <module>message-consumer</module>
-        <module>core</module>
+        <module>mc-messaging</module>
+        <module>mc-core</module>
     </modules>
 
 </project>
