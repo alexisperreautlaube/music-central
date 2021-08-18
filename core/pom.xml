@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.apa</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
         <artifactId>parent-modules</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -18,6 +18,7 @@
         <module>services</module>
         <module>events</module>
         <module>models</module>
+        <module>dtos</module>
     </modules>
 
 </project>

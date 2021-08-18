@@ -1,6 +1,6 @@
 package com.apa.importer;
 
-import com.apa.importer.config.MusicCentralImporterConfiguration;
+import com.apa.consumer.config.MusicCentralImporterConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,12 @@
-spring:
-  data:
-    mongodb:
-      database: my-mongo-database
+kafka:
+  bootstrapAddress: localhost:9092
+  topic:
+    local:
+      media:
+        importer: local.media.importer
+    plex:
+      media:
+        importer: plex.media.importer
+    tidal:
+      media:
+        importer: tidal.media.importer

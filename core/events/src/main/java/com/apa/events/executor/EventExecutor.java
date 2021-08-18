@@ -3,6 +3,7 @@ package com.apa.events.executor;
 import com.apa.common.entities.media.MusicCentralMedia;
 import com.apa.common.services.AbstractMediaService;
 import com.apa.common.services.MediaServiceProvider;
+import com.apa.core.dto.media.MediaDto;
 import com.apa.events.entities.EventAudit;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.entities.enums.MusicCentralEventStates;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class EventExecutor<M extends MusicCentralMedia> {
+public abstract class EventExecutor<M extends MediaDto> {
     
     @Autowired
     private MusicCentralEventRepository musicCentralEventRepository;

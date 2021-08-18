@@ -1,6 +1,6 @@
-package com.apa.importer.config;
+package com.apa.consumer.config;
 
-import com.apa.importer.dto.LocalMediaDto;
+import com.apa.core.dto.media.LocalMediaDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,13 +17,12 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfiguration {
 
-    @Value(value = "${kafka.bootstrapAddress}")
-    private String bootstrapAddress;
+
 
     public ConsumerFactory<String, LocalMediaDto> localMediaDtoConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "localMediaImporter");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "local.media.importer");
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(LocalMediaDto.class));
     }
 
