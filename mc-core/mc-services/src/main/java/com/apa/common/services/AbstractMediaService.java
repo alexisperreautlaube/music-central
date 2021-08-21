@@ -9,6 +9,7 @@ import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
 import org.javers.shadow.Shadow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -48,4 +49,10 @@ public abstract class AbstractMediaService<E extends MusicCentralMedia> implemen
     @Override
     public abstract void delete(UUID uuid);
 
+    public boolean existAndEquals(E media) {
+        Optional<E> byId = getRepository().findById(media.getUuid());
+        return byId.map(m -> m.equals(media)).orElse(false);
+    }
+
+    public abstract MongoRepository<E, UUID> getRepository();
 }

@@ -25,9 +25,9 @@ class LocalMediaServiceIT extends AbstractCommonIT {
         LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
@@ -40,15 +40,15 @@ class LocalMediaServiceIT extends AbstractCommonIT {
         LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
-        localMedia.setTitle("title2");
+        localMedia.setTrackTitle("title2");
         versionMedia = localMediaService.save(localMedia);
         assertEquals(2, versionMedia.getVersion());
     }
@@ -58,20 +58,20 @@ class LocalMediaServiceIT extends AbstractCommonIT {
         LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();
         assertNotNull(localMedia);
         assertEquals(1, versionMedia.getVersion());
-        localMedia.setTitle("title2");
+        localMedia.setTrackTitle("title2");
         versionMedia = localMediaService.save(localMedia);
         assertEquals(2, versionMedia.getVersion());
-        assertEquals("title2", versionMedia.getMedia().getTitle());
+        assertEquals("title2", versionMedia.getMedia().getTrackTitle());
         versionMedia = localMediaService.restore(versionMedia.getMedia().getUuid(), 1);
-        assertEquals("title", versionMedia.getMedia().getTitle());
+        assertEquals("title", versionMedia.getMedia().getTrackTitle());
     }
 
     @Test
@@ -79,9 +79,9 @@ class LocalMediaServiceIT extends AbstractCommonIT {
         LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         VersionMedia<LocalMedia> versionMedia = localMediaService.save(media);
         LocalMedia localMedia = versionMedia.getMedia();

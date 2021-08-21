@@ -5,6 +5,7 @@ import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.repositories.TidalMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,5 +27,10 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> {
     @Override
     public void delete(UUID uuid) {
         tidalMediaRepository.deleteById(uuid);
+    }
+
+    @Override
+    public MongoRepository<TidalMedia, UUID> getRepository() {
+        return tidalMediaRepository;
     }
 }

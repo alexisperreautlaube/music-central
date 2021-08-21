@@ -10,9 +10,9 @@ public class PlexMediaMapper {
         return PlexMedia.builder()
                 .uuid(UUID.randomUUID())
                 .plexId(plexMediaDto.getPlexId())
-                .artist(plexMediaDto.getArtist())
-                .album(plexMediaDto.getAlbum())
-                .title(plexMediaDto.getTitle())
+                .artistName(plexMediaDto.getArtistName())
+                .albumName(plexMediaDto.getAlbumName())
+                .trackTitle(plexMediaDto.getTrackTitle())
                 .build();
     }
 }

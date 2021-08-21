@@ -19,9 +19,9 @@ class PlexMediaServiceIT extends AbstractCommonIT {
         PlexMedia media = PlexMedia.builder()
                 .uuid(UUID.randomUUID())
                 .plexId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         PlexMedia plexMedia = plexMediaService.save(media).getMedia();
         assertNotNull(plexMedia);

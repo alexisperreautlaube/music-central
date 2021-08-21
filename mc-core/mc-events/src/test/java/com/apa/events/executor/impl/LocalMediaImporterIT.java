@@ -38,11 +38,12 @@ class LocalMediaImporterIT extends AbstractEventIT {
     public void simpleTest() {
         LocalMediaDto localMedia = LocalMediaDto.builder()
                 .localId("localId")
-                .artist("artist")
-                .album("album")
-                .title("title")
+                .artistName("artist")
+                .albumName("album")
+                .trackTitle("title")
                 .build();
-        MusicCentralEvent execute = localMediaImporter.execute(localMedia);
+
+        localMediaImporter.execute(localMedia);
 
         // media
         List<LocalMedia> all = localMediaRepository.findAll();

@@ -5,6 +5,7 @@ import com.apa.common.entities.media.LocalMedia;
 import com.apa.common.repositories.LocalMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,4 +28,10 @@ public class LocalMediaService extends AbstractMediaService<LocalMedia> {
     public void delete(UUID uuid) {
         localMediaRepository.deleteById(uuid);
     }
+
+    @Override
+    public MongoRepository<LocalMedia, UUID> getRepository() {
+        return localMediaRepository;
+    }
+
 }

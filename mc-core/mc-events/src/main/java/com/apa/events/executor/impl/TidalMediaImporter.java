@@ -25,4 +25,10 @@ public class TidalMediaImporter extends EventExecutor<TidalMediaDto> {
         VersionMedia<TidalMedia> save = tidalMediaService.save(tidalMedia);
         return List.of(new EventAudit(save.getMedia().getUuid(), save.getMedia().getClass().getName(), save.getVersion()));
     }
+
+    @Override
+    protected boolean existAndEquals(TidalMediaDto tidalMediaDto) {
+        TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
+        return tidalMediaService.existAndEquals(tidalMedia);
+    }
 }

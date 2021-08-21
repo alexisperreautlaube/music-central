@@ -9,10 +9,10 @@ public class TidalMediaMapper {
     public static TidalMedia toTidalMedia(TidalMediaDto tidalMediaDto) {
         return TidalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .tidalId(tidalMediaDto.getTidalId())
-                .artist(tidalMediaDto.getArtist())
-                .album(tidalMediaDto.getAlbum())
-                .title(tidalMediaDto.getTitle())
+                .tidalTrackId(tidalMediaDto.getTidalTrackId())
+                .artistName(tidalMediaDto.getArtistName())
+                .albumName(tidalMediaDto.getAlbumName())
+                .trackTitle(tidalMediaDto.getTrackTitle())
                 .build();
     }
 }

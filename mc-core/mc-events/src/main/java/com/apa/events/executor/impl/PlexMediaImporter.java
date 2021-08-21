@@ -25,4 +25,10 @@ public class PlexMediaImporter extends EventExecutor<PlexMediaDto> {
         VersionMedia<PlexMedia> save = plexMediaService.save(plexMedia);
         return List.of(new EventAudit(save.getMedia().getUuid(), save.getMedia().getClass().getName(), save.getVersion()));
     }
+
+    @Override
+    protected boolean existAndEquals(PlexMediaDto plexMediaDto) {
+        PlexMedia plexMedia = PlexMediaMapper.toPlexMedia(plexMediaDto);
+        return plexMediaService.existAndEquals(plexMedia);
+    }
 }

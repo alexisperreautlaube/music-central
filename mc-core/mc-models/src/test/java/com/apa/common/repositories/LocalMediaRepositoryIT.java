@@ -29,16 +29,16 @@ class LocalMediaRepositoryIT extends AbstractModelsIT {
         LocalMedia media = LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         LocalMedia localMedia = localMediaRepository.save(media);
         assertNotNull(localMedia);
-        media.setTitle("title2");
+        media.setTrackTitle("title2");
         localMediaRepository.save(media);
         Optional<LocalMedia> byId = localMediaRepository.findById(media.getUuid());
-        assertEquals("title2", byId.get().getTitle());
+        assertEquals("title2", byId.get().getTrackTitle());
         QueryBuilder jqlQuery = QueryBuilder.byClass(LocalMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
         Assertions.assertEquals("title", snapshots.get(1).getPropertyValue("title"));

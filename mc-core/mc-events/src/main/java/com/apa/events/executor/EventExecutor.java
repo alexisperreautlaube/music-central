@@ -32,7 +32,10 @@ public abstract class EventExecutor<M extends MediaDto> {
         this.musicCentralMediaClass = (Class<MusicCentralMedia>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public MusicCentralEvent execute(M m) {
+    public Optional<MusicCentralEvent> execute(M m) {
+        if (existAndEquals(m)) {
+            return Optional.empty();
+        }
         MusicCentralEvent e = new MusicCentralEvent();
         e.setExecutorClassName(executerClass.getName());
         e.setMediaClassName(musicCentralMediaClass.getName());
@@ -45,7 +48,7 @@ public abstract class EventExecutor<M extends MediaDto> {
         e.setState(MusicCentralEventStates.EXECUTED);
         e.setDateExecuted(LocalDateTime.now());
         musicCentralEventRepository.save(e);
-        return e;
+        return Optional.of(e);
     }
 
     public void rollback(MusicCentralEvent e) {
@@ -61,15 +64,23 @@ public abstract class EventExecutor<M extends MediaDto> {
 
     protected abstract List<EventAudit> doExecute(MusicCentralEvent e, M m);
 
+    protected abstract boolean existAndEquals(M m);
+
     private void doRollback(MusicCentralEvent e) {
         e.getEventAudits().forEach(eventAudit -> {
             Optional<AbstractMediaService> mediaService = null;
-            try {
-                mediaService = mediaServiceProvider.provideMediaService(Class.forName(eventAudit.getEventClassName()));
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
-            }
-            mediaService.get().restore(eventAudit.getUuid(), eventAudit.getVersion() - 1);
+
+            mediaService = getMediaService(eventAudit.getEventClassName());
+
+            mediaService.map(s -> s.restore(eventAudit.getUuid(), eventAudit.getVersion() - 1)).orElseThrow();
         });
+    }
+
+    private Optional<AbstractMediaService> getMediaService(String eventAudit) {
+        try {
+            return mediaServiceProvider.provideMediaService(Class.forName(eventAudit));
+        } catch (ClassNotFoundException e) {
+            return Optional.empty();
+        }
     }
 }

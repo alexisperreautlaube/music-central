@@ -17,7 +17,7 @@ import java.util.UUID;
 public class MusicCentralMedia {
     @Id
     private UUID uuid;
-    private String title;
-    private String album;
-    private String artist;
+    private String trackTitle;
+    private String albumName;
+    private String artistName;
 }

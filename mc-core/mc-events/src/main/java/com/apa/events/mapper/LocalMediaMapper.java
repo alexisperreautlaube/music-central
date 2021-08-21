@@ -10,9 +10,9 @@ public class LocalMediaMapper {
         return LocalMedia.builder()
                 .uuid(UUID.randomUUID())
                 .localId(localMediaDto.getLocalId())
-                .artist(localMediaDto.getArtist())
-                .album(localMediaDto.getAlbum())
-                .title(localMediaDto.getTitle())
+                .artistName(localMediaDto.getArtistName())
+                .albumName(localMediaDto.getAlbumName())
+                .trackTitle(localMediaDto.getTrackTitle())
                 .build();
     }
 }

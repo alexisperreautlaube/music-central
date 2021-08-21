@@ -29,16 +29,16 @@ class PlexMediaRepositoryIT extends AbstractModelsIT {
         PlexMedia media = PlexMedia.builder()
                 .uuid(UUID.randomUUID())
                 .plexId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         PlexMedia plexMedia = plexMediaRepository.save(media);
         assertNotNull(plexMedia);
-        media.setTitle("title2");
+        media.setTrackTitle("title2");
         plexMediaRepository.save(media);
         Optional<PlexMedia> byId = plexMediaRepository.findById(media.getUuid());
-        assertEquals("title2", byId.get().getTitle());
+        assertEquals("title2", byId.get().getTrackTitle());
         QueryBuilder jqlQuery = QueryBuilder.byClass(PlexMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
         Assertions.assertEquals("title", snapshots.get(1).getPropertyValue("title"));

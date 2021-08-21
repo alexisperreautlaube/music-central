@@ -5,14 +5,17 @@ import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.repositories.PlexMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class PlexMediaService extends AbstractMediaService<PlexMedia> {
+
     private final PlexMediaRepository plexMediaRepository;
 
     @Override
@@ -25,5 +28,10 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> {
     @Override
     public void delete(UUID uuid) {
         plexMediaRepository.deleteById(uuid);
+    }
+
+    @Override
+    public MongoRepository<PlexMedia, UUID> getRepository() {
+        return plexMediaRepository;
     }
 }

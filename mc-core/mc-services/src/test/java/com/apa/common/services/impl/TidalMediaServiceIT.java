@@ -20,10 +20,10 @@ class TidalMediaServiceIT extends AbstractCommonIT {
     public void saveTest() {
         TidalMedia media = TidalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .tidalId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .tidalTrackId(UUID.randomUUID().toString())
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         TidalMedia tidalMedia = tidalMediaService.save(media).getMedia();
         assertNotNull(tidalMedia);

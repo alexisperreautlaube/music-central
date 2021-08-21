@@ -10,10 +10,10 @@ class TidalMediaTest {
     @Test
     public void checkOwnAttributeEquals() {
         TidalMedia tidalMedia1 = TidalMedia.builder()
-                .tidalId("test")
+                .tidalTrackId("test")
                 .build();
         TidalMedia tidalMedia2 = TidalMedia.builder()
-                .tidalId("test")
+                .tidalTrackId("test")
                 .build();
         assertTrue(tidalMedia1.equals(tidalMedia2));
     }
@@ -21,10 +21,10 @@ class TidalMediaTest {
     @Test
     public void checkOwnAttributeNotEquals() {
         TidalMedia tidalMedia1 = TidalMedia.builder()
-                .tidalId("test")
+                .tidalTrackId("test")
                 .build();
         TidalMedia tidalMedia2 = TidalMedia.builder()
-                .tidalId("test2")
+                .tidalTrackId("test2")
                 .build();
         assertFalse(tidalMedia1.equals(tidalMedia2));
     }
@@ -32,10 +32,10 @@ class TidalMediaTest {
     @Test
     public void checkParentAttributeEquals() {
         TidalMedia tidalMedia1 = TidalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         TidalMedia tidalMedia2 = TidalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         assertTrue(tidalMedia1.equals(tidalMedia2));
     }
@@ -43,10 +43,10 @@ class TidalMediaTest {
     @Test
     public void checkParentAttributeNotEquals() {
         TidalMedia tidalMedia1 = TidalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         TidalMedia tidalMedia2 = TidalMedia.builder()
-                .artist("test2")
+                .artistName("test2")
                 .build();
         assertFalse(tidalMedia1.equals(tidalMedia2));
     }

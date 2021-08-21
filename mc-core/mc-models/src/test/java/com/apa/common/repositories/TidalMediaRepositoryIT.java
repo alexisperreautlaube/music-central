@@ -28,17 +28,17 @@ class TidalMediaRepositoryIT extends AbstractModelsIT {
     public void reloadPreviousVersionTestTest() {
         TidalMedia media = TidalMedia.builder()
                 .uuid(UUID.randomUUID())
-                .tidalId(UUID.randomUUID().toString())
-                .title("title")
-                .album("album")
-                .artist("artist")
+                .tidalTrackId(UUID.randomUUID().toString())
+                .trackTitle("title")
+                .albumName("album")
+                .artistName("artist")
                 .build();
         TidalMedia tidalMedia = tidalMediaRepository.save(media);
         assertNotNull(tidalMedia);
-        media.setTitle("title2");
+        media.setTrackTitle("title2");
         tidalMediaRepository.save(media);
         Optional<TidalMedia> byId = tidalMediaRepository.findById(media.getUuid());
-        assertEquals("title2", byId.get().getTitle());
+        assertEquals("title2", byId.get().getTrackTitle());
         QueryBuilder jqlQuery = QueryBuilder.byClass(TidalMedia.class);
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery.build());
         Assertions.assertEquals("title", snapshots.get(1).getPropertyValue("title"));

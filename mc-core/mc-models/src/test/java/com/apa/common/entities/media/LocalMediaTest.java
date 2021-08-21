@@ -32,10 +32,10 @@ class LocalMediaTest {
     @Test
     public void checkParentAttributeEquals() {
         LocalMedia localMedia1 = LocalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         LocalMedia localMedia2 = LocalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         assertTrue(localMedia1.equals(localMedia2));
     }
@@ -43,10 +43,10 @@ class LocalMediaTest {
     @Test
     public void checkParentAttributeNotEquals() {
         LocalMedia localMedia1 = LocalMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         LocalMedia localMedia2 = LocalMedia.builder()
-                .artist("test2")
+                .artistName("test2")
                 .build();
         assertFalse(localMedia1.equals(localMedia2));
     }

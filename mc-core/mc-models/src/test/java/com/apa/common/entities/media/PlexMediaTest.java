@@ -32,10 +32,10 @@ class PlexMediaTest {
     @Test
     public void checkParentAttributeEquals() {
         PlexMedia plexMedia1 = PlexMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         PlexMedia plexMedia2 = PlexMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         assertTrue(plexMedia1.equals(plexMedia2));
     }
@@ -43,10 +43,10 @@ class PlexMediaTest {
     @Test
     public void checkParentAttributeNotEquals() {
         PlexMedia plexMedia1 = PlexMedia.builder()
-                .artist("test")
+                .artistName("test")
                 .build();
         PlexMedia plexMedia2 = PlexMedia.builder()
-                .artist("test2")
+                .artistName("test2")
                 .build();
         assertFalse(plexMedia1.equals(plexMedia2));
     }

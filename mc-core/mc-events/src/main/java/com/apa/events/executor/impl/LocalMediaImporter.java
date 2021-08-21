@@ -25,4 +25,10 @@ public class LocalMediaImporter extends EventExecutor<LocalMediaDto> {
         VersionMedia<LocalMedia> save = localMediaService.save(localMedia);
         return List.of(new EventAudit(save.getMedia().getUuid(), save.getMedia().getClass().getName(), save.getVersion()));
     }
+
+    @Override
+    protected boolean existAndEquals(LocalMediaDto localMediaDto) {
+        LocalMedia localMedia = LocalMediaMapper.toLocalMedia(localMediaDto);
+        return localMediaService.existAndEquals(localMedia);
+    }
 }

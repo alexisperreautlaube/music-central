@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class MediaDto {
-    private String title;
-    private String album;
-    private String artist;
+    private String trackTitle;
+    private String albumName;
+    private String artistName;
 }
