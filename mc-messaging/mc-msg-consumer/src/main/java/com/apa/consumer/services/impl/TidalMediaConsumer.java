@@ -12,7 +12,7 @@ public class TidalMediaConsumer {
     @Autowired
     private TidalMediaImporter tidalMediaImporter;
 
-    @KafkaListener(groupId = "media.importer", topics = "tidal.media.importer", containerFactory = "tidalMediaDtoKafkaListenerContainerFactory")
+    @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = "${spring.kafka.topic.tidal.media.importer}", containerFactory = "tidalMediaDtoKafkaListenerContainerFactory")
     public void doImport(TidalMediaDto tidalMediaDto) {
         tidalMediaImporter.execute(tidalMediaDto);
     }

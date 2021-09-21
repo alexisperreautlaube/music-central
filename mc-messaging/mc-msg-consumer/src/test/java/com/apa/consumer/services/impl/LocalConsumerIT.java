@@ -6,6 +6,7 @@ import com.apa.core.dto.media.LocalMediaDto;
 import com.apa.consumer.AbstractConsumerIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.List;
@@ -15,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LocalConsumerIT extends AbstractConsumerIT {
+
+    @Value("${spring.kafka.topic.local.media.importer}")
+    private String topic;
 
     @Autowired
     private LocalMediaRepository localMediaRepository;
@@ -34,7 +38,7 @@ class LocalConsumerIT extends AbstractConsumerIT {
                 .localId(UUID.randomUUID().toString())
                 .build();
 
-        localMediaDtoTemplate.send("local.media.importer", build);
+        localMediaDtoTemplate.send(topic, build);
         List<LocalMedia> all = localMediaRepository.findAll();
         int timeOut = 5000;
         while (all.isEmpty() && timeOut > 0) {

@@ -12,7 +12,7 @@ public class LocalMediaConsumer {
     @Autowired
     private LocalMediaImporter localMediaImporter;
 
-    @KafkaListener(groupId = "media.importer", topics = "local.media.importer", containerFactory = "localMediaDtoKafkaListenerContainerFactory")
+    @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = "${spring.kafka.topic.local.media.importer}", containerFactory = "localMediaDtoKafkaListenerContainerFactory")
     public void doImport(LocalMediaDto localMediaDto) {
         localMediaImporter.execute(localMediaDto);
     }

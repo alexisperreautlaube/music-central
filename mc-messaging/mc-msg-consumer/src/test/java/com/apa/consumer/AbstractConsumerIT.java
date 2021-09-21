@@ -12,7 +12,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
-@TestPropertySource(properties = "spring.kafka.bootstrap-servers=localhost:9092")
+@TestPropertySource(properties = {
+        "spring.kafka.bootstrap-servers=localhost:9092",
+        "spring.kafka.consumer.group-id=media.importer",
+        "spring.kafka.topic.local.media.importer=local.media.importer",
+        "spring.kafka.topic.plex.media.importer=local.plex.importer",
+        "spring.kafka.topic.tidal.media.importer=local.tidal.importer"
+})
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ImporterSpringBootTestApplication.class)
 public class AbstractConsumerIT {

@@ -13,7 +13,7 @@ public class PlexMediaConsumer {
     @Autowired
     private PlexMediaImporter plexMediaImporter;
 
-    @KafkaListener(groupId = "media.importer", topics = "plex.media.importer", containerFactory = "plexMediaDtoKafkaListenerContainerFactory")
+    @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = "${spring.kafka.topic.plex.media.importer}", containerFactory = "plexMediaDtoKafkaListenerContainerFactory")
     public void doImport(PlexMediaDto plexMediaDto) {
         plexMediaImporter.execute(plexMediaDto);
     }

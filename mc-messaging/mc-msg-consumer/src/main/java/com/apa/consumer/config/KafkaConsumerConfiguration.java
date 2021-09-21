@@ -24,21 +24,24 @@ public class KafkaConsumerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootStrapServers;
 
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
+
     public ConsumerFactory<String, LocalMediaDto> localMediaDtoConsumerFactory() {
         Map<String, Object> props = initCommonProperties();
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "media.importer");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(LocalMediaDto.class));
     }
 
     public ConsumerFactory<String, PlexMediaDto> plexMediaDtoConsumerFactory() {
         Map<String, Object> props = initCommonProperties();
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "media.importer");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(PlexMediaDto.class));
     }
 
     public ConsumerFactory<String, TidalMediaDto> tidalMediaDtoConsumerFactory() {
         Map<String, Object> props = initCommonProperties();
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "media.importer");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TidalMediaDto.class));
     }
 

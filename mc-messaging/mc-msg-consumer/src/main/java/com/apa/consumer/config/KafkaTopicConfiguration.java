@@ -17,6 +17,15 @@ public class KafkaTopicConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootStrapServers;
 
+    @Value("${spring.kafka.topic.local.media.importer}")
+    private String localTopic;
+
+    @Value("${spring.kafka.topic.plex.media.importer}")
+    private String plexTopic;
+
+    @Value("${spring.kafka.topic.tidal.media.importer}")
+    private String tidalTopic;
+
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
@@ -27,7 +36,7 @@ public class KafkaTopicConfiguration {
     @Bean
     public NewTopic tidalImporterTopic() {
         return TopicBuilder
-                .name("tidal.media.importer")
+                .name(tidalTopic)
                 .partitions(1)
                 .replicas(1).build();
     }
@@ -35,7 +44,7 @@ public class KafkaTopicConfiguration {
     @Bean
     public NewTopic plexImporterTopic() {
         return TopicBuilder
-                .name("plex.media.importer")
+                .name(plexTopic)
                 .partitions(1)
                 .replicas(1).build();
     }
@@ -43,7 +52,7 @@ public class KafkaTopicConfiguration {
     @Bean
     public NewTopic localImporterTopic() {
         return TopicBuilder
-                .name("local.media.importer")
+                .name(localTopic)
                 .partitions(1)
                 .replicas(1).build();
     }

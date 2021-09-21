@@ -11,3 +11,5 @@ spring:
       tidal:
         media:
           importer: tidal.media.importer
+    consumer:
+      group-id: media.importer
