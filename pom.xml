@@ -38,7 +38,7 @@
         <mongodb-junit-test.version>1.1.0</mongodb-junit-test.version>
         <assertj-core.version>3.19.0</assertj-core.version>
         <!-- plugin -->
-
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -71,6 +71,11 @@
             <dependency>
                 <groupId>com.apa</groupId>
                 <artifactId>mc-dtos</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.apa</groupId>
+                <artifactId>mc-msg-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -212,6 +217,16 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <modules>

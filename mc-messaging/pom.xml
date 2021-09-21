@@ -15,7 +15,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mc-consumer</module>
+        <module>mc-msg-common</module>
+        <module>mc-msg-consumer</module>
     </modules>
 
 </project>

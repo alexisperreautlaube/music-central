@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: "192.168.1.82:30000"
+  data:
+    mongodb:
+      database: local
+      host: 192.168.1.82
+      port: 27017
+
+javers:
+  mongodb:
+    host: 192.168.1.82
+    port: 27017
+    database: local-javers-audit
