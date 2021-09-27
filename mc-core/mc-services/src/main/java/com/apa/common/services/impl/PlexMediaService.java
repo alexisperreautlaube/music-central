@@ -32,7 +32,7 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> {
 
     @Override
     public boolean existAndEquals(PlexMedia media) {
-        return true;
+        throw new RuntimeException("not implemted yet");
     }
 
 }

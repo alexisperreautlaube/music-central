@@ -2,6 +2,7 @@ package com.apa.common.services.impl;
 
 import com.apa.common.entities.VersionMedia;
 import com.apa.common.entities.media.LocalMedia;
+import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.repositories.LocalMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -31,7 +33,12 @@ public class LocalMediaService extends AbstractMediaService<LocalMedia> {
 
     @Override
     public boolean existAndEquals(LocalMedia media) {
-        return true;
+        return getByLocalId(media.getLocalId())
+                .map(m -> m.equals(media))
+                .orElse(false);
     }
 
+    public Optional<LocalMedia> getByLocalId(String localId) {
+        return localMediaRepository.findByLocalId(localId);
+    }
 }
