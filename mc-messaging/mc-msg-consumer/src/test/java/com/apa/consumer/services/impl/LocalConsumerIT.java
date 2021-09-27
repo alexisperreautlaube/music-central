@@ -12,8 +12,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LocalConsumerIT extends AbstractConsumerIT {
 
@@ -46,6 +45,7 @@ class LocalConsumerIT extends AbstractConsumerIT {
             Thread.sleep(50);
             all = localMediaRepository.findAll();
         }
+        assertFalse(all.isEmpty());
         assertEquals(all.get(0).getLocalId(), build.getLocalId());
     }
 }
