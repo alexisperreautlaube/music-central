@@ -26,12 +26,13 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> {
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(String uuid) {
         plexMediaRepository.deleteById(uuid);
     }
 
     @Override
-    public MongoRepository<PlexMedia, UUID> getRepository() {
-        return plexMediaRepository;
+    public boolean existAndEquals(PlexMedia media) {
+        return true;
     }
+
 }

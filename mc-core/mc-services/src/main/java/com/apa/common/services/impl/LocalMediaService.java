@@ -25,13 +25,13 @@ public class LocalMediaService extends AbstractMediaService<LocalMedia> {
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(String uuid) {
         localMediaRepository.deleteById(uuid);
     }
 
     @Override
-    public MongoRepository<LocalMedia, UUID> getRepository() {
-        return localMediaRepository;
+    public boolean existAndEquals(LocalMedia media) {
+        return true;
     }
 
 }

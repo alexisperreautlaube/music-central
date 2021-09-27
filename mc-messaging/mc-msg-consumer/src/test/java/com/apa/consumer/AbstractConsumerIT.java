@@ -2,7 +2,10 @@ package com.apa.consumer;
 
 import com.apa.importer.ImporterSpringBootTestApplication;
 import lombok.Getter;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -10,6 +13,8 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+
+import java.util.HashMap;
 
 @Testcontainers
 @TestPropertySource(properties = {

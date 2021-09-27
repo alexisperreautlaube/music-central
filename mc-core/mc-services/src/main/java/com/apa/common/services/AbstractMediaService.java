@@ -33,7 +33,7 @@ public abstract class AbstractMediaService<E extends MusicCentralMedia> implemen
         return latestSnapshot.get().getVersion();
     }
 
-    public VersionMedia<E> restore(UUID uuid, long i) {
+    public VersionMedia<E> restore(String uuid, long i) {
         if (i == 0) {
             delete(uuid);
             return new VersionMedia(0, null);
@@ -47,12 +47,7 @@ public abstract class AbstractMediaService<E extends MusicCentralMedia> implemen
     public abstract VersionMedia<E> save(E media);
 
     @Override
-    public abstract void delete(UUID uuid);
+    public abstract void delete(String uuid);
 
-    public boolean existAndEquals(E media) {
-        Optional<E> byId = getRepository().findById(media.getUuid());
-        return byId.map(m -> m.equals(media)).orElse(false);
-    }
-
-    public abstract MongoRepository<E, UUID> getRepository();
+    public abstract boolean existAndEquals(E media);
 }

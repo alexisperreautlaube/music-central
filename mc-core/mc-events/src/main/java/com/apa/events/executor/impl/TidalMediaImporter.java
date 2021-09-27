@@ -22,6 +22,7 @@ public class TidalMediaImporter extends EventExecutor<TidalMediaDto> {
     @Override
     protected List<EventAudit> doExecute(MusicCentralEvent e, TidalMediaDto tidalMediaDto) {
         TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
+        tidalMediaService.getByTidalTrackId(tidalMediaDto.getTidalTrackId()).ifPresent(m -> tidalMedia.setUuid(m.getUuid()));
         VersionMedia<TidalMedia> save = tidalMediaService.save(tidalMedia);
         return List.of(new EventAudit(save.getMedia().getUuid(), save.getMedia().getClass().getName(), save.getVersion()));
     }

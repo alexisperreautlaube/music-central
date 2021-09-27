@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class EventAudit {
-    private UUID uuid;
+    private String uuid;
     private String eventClassName;
     private long version;
 }

@@ -27,7 +27,7 @@ class TidalMediaRepositoryIT extends AbstractModelsIT {
     @Test
     public void reloadPreviousVersionTestTest() {
         TidalMedia media = TidalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .tidalTrackId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")

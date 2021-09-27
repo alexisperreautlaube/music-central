@@ -1,12 +1,14 @@
 package com.apa.common.entities.media;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.Map;
 
+@Getter
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -17,7 +19,7 @@ public class TidalMedia extends MusicCentralMedia {
     private int trackCount;
     private int discCount;
     private long albumDuration;
-    private LocalDate release_date;
+    private LocalDate releaseDate;
     private String tidalTrackId;
     private long trackDuration;
     private int trackNumber;

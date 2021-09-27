@@ -31,6 +31,7 @@
         <jackson-databind.version>2.12.2</jackson-databind.version>
         <lombok.version>1.18.18</lombok.version>
         <jackson.version>2.12.2</jackson.version>
+        <jackson-datatype-jsr310.version>2.12.5</jackson-datatype-jsr310.version>
         <!-- test -->
         <junit-bom.version>5.7.1</junit-bom.version>
         <testcontainers-kafka.version>1.15.3</testcontainers-kafka.version>
@@ -122,7 +123,11 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson-datatype-jsr310.version}</version>
+            </dependency>
             <!-- test -->
             <dependency>
                 <groupId>org.mockito</groupId>

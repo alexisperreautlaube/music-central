@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.UUID;
 
 @JaversSpringDataAuditable
-public interface LocalMediaRepository extends MongoRepository<LocalMedia, UUID> {
+public interface LocalMediaRepository extends MongoRepository<LocalMedia, String> {
 }

@@ -12,11 +12,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude="uuid")
 @NoArgsConstructor
 public class MusicCentralMedia {
     @Id
-    private UUID uuid;
+    private String uuid;
     private String trackTitle;
     private String albumName;
     private String artistName;

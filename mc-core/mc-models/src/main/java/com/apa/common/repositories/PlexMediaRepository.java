@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.UUID;
 
 @JaversSpringDataAuditable
-public interface PlexMediaRepository extends MongoRepository<PlexMedia, UUID> {
+public interface PlexMediaRepository extends MongoRepository<PlexMedia, String> {
 }

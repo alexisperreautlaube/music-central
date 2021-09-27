@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface MediaService<T extends MusicCentralMedia> {
     VersionMedia<T> save(T t);
 
-    void delete(UUID uuit);
+    void delete(String uuid);
 }

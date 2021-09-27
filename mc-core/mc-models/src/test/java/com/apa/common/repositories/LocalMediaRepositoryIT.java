@@ -27,7 +27,7 @@ class LocalMediaRepositoryIT extends AbstractModelsIT {
     @Test
     public void reloadPreviousVersionTestTest() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")

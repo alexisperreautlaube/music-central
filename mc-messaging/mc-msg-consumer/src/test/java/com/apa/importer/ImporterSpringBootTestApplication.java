@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 
 @SpringBootApplication
-@Import(MusicCentralImporterConfiguration.class)
+@Import({MusicCentralImporterConfiguration.class})
 public class ImporterSpringBootTestApplication {
 
     public static void main(String[] args) {

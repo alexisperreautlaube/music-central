@@ -8,6 +8,7 @@ import com.apa.events.entities.EventAudit;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.entities.enums.MusicCentralEventStates;
 import com.apa.events.repositories.MusicCentralEventRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public abstract class EventExecutor<M extends MediaDto> {
     
     @Autowired
@@ -43,11 +45,14 @@ public abstract class EventExecutor<M extends MediaDto> {
             e.setEventAudits(doExecute(e, m));
         } catch (Throwable t) {
             e.setState(MusicCentralEventStates.EXECUTE_FAILED);
+            log.info("executor={} failed, {} - {} - {}", e.getExecutorClassName(), m.getArtistName(), m.getAlbumName(), m.getTrackTitle());
+            musicCentralEventRepository.save(e);
             throw t;
         }
         e.setState(MusicCentralEventStates.EXECUTED);
         e.setDateExecuted(LocalDateTime.now());
         musicCentralEventRepository.save(e);
+        log.info("executor={} success, {} - {} - {}", e.getExecutorClassName(), m.getArtistName(), m.getAlbumName(), m.getTrackTitle());
         return Optional.of(e);
     }
 

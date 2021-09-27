@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -25,12 +26,19 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> {
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(String uuid) {
         tidalMediaRepository.deleteById(uuid);
     }
 
     @Override
-    public MongoRepository<TidalMedia, UUID> getRepository() {
-        return tidalMediaRepository;
+    public boolean existAndEquals(TidalMedia media) {
+        return getByTidalTrackId(media.getTidalTrackId())
+                .map(m -> m.equals(media))
+                .orElse(false);
     }
+
+    public Optional<TidalMedia> getByTidalTrackId(String tidalTrackId) {
+        return tidalMediaRepository.findByTidalTrackId(tidalTrackId);
+    }
+
 }

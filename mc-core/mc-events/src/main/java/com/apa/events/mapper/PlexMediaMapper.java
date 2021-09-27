@@ -8,7 +8,6 @@ import java.util.UUID;
 public class PlexMediaMapper {
     public static PlexMedia toPlexMedia(PlexMediaDto plexMediaDto) {
         return PlexMedia.builder()
-                .uuid(UUID.randomUUID())
                 .plexId(plexMediaDto.getPlexId())
                 .artistName(plexMediaDto.getArtistName())
                 .albumName(plexMediaDto.getAlbumName())

@@ -23,7 +23,7 @@ class LocalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void saveTest() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")
@@ -38,7 +38,7 @@ class LocalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void saveSaveTest() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")
@@ -56,7 +56,7 @@ class LocalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void restoreTest() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")
@@ -77,7 +77,7 @@ class LocalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void restore0Test() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")

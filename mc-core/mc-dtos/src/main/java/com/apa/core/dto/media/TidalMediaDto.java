@@ -1,5 +1,6 @@
 package com.apa.core.dto.media;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -17,7 +18,8 @@ public class TidalMediaDto extends MediaDto {
     private int trackCount;
     private int discCount;
     private long albumDuration;
-    private LocalDate release_date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate releaseDate;
     private String tidalTrackId;
     private long trackDuration;
     private int trackNumber;

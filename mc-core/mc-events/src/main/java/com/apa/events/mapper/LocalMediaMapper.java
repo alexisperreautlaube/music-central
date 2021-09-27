@@ -8,7 +8,6 @@ import java.util.UUID;
 public class LocalMediaMapper {
     public static LocalMedia toLocalMedia(LocalMediaDto localMediaDto) {
         return LocalMedia.builder()
-                .uuid(UUID.randomUUID())
                 .localId(localMediaDto.getLocalId())
                 .artistName(localMediaDto.getArtistName())
                 .albumName(localMediaDto.getAlbumName())
