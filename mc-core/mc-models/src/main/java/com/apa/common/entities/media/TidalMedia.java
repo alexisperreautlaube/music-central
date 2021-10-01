@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class TidalMedia extends MusicCentralMedia {
+    @Id
     private String artistId;
     private Map<String, String> artists;
     private String albumId;

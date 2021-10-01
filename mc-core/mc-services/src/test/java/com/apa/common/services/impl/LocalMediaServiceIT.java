@@ -21,7 +21,6 @@ class LocalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void saveTest() {
         LocalMedia media = LocalMedia.builder()
-                .uuid(UUID.randomUUID().toString())
                 .localId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")

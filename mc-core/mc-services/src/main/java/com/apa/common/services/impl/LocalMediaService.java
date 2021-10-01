@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class LocalMediaService extends AbstractMediaService<LocalMedia> {
@@ -28,12 +26,8 @@ public class LocalMediaService extends AbstractMediaService<LocalMedia> {
 
     @Override
     public boolean existAndEquals(LocalMedia media) {
-        return getByLocalId(media.getLocalId())
+        return localMediaRepository.findById(media.getLocalId())
                 .map(m -> m.equals(media))
                 .orElse(false);
-    }
-
-    public Optional<LocalMedia> getByLocalId(String localId) {
-        return localMediaRepository.findByLocalId(localId);
     }
 }

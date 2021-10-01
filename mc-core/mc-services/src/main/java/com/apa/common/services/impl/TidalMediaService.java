@@ -28,13 +28,9 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> {
 
     @Override
     public boolean existAndEquals(TidalMedia media) {
-        return getByTidalTrackId(media.getTidalTrackId())
+        return tidalMediaRepository.findById(media.getTidalTrackId())
                 .map(m -> m.equals(media))
                 .orElse(false);
-    }
-
-    public Optional<TidalMedia> getByTidalTrackId(String tidalTrackId) {
-        return tidalMediaRepository.findByTidalTrackId(tidalTrackId);
     }
 
 }

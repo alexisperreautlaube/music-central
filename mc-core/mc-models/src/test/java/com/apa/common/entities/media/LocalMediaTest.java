@@ -59,7 +59,6 @@ class LocalMediaTest {
                 .artistName("test")
                 .build();
         LocalMedia localMedia2 = LocalMedia.builder()
-                .uuid(UUID.randomUUID().toString())
                 .artistName("test")
                 .build();
         assertTrue(localMedia1.equals(localMedia2));

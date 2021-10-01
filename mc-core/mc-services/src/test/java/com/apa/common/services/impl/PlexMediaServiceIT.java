@@ -17,7 +17,6 @@ class PlexMediaServiceIT extends AbstractCommonIT {
     @Test
     public void saveTest() {
         PlexMedia media = PlexMedia.builder()
-                .uuid(UUID.randomUUID().toString())
                 .plexId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")

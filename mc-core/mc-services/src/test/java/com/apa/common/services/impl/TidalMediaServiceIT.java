@@ -19,7 +19,6 @@ class TidalMediaServiceIT extends AbstractCommonIT {
     @Test
     public void saveTest() {
         TidalMedia media = TidalMedia.builder()
-                .uuid(UUID.randomUUID().toString())
                 .tidalTrackId(UUID.randomUUID().toString())
                 .trackTitle("title")
                 .albumName("album")
