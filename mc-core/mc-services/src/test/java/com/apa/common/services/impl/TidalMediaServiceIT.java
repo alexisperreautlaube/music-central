@@ -25,8 +25,7 @@ class TidalMediaServiceIT extends AbstractCommonIT {
                 .albumName("album")
                 .artistName("artist")
                 .build();
-        TidalMedia tidalMedia = tidalMediaService.save(media).getMedia();
+        TidalMedia tidalMedia = tidalMediaService.save(media);
         assertNotNull(tidalMedia);
-        log.info("patate");
     }
 }

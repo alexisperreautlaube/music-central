@@ -23,7 +23,7 @@ class PlexMediaServiceIT extends AbstractCommonIT {
                 .albumName("album")
                 .artistName("artist")
                 .build();
-        PlexMedia plexMedia = plexMediaService.save(media).getMedia();
+        PlexMedia plexMedia = plexMediaService.save(media);
         assertNotNull(plexMedia);
     }
 }

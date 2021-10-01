@@ -16,8 +16,6 @@ public class MusicCentralEvent {
 
     private LocalDateTime dateExecuted;
 
-    private List<EventAudit> eventAudits = new ArrayList<>();
-
     private String executorClassName;
 
     private String mediaClassName;

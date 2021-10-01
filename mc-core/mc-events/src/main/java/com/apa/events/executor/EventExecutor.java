@@ -4,7 +4,6 @@ import com.apa.common.entities.media.MusicCentralMedia;
 import com.apa.common.services.AbstractMediaService;
 import com.apa.common.services.MediaServiceProvider;
 import com.apa.core.dto.media.MediaDto;
-import com.apa.events.entities.EventAudit;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.entities.enums.MusicCentralEventStates;
 import com.apa.events.repositories.MusicCentralEventRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -42,7 +40,7 @@ public abstract class EventExecutor<M extends MediaDto> {
         e.setExecutorClassName(executerClass.getName());
         e.setMediaClassName(musicCentralMediaClass.getName());
         try {
-            e.setEventAudits(doExecute(e, m));
+            doExecute(e, m);
         } catch (Throwable t) {
             e.setState(MusicCentralEventStates.EXECUTE_FAILED);
             log.info("executor={} failed, {} - {} - {}", e.getExecutorClassName(), m.getArtistName(), m.getAlbumName(), m.getTrackTitle());
@@ -56,30 +54,10 @@ public abstract class EventExecutor<M extends MediaDto> {
         return Optional.of(e);
     }
 
-    public void rollback(MusicCentralEvent e) {
-        try {
-            doRollback(e);
-        } catch (Throwable t) {
-            e.setState(MusicCentralEventStates.ROLLEDBACK_FAILED);
-            throw t;
-        }
-        e.setState(e.getState().equals(MusicCentralEventStates.TO_PERMANENTLY_ROLLBACK) ? MusicCentralEventStates.PERMANENTLY_ROLLEDBACK : MusicCentralEventStates.ROLLEDBACK);
-        musicCentralEventRepository.save(e);
-    }
 
-    protected abstract List<EventAudit> doExecute(MusicCentralEvent e, M m);
+    protected abstract void doExecute(MusicCentralEvent e, M m);
 
     protected abstract boolean existAndEquals(M m);
-
-    private void doRollback(MusicCentralEvent e) {
-        e.getEventAudits().forEach(eventAudit -> {
-            Optional<AbstractMediaService> mediaService = null;
-
-            mediaService = getMediaService(eventAudit.getEventClassName());
-
-            mediaService.map(s -> s.restore(eventAudit.getUuid(), eventAudit.getVersion() - 1)).orElseThrow();
-        });
-    }
 
     private Optional<AbstractMediaService> getMediaService(String eventAudit) {
         try {

@@ -1,16 +1,11 @@
 package com.apa.common.services.impl;
 
-import com.apa.common.entities.VersionMedia;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.repositories.PlexMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -20,9 +15,8 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> {
 
     @Override
     @Transactional
-    public VersionMedia<PlexMedia> save(PlexMedia plexMedia) {
-        PlexMedia save = plexMediaRepository.save(plexMedia);
-        return new VersionMedia(getEntityVersion(save), save);
+    public PlexMedia save(PlexMedia plexMedia) {
+        return plexMediaRepository.save(plexMedia);
     }
 
     @Override
