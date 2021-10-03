@@ -1,9 +1,7 @@
 package com.apa.consumer.config;
 
+import com.apa.common.msg.InputMessage;
 import com.apa.consumer.error.McKafkaErrorHandler;
-import com.apa.core.dto.media.LocalMediaDto;
-import com.apa.core.dto.media.PlexMediaDto;
-import com.apa.core.dto.media.TidalMediaDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -30,40 +28,15 @@ public class KafkaConsumerConfiguration {
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
-    public ConsumerFactory<String, LocalMediaDto> localMediaDtoConsumerFactory() {
-        Map<String, Object> props = initCommonProperties();
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(LocalMediaDto.class));
-    }
 
-    public ConsumerFactory<String, PlexMediaDto> plexMediaDtoConsumerFactory() {
+    public ConsumerFactory<String, InputMessage> tidalMediaDtoConsumerFactory() {
         Map<String, Object> props = initCommonProperties();
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(PlexMediaDto.class));
-    }
-
-    public ConsumerFactory<String, TidalMediaDto> tidalMediaDtoConsumerFactory() {
-        Map<String, Object> props = initCommonProperties();
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TidalMediaDto.class));
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(InputMessage.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, LocalMediaDto> localMediaDtoKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, LocalMediaDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(localMediaDtoConsumerFactory());
-        setFactoryCommonProperties(factory);
-        return factory;
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PlexMediaDto> plexMediaDtoKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PlexMediaDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(plexMediaDtoConsumerFactory());
-        setFactoryCommonProperties(factory);
-        return factory;
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TidalMediaDto> tidalMediaDtoKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TidalMediaDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, InputMessage> tidalMediaDtoKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, InputMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(tidalMediaDtoConsumerFactory());
         setFactoryCommonProperties(factory);
         return factory;

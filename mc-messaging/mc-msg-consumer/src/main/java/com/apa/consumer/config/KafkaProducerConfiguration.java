@@ -1,9 +1,8 @@
 package com.apa.consumer.config;
 
-import com.apa.core.dto.media.LocalMediaDto;
+import com.apa.common.msg.InputMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,7 @@ public class KafkaProducerConfiguration {
     private String bootStrapServers;
 
     @Bean
-    public ProducerFactory<String, LocalMediaDto> producerFactory() {
+    public ProducerFactory<String, InputMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -32,7 +31,7 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, LocalMediaDto> localMediaDtoKafkaTemplate() {
+    public KafkaTemplate<String, InputMessage> localMediaDtoKafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

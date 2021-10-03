@@ -17,14 +17,9 @@ public class KafkaTopicConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootStrapServers;
 
-    @Value("${spring.kafka.topic.local.media.importer}")
-    private String localTopic;
+    @Value("${spring.kafka.topic.input.message}")
+    private String inputMessageTopic;
 
-    @Value("${spring.kafka.topic.plex.media.importer}")
-    private String plexTopic;
-
-    @Value("${spring.kafka.topic.tidal.media.importer}")
-    private String tidalTopic;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -34,25 +29,9 @@ public class KafkaTopicConfiguration {
     }
 
     @Bean
-    public NewTopic tidalImporterTopic() {
+    public NewTopic importerTopic() {
         return TopicBuilder
-                .name(tidalTopic)
-                .partitions(1)
-                .replicas(1).build();
-    }
-
-    @Bean
-    public NewTopic plexImporterTopic() {
-        return TopicBuilder
-                .name(plexTopic)
-                .partitions(1)
-                .replicas(1).build();
-    }
-
-    @Bean
-    public NewTopic localImporterTopic() {
-        return TopicBuilder
-                .name(localTopic)
+                .name(inputMessageTopic)
                 .partitions(1)
                 .replicas(1).build();
     }

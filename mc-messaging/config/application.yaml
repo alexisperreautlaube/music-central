@@ -2,14 +2,8 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     topic:
-      local:
-        media:
-          importer: local.media.importer
-      plex:
-        media:
-          importer: plex.media.importer
-      tidal:
-        media:
-          importer: tidal.media.importer
+      input:
+        message: input.message
+
     consumer:
-      group-id: media.importer
+      group-id: mc-input.message

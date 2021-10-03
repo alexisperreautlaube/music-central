@@ -27,5 +27,9 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.apa</groupId>
+            <artifactId>mc-dtos</artifactId>
+        </dependency>
     </dependencies>
 </project>
