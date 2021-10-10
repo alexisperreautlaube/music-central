@@ -2,8 +2,8 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     topic:
-      input:
-        message: input.message
+      import:
+        message: import.message
 
     consumer:
-      group-id: mc-input.message
+      group-id: mc.message

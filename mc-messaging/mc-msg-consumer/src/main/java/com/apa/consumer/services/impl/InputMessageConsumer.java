@@ -38,7 +38,7 @@ public class InputMessageConsumer implements ConsumerSeekAware {
 
     @KafkaListener(
             groupId = "${spring.kafka.consumer.group-id}",
-            topics = "${spring.kafka.topic.input.message}",
+            topics = "${spring.kafka.topic.import.message}",
             containerFactory = "tidalMediaDtoKafkaListenerContainerFactory")
     public void doImport(InputMessage inputMessage) {
         InputMessageEvent inputMessageEvent = InputMessageEvent.valueOf(inputMessage.getEvent());
@@ -59,7 +59,6 @@ public class InputMessageConsumer implements ConsumerSeekAware {
                 break;
             default:
                 throw new RuntimeException("not implemented yet");
-                //break;
         }
 
         ;

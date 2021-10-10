@@ -15,8 +15,8 @@ import org.testcontainers.utility.DockerImageName;
 @Testcontainers
 @TestPropertySource(properties = {
         "spring.kafka.bootstrap-servers=localhost:9092",
-        "spring.kafka.consumer.group-id=mc-input.message",
-        "spring.kafka.topic.input.message=input.message"
+        "spring.kafka.consumer.group-id=mc.message",
+        "spring.kafka.topic.import.message=import.message"
 })
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ImporterSpringBootTestApplication.class)

@@ -17,7 +17,7 @@ public class KafkaTopicConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootStrapServers;
 
-    @Value("${spring.kafka.topic.input.message}")
+    @Value("${spring.kafka.topic.import.message}")
     private String inputMessageTopic;
 
 

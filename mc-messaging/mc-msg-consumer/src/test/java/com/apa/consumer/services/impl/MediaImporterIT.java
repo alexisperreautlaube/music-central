@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MediaImporterIT extends AbstractConsumerIT {
 
-    @Value("${spring.kafka.topic.input.message}")
+    @Value("${spring.kafka.topic.import.message}")
     private String topic;
 
     @Autowired
