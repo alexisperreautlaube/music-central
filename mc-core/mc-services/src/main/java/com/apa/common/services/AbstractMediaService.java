@@ -1,6 +1,7 @@
 package com.apa.common.services;
 
 import com.apa.common.entities.media.MusicCentralMedia;
+import com.apa.common.services.media.MediaService;
 import lombok.Getter;
 
 import java.lang.reflect.ParameterizedType;
@@ -17,9 +18,6 @@ public abstract class AbstractMediaService<E extends MusicCentralMedia> implemen
 
     @Override
     public abstract E save(E media);
-
-    @Override
-    public abstract void delete(String uuid);
 
     public abstract boolean existAndEquals(E media);
 }

@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-class LocalMediaRepositoryIT extends AbstractModelsIT {
+class VolumioMediaRepositoryIT extends AbstractModelsIT {
 
     @Autowired
-    private LocalMediaRepository localMediaRepository;
+    private VolumioMediaRepository volumioMediaRepository;
 
     @Test
     public void reloadPreviousVersionTestTest() {

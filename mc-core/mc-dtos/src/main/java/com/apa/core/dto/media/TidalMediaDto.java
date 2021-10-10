@@ -12,6 +12,8 @@ import java.util.Map;
 @SuperBuilder
 @NoArgsConstructor
 public class TidalMediaDto extends MediaDto {
+    private String albumName;
+    private String artistName;
     private String artistId;
     private Map<String, String> artists;
     private String albumId;

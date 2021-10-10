@@ -1,7 +1,8 @@
-package com.apa.common.services.impl;
+package com.apa.common.services.media.impl;
 
 import com.apa.common.AbstractCommonIT;
 import com.apa.common.entities.media.PlexMedia;
+import com.apa.common.services.media.impl.plex.PlexMediaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

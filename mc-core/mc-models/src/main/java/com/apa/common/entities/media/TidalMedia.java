@@ -14,7 +14,8 @@ import java.util.Map;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class TidalMedia extends MusicCentralMedia {
-    @Id
+    private String albumName;
+    private String artistName;
     private String artistId;
     private Map<String, String> artists;
     private String albumId;
@@ -22,6 +23,7 @@ public class TidalMedia extends MusicCentralMedia {
     private int discCount;
     private long albumDuration;
     private LocalDate releaseDate;
+    @Id
     private String tidalTrackId;
     private long trackDuration;
     private int trackNumber;

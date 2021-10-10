@@ -1,4 +1,4 @@
-package com.apa.common.services.impl;
+package com.apa.common.services.media.impl.plex;
 
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.repositories.PlexMediaRepository;
@@ -20,13 +20,9 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> {
     }
 
     @Override
-    public void delete(String uuid) {
-        plexMediaRepository.deleteById(uuid);
-    }
-
-    @Override
     public boolean existAndEquals(PlexMedia media) {
-        throw new RuntimeException("not implemted yet");
+        return plexMediaRepository.findById(media.getPlexId())
+                .map(m -> m.equals(media))
+                .orElse(false);
     }
-
 }

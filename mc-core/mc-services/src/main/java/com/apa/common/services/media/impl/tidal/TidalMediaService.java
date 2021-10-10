@@ -1,4 +1,4 @@
-package com.apa.common.services.impl;
+package com.apa.common.services.media.impl.tidal;
 
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.repositories.TidalMediaRepository;
@@ -6,8 +6,6 @@ import com.apa.common.services.AbstractMediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -19,11 +17,6 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> {
     @Transactional
     public TidalMedia save(TidalMedia tidalMedia) {
         return tidalMediaRepository.save(tidalMedia);
-    }
-
-    @Override
-    public void delete(String uuid) {
-        tidalMediaRepository.deleteById(uuid);
     }
 
     @Override

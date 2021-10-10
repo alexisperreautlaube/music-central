@@ -1,8 +1,8 @@
 package com.apa.events.executor.impl;
 
-import com.apa.common.entities.media.LocalMedia;
-import com.apa.common.repositories.LocalMediaRepository;
-import com.apa.core.dto.media.LocalMediaDto;
+import com.apa.common.entities.media.VolumioMedia;
+import com.apa.common.repositories.VolumioMediaRepository;
+import com.apa.core.dto.media.VolumioMediaDto;
 import com.apa.events.AbstractEventIT;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.entities.enums.MusicCentralEventStates;
@@ -16,44 +16,44 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class LocalMediaImporterIT extends AbstractEventIT {
+class VolumioMediaImporterIT extends AbstractEventIT {
 
     @Autowired
-    private LocalMediaImporter localMediaImporter;
+    private VolumioMediaImporter volumioMediaImporter;
 
     @Autowired
-    private LocalMediaRepository localMediaRepository;
+    private VolumioMediaRepository volumioMediaRepository;
 
     @Autowired
     private MusicCentralEventRepository musicCentralEventRepository;
 
     @BeforeEach
     public void setup() {
-        localMediaRepository.deleteAll();
+        volumioMediaRepository.deleteAll();
         musicCentralEventRepository.deleteAll();
     }
 
     @Test
     public void simpleTest() {
-        LocalMediaDto localMedia = LocalMediaDto.builder()
-                .localId("localId")
-                .artistName("artist")
-                .albumName("album")
+        VolumioMediaDto volumioMediaDto = VolumioMediaDto.builder()
+                .trackUri("localId")
+                .albumArtist("artist")
+                .albumTitle("album")
                 .trackTitle("title")
                 .build();
 
-        localMediaImporter.execute(localMedia);
+        volumioMediaImporter.execute(volumioMediaDto);
 
         // media
-        List<LocalMedia> all = localMediaRepository.findAll();
+        List<VolumioMedia> all = volumioMediaRepository.findAll();
         assertEquals(1, all.size());
-        //assertEquals(localMedia, all.get(0));
+        //assertEquals(volumioMediaDto, all.get(0));
 
         // event
         MusicCentralEvent musicCentralEvent = musicCentralEventRepository.findAll().get(0);
         assertEquals(MusicCentralEventStates.EXECUTED, musicCentralEvent.getState());
-        assertEquals(LocalMediaImporter.class.getName(), musicCentralEvent.getExecutorClassName());
-        assertEquals(LocalMediaDto.class.getName(), musicCentralEvent.getMediaClassName());
+        assertEquals(VolumioMediaImporter.class.getName(), musicCentralEvent.getExecutorClassName());
+        assertEquals(VolumioMediaDto.class.getName(), musicCentralEvent.getMediaClassName());
         assertNotNull(musicCentralEvent.getDateCreated());
         assertNotNull(musicCentralEvent.getDateExecuted());
     }

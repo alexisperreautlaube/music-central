@@ -1,14 +1,16 @@
 package com.apa.events.executor.impl;
 
 import com.apa.common.entities.media.TidalMedia;
-import com.apa.common.services.impl.TidalMediaService;
+import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.core.dto.media.TidalMediaDto;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.executor.EventExecutor;
 import com.apa.events.mapper.TidalMediaMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TidalMediaImporter extends EventExecutor<TidalMediaDto> {
 
@@ -19,6 +21,7 @@ public class TidalMediaImporter extends EventExecutor<TidalMediaDto> {
     protected void doExecute(MusicCentralEvent e, TidalMediaDto tidalMediaDto) {
         TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
         tidalMediaService.save(tidalMedia);
+        log.info("Euccess, {} - {} - {}", tidalMedia.getArtistName(), tidalMedia.getAlbumName(), tidalMedia.getTrackTitle());
     }
 
     @Override

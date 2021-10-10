@@ -1,8 +1,6 @@
 package com.apa.events.executor;
 
 import com.apa.common.entities.media.MusicCentralMedia;
-import com.apa.common.services.AbstractMediaService;
-import com.apa.common.services.MediaServiceProvider;
 import com.apa.core.dto.media.MediaDto;
 import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.entities.enums.MusicCentralEventStates;
@@ -19,9 +17,6 @@ public abstract class EventExecutor<M extends MediaDto> {
     
     @Autowired
     private MusicCentralEventRepository musicCentralEventRepository;
-
-    @Autowired
-    private MediaServiceProvider mediaServiceProvider;
 
     private Class<EventExecutor> executerClass;
 
@@ -43,14 +38,13 @@ public abstract class EventExecutor<M extends MediaDto> {
             doExecute(e, m);
         } catch (Throwable t) {
             e.setState(MusicCentralEventStates.EXECUTE_FAILED);
-            log.info("executor={} failed, {} - {} - {}", e.getExecutorClassName(), m.getArtistName(), m.getAlbumName(), m.getTrackTitle());
+            log.info("executor={} failed, {} - {} - {}", e.getExecutorClassName(), m.getTrackTitle());
             musicCentralEventRepository.save(e);
             throw t;
         }
         e.setState(MusicCentralEventStates.EXECUTED);
         e.setDateExecuted(LocalDateTime.now());
         musicCentralEventRepository.save(e);
-        log.info("executor={} success, {} - {} - {}", e.getExecutorClassName(), m.getArtistName(), m.getAlbumName(), m.getTrackTitle());
         return Optional.of(e);
     }
 
@@ -59,11 +53,4 @@ public abstract class EventExecutor<M extends MediaDto> {
 
     protected abstract boolean existAndEquals(M m);
 
-    private Optional<AbstractMediaService> getMediaService(String eventAudit) {
-        try {
-            return mediaServiceProvider.provideMediaService(Class.forName(eventAudit));
-        } catch (ClassNotFoundException e) {
-            return Optional.empty();
-        }
-    }
 }

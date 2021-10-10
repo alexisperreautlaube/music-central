@@ -1,7 +1,8 @@
-package com.apa.common.services.impl;
+package com.apa.common.services.media.impl;
 
 import com.apa.common.AbstractCommonIT;
 import com.apa.common.entities.media.TidalMedia;
+import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

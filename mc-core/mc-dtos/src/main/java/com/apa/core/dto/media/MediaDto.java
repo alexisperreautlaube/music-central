@@ -9,6 +9,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class MediaDto {
     private String trackTitle;
-    private String albumName;
-    private String artistName;
+
 }
