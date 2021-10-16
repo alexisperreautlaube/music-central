@@ -38,11 +38,11 @@ public class StringsDistanceServiceImpl implements StringsDistanceService {
                 .to(to)
                 .distance(stringsDistanceRepository.findByFromAndTo(from, to)
                         .map(StringsDistance::getDistance)
-                        .orElse(CalcutateDistance(from, to).getDistance()))
+                        .orElse(calcutateDistance(from, to).getDistance()))
                 .build();
     }
 
-    private StringsDistance CalcutateDistance(String from, String to) {
+    private StringsDistance calcutateDistance(String from, String to) {
         return save(StringsDistance.builder()
                 .from(from)
                 .to(to)
@@ -56,7 +56,7 @@ public class StringsDistanceServiceImpl implements StringsDistanceService {
         UpdateResult updateResult = template.getCollection("stringsDistance")
                 .replaceOne(
                     Filters.and(Filters.eq("from", stringsDistance.getFrom()),
-                            Filters.eq("from", stringsDistance.getFrom())),
+                            Filters.eq("to", stringsDistance.getTo())),
                     documentToUpsert,
                     new ReplaceOptions().upsert(true));
         return stringsDistance;

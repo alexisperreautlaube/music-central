@@ -1,5 +1,7 @@
 spring:
   kafka:
+    listener:
+      concurrency: 4
     bootstrap-servers: localhost:9092
     topic:
       import:

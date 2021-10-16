@@ -48,7 +48,7 @@ public class InputMessageConsumer implements ConsumerSeekAware {
             containerFactory = "importMediaDtoKafkaListenerContainerFactory")
     public void doImport(InputMessage inputMessage) {
         ImportMessageEvent importMessageEvent = ImportMessageEvent.valueOf(inputMessage.getEvent());
-        log.debug("importMessageEvent={}", importMessageEvent);
+        log.info("importMessageEvent={}", importMessageEvent);
         Gson gson = new Gson();
         switch (importMessageEvent) {
             case IMPORT_TIDAL:

@@ -3,7 +3,6 @@ package com.apa.events.executor.impl;
 import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
-import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.executor.EventExecutor;
 import com.apa.events.mapper.VolumioMediaMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +17,10 @@ public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
     private VolumioMediaService volumioMediaService;
 
     @Override
-    protected void doExecute(MusicCentralEvent e, VolumioMediaDto volumioMediaDto) {
+    protected void doExecute(VolumioMediaDto volumioMediaDto) {
         VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
         volumioMediaService.save(volumioMedia);
-        log.info("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
+        log.debug("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
     }
 
     @Override

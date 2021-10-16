@@ -3,7 +3,6 @@ package com.apa.events.executor.impl;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.core.dto.media.PlexMediaDto;
-import com.apa.events.entities.MusicCentralEvent;
 import com.apa.events.executor.EventExecutor;
 import com.apa.events.mapper.PlexMediaMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +17,10 @@ public class PlexMediaImporter extends EventExecutor<PlexMediaDto> {
     private PlexMediaService plexMediaService;
 
     @Override
-    protected void doExecute(MusicCentralEvent e, PlexMediaDto plexMediaDto) {
+    protected void doExecute(PlexMediaDto plexMediaDto) {
         PlexMedia plexMedia = PlexMediaMapper.toPlexMedia(plexMediaDto);
         plexMediaService.save(plexMedia);
-        log.info("Success, {} - {} - {}", plexMedia.getArtistName(), plexMedia.getAlbumName(), plexMedia.getTrackTitle());
+        log.debug("Success, {} - {} - {}", plexMedia.getArtistName(), plexMedia.getAlbumName(), plexMedia.getTrackTitle());
     }
 
     @Override
