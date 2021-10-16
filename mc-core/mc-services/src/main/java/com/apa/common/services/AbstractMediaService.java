@@ -1,12 +1,12 @@
 package com.apa.common.services;
 
 import com.apa.common.entities.media.MusicCentralMedia;
-import com.apa.common.services.media.MediaService;
 import lombok.Getter;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-public abstract class AbstractMediaService<E extends MusicCentralMedia> implements MediaService<E> {
+public abstract class AbstractMediaService<E extends MusicCentralMedia> {
 
     @Getter
     private final Class<E> persistentClass;
@@ -16,8 +16,7 @@ public abstract class AbstractMediaService<E extends MusicCentralMedia> implemen
                 .getActualTypeArguments()[0];
     }
 
-    @Override
-    public abstract E save(E media);
+    public abstract List<E> findAll();
 
-    public abstract boolean existAndEquals(E media);
+    public abstract boolean exist(E media);
 }

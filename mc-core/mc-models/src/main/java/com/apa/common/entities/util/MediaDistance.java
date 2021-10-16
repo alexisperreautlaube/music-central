@@ -14,4 +14,6 @@ public class MediaDistance {
     private StringsDistance artist;
     private StringsDistance album;
     private StringsDistance song;
+    private StringsDistance index;
+    private MatchStatus matchStatus = MatchStatus.POTENTIAL_MATCH;
 }

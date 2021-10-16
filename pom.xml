@@ -41,6 +41,9 @@
         <assertj-core.version>3.19.0</assertj-core.version>
         <!-- plugin -->
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+        <spring-boot-starter-web.version>2.5.5</spring-boot-starter-web.version>
+        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -102,6 +105,11 @@
                 <artifactId>spring-boot-test-autoconfigure</artifactId>
                 <version>${spring-boot-test-autoconfigure.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot-starter-web.version}</version>
+            </dependency>
 
             <!-- other -->
             <dependency>
@@ -134,7 +142,16 @@
                 <artifactId>commons-text</artifactId>
                 <version>${commons-text.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox-boot-starter.version}</version>
+            </dependency>
             <!-- test -->
             <dependency>
                 <groupId>org.mockito</groupId>

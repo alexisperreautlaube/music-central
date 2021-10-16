@@ -13,5 +13,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class MusicCentralMedia {
     private String trackTitle;
-
 }

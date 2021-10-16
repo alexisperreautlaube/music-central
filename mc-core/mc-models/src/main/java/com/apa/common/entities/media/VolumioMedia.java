@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ import org.springframework.data.annotation.Id;
 @EqualsAndHashCode(callSuper = true)
 public class VolumioMedia extends MusicCentralMedia {
     @Id
+    @Field(targetType = FieldType.STRING)
     private String trackUri;
     private String albumTitle;
     private String albumUri;

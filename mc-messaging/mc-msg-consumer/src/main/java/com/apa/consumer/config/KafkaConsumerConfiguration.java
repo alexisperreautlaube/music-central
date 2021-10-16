@@ -29,15 +29,15 @@ public class KafkaConsumerConfiguration {
     private String groupId;
 
 
-    public ConsumerFactory<String, InputMessage> tidalMediaDtoConsumerFactory() {
+    public ConsumerFactory<String, InputMessage> importMediaDtoConsumerFactory() {
         Map<String, Object> props = initCommonProperties();
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(InputMessage.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, InputMessage> tidalMediaDtoKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, InputMessage> importMediaDtoKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, InputMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(tidalMediaDtoConsumerFactory());
+        factory.setConsumerFactory(importMediaDtoConsumerFactory());
         setFactoryCommonProperties(factory);
         return factory;
     }

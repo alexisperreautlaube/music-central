@@ -3,8 +3,6 @@ package com.apa.events.mapper;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.core.dto.media.TidalMediaDto;
 
-import java.util.UUID;
-
 public class TidalMediaMapper {
     public static TidalMedia toTidalMedia(TidalMediaDto tidalMediaDto) {
         return TidalMedia.builder()
@@ -26,6 +24,29 @@ public class TidalMediaMapper {
                 .artistName(tidalMediaDto.getArtistName())
                 .albumName(tidalMediaDto.getAlbumName())
                 .trackTitle(tidalMediaDto.getTrackTitle())
+                .build();
+    }
+
+    public static TidalMediaDto toTidalMediaDto(TidalMedia tidalMedia) {
+        return TidalMediaDto.builder()
+                .artistId(tidalMedia.getArtistId())
+                .albumId(tidalMedia.getAlbumId())
+                .artists(tidalMedia.getArtists())
+                .trackCount(tidalMedia.getTrackCount())
+                .discCount(tidalMedia.getDiscCount())
+                .albumDuration(tidalMedia.getAlbumDuration())
+                .releaseDate(tidalMedia.getReleaseDate())
+                .trackDuration(tidalMedia.getTrackDuration())
+                .trackNumber(tidalMedia.getTrackNumber())
+                .discNumber(tidalMedia.getDiscNumber())
+                .trackVersion(tidalMedia.getTrackVersion())
+                .popularity(tidalMedia.getPopularity())
+                .available(tidalMedia.isAvailable())
+                .type(tidalMedia.getType())
+                .tidalTrackId(tidalMedia.getTidalTrackId())
+                .artistName(tidalMedia.getArtistName())
+                .albumName(tidalMedia.getAlbumName())
+                .trackTitle(tidalMedia.getTrackTitle())
                 .build();
     }
 }

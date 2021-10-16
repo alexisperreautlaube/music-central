@@ -38,4 +38,39 @@ public class PlexMediaMapper {
                 .trackBitrate(plexMediaDto.getTrackBitrate())
                 .build();
     }
+
+    public static PlexMediaDto toPLexDto(PlexMedia plexMedia) {
+        return PlexMediaDto.builder()
+                .plexId(plexMedia.getPlexId().toString())
+                .artistName(plexMedia.getArtistName())
+                .albumName(plexMedia.getAlbumName())
+                .trackTitle(plexMedia.getTrackTitle())
+                .addedAt(plexMedia.getAddedAt())
+                .albumIndex(plexMedia.getAlbumIndex())
+                .albumLastViewedAt(plexMedia.getAlbumLastViewedAt())
+                .albumRatingKey(plexMedia.getAlbumRatingKey())
+                .albumSortTitle(plexMedia.getAlbumSortTitle())
+                .albumViewCount(plexMedia.getAlbumViewCount())
+                .albumOriginallyAvailableAt(plexMedia.getAlbumOriginallyAvailableAt())
+                .artistKey(plexMedia.getArtistKey())
+                .albumStudio(plexMedia.getAlbumStudio())
+                .albumYear(plexMedia.getAlbumYear())
+
+                .trackAddedAt(plexMedia.getTrackAddedAt())
+                .trackIndex(plexMedia.getTrackIndex())
+                .trackLastViewedAt(plexMedia.getTrackLastViewedAt())
+                .trackSortTitle(plexMedia.getTrackSortTitle())
+                .trackUpdatedAt(plexMedia.getTrackUpdatedAt())
+                .trackViewCount(plexMedia.getTrackViewCount())
+                .trackViewedAt(plexMedia.getTrackViewedAt())
+                .trackDuration(plexMedia.getTrackDuration())
+                .trackOriginalTitle(plexMedia.getTrackOriginalTitle())
+                .trackRatingCount(plexMedia.getTrackRatingCount())
+                .trackUserRating(plexMedia.getTrackUserRating())
+                .trackYear(plexMedia.getTrackYear())
+
+                .trackFormat(plexMedia.getTrackFormat())
+                .trackBitrate(plexMedia.getTrackBitrate())
+                .build();
+    }
 }

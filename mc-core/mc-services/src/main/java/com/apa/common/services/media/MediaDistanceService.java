@@ -10,4 +10,6 @@ public interface MediaDistanceService<M extends MusicCentralMedia> {
     MediaDistance distance(M m, PlexMedia plexMedia);
     MediaDistance distance(M m, TidalMedia tidalMedia);
     MediaDistance distance(M m, VolumioMedia volumioMedia);
+    MediaDistance save(MediaDistance mediaDistance);
+
 }

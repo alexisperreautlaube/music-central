@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class TidalMedia extends MusicCentralMedia {
     private long albumDuration;
     private LocalDate releaseDate;
     @Id
+    @Field(targetType = FieldType.STRING)
     private String tidalTrackId;
     private long trackDuration;
     private int trackNumber;

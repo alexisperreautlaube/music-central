@@ -40,7 +40,6 @@ public class StringsDistanceServiceImpl implements StringsDistanceService {
                         .map(StringsDistance::getDistance)
                         .orElse(CalcutateDistance(from, to).getDistance()))
                 .build();
-
     }
 
     private StringsDistance CalcutateDistance(String from, String to) {
@@ -51,18 +50,15 @@ public class StringsDistanceServiceImpl implements StringsDistanceService {
                 .build());
     }
 
-    private StringsDistance save(StringsDistance stringsDistance) {
+    public StringsDistance save(StringsDistance stringsDistance) {
         Document documentToUpsert = new Document();
         mongoConverter.write(stringsDistance, documentToUpsert);
-        UpdateResult updateResult = template.getCollection("StringsDistance")
+        UpdateResult updateResult = template.getCollection("stringsDistance")
                 .replaceOne(
                     Filters.and(Filters.eq("from", stringsDistance.getFrom()),
                             Filters.eq("from", stringsDistance.getFrom())),
                     documentToUpsert,
                     new ReplaceOptions().upsert(true));
-        if (updateResult.getModifiedCount() == 0) {
-            return stringsDistanceRepository.save(stringsDistance);
-        }
         return stringsDistance;
     }
 }

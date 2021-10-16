@@ -1,7 +1,7 @@
 package com.apa.consumer.services.impl;
 
 import com.apa.common.msg.InputMessage;
-import com.apa.common.msg.InputMessageEvent;
+import com.apa.common.msg.impor.ImportMessageEvent;
 import com.apa.core.dto.media.PlexMediaDto;
 import com.apa.core.dto.media.TidalMediaDto;
 import com.apa.core.dto.media.VolumioMediaDto;
@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.ConsumerSeekAware;
 import org.springframework.stereotype.Component;
@@ -31,20 +32,25 @@ public class InputMessageConsumer implements ConsumerSeekAware {
     @Autowired
     private VolumioMediaImporter volumioMediaImporter;
 
+    @Value("${spring.kafka.topic.import.resetOffset}")
+    private Boolean resetOffset;
+
     @Override
     public void onPartitionsAssigned(Map<TopicPartition, Long> assignments, ConsumerSeekCallback callback) {
-        assignments.forEach((t, o) -> callback.seekToBeginning(t.topic(), t.partition()));
+        if (Boolean.TRUE.equals(resetOffset)) {
+            assignments.forEach((t, o) -> callback.seekToBeginning(t.topic(), t.partition()));
+        }
     }
 
     @KafkaListener(
             groupId = "${spring.kafka.consumer.group-id}",
             topics = "${spring.kafka.topic.import.message}",
-            containerFactory = "tidalMediaDtoKafkaListenerContainerFactory")
+            containerFactory = "importMediaDtoKafkaListenerContainerFactory")
     public void doImport(InputMessage inputMessage) {
-        InputMessageEvent inputMessageEvent = InputMessageEvent.valueOf(inputMessage.getEvent());
-        log.debug("inputMessageEvent={}", inputMessageEvent);
+        ImportMessageEvent importMessageEvent = ImportMessageEvent.valueOf(inputMessage.getEvent());
+        log.debug("importMessageEvent={}", importMessageEvent);
         Gson gson = new Gson();
-        switch (inputMessageEvent) {
+        switch (importMessageEvent) {
             case IMPORT_TIDAL:
                 TidalMediaDto tidalMediaDto = gson.fromJson(inputMessage.getData(), TidalMediaDto.class);
                 tidalMediaImporter.execute(tidalMediaDto);
@@ -60,7 +66,5 @@ public class InputMessageConsumer implements ConsumerSeekAware {
             default:
                 throw new RuntimeException("not implemented yet");
         }
-
-        ;
     }
 }

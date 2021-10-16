@@ -3,7 +3,7 @@ package com.apa.consumer.services.impl;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.msg.InputMessage;
-import com.apa.common.msg.InputMessageEvent;
+import com.apa.common.msg.impor.ImportMessageEvent;
 import com.apa.common.repositories.PlexMediaRepository;
 import com.apa.common.repositories.TidalMediaRepository;
 import com.apa.consumer.AbstractConsumerIT;
@@ -50,7 +50,7 @@ class MediaImporterIT extends AbstractConsumerIT {
                 .build();
 
         InputMessage inputMessage = InputMessage.builder()
-                .event(InputMessageEvent.IMPORT_TIDAL.toString())
+                .event(ImportMessageEvent.IMPORT_TIDAL.toString())
                 .data(gson.toJson(tidalMediaDto))
                 .build();
 
@@ -75,7 +75,7 @@ class MediaImporterIT extends AbstractConsumerIT {
                 .build();
 
         InputMessage inputMessage = InputMessage.builder()
-                .event(InputMessageEvent.IMPORT_PLEX.toString())
+                .event(ImportMessageEvent.IMPORT_PLEX.toString())
                 .data(gson.toJson(tidalMediaDto))
                 .build();
 

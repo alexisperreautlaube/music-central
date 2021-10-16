@@ -20,4 +20,21 @@ public class VolumioMediaMapper {
                 .trackAudioQuality(volumioMediaDto.getTrackAudioQuality())
                 .build();
     }
+
+    public static VolumioMediaDto toVolumioMediaDto(VolumioMedia volumioMedia) {
+        return VolumioMediaDto.builder()
+                .trackUri(volumioMedia.getTrackUri())
+                .trackTitle(volumioMedia.getTrackTitle())
+                .albumTitle(volumioMedia.getAlbumTitle())
+                .albumUri(volumioMedia.getAlbumUri())
+                .albumTrackType(volumioMedia.getAlbumTrackType())
+                .albumArtist(volumioMedia.getAlbumArtist())
+                .albumAudioQuality(volumioMedia.getAlbumAudioQuality())
+                .trackType(volumioMedia.getTrackType())
+                .trackArtist(volumioMedia.getTrackArtist())
+                .trackDuration(volumioMedia.getTrackDuration())
+                .trackNumber(volumioMedia.getTrackNumber())
+                .trackAudioQuality(volumioMedia.getTrackAudioQuality())
+                .build();
+    }
 }

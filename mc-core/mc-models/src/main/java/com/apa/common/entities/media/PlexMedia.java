@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ public class PlexMedia extends MusicCentralMedia {
     private String albumName;
     private String artistName;
     @Id
+    @Field(targetType = FieldType.STRING)
     private String plexId;
     private LocalDateTime addedAt;
     private String albumIndex;

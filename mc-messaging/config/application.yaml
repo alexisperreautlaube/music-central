@@ -4,6 +4,9 @@ spring:
     topic:
       import:
         message: import.message
-
+        resetOffset: false
+      match:
+        message: match.message
+        resetOffset: false
     consumer:
       group-id: mc.message

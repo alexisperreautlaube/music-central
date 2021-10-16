@@ -21,7 +21,7 @@ public class TidalMediaImporter extends EventExecutor<TidalMediaDto> {
     protected void doExecute(MusicCentralEvent e, TidalMediaDto tidalMediaDto) {
         TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
         tidalMediaService.save(tidalMedia);
-        log.info("Euccess, {} - {} - {}", tidalMedia.getArtistName(), tidalMedia.getAlbumName(), tidalMedia.getTrackTitle());
+        log.info("Success, {} - {} - {}", tidalMedia.getArtistName(), tidalMedia.getAlbumName(), tidalMedia.getTrackTitle());
     }
 
     @Override

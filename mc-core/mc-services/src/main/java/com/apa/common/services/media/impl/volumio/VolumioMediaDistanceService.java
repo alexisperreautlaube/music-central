@@ -8,22 +8,27 @@ import com.apa.common.entities.util.MediaReference;
 import com.apa.common.services.media.AbstractMediaDistanceService;
 import com.apa.common.services.util.StringsDistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class TidalMediaDistanceService extends AbstractMediaDistanceService<VolumioMedia> {
+@Component
+public class VolumioMediaDistanceService extends AbstractMediaDistanceService<VolumioMedia> {
+
+    @Autowired
+    private VolumioMediaDistanceService volumioMediaDistanceService;
 
     @Autowired
     private StringsDistanceService stringsDistanceService;
 
     @Override
     public MediaDistance distance(VolumioMedia volumioMedia, PlexMedia plexMedia) {
-        return MediaDistance.builder()
+        MediaDistance mediaDistance = MediaDistance.builder()
                 .from(MediaReference.builder()
                         .id(volumioMedia.getTrackUri())
-                        .clazz(volumioMedia.getClass())
+                        .clazz(volumioMedia.getClass().getName())
                         .build())
                 .to(MediaReference.builder()
                         .id(plexMedia.getPlexId())
-                        .clazz(plexMedia.getClass())
+                        .clazz(plexMedia.getClass().getName())
                         .build())
                 .artist(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackArtist(), plexMedia.getTrackTitle()))
@@ -32,18 +37,20 @@ public class TidalMediaDistanceService extends AbstractMediaDistanceService<Volu
                 .song(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackTitle(), plexMedia.getTrackTitle()))
                 .build();
+        volumioMediaDistanceService.save(mediaDistance);
+        return mediaDistance;
     }
 
     @Override
     public MediaDistance distance(VolumioMedia volumioMedia, TidalMedia tidalMedia) {
-        return MediaDistance.builder()
+        MediaDistance mediaDistance = MediaDistance.builder()
                 .from(MediaReference.builder()
                         .id(volumioMedia.getTrackUri())
-                        .clazz(volumioMedia.getClass())
+                        .clazz(volumioMedia.getClass().getName())
                         .build())
                 .to(MediaReference.builder()
                         .id(tidalMedia.getTidalTrackId())
-                        .clazz(tidalMedia.getClass())
+                        .clazz(tidalMedia.getClass().getName())
                         .build())
                 .artist(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackArtist(), tidalMedia.getTrackTitle()))
@@ -52,18 +59,20 @@ public class TidalMediaDistanceService extends AbstractMediaDistanceService<Volu
                 .song(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackTitle(), tidalMedia.getTrackTitle()))
                 .build();
+        volumioMediaDistanceService.save(mediaDistance);
+        return mediaDistance;
     }
 
     @Override
     public MediaDistance distance(VolumioMedia volumioMedia, VolumioMedia volumioMedia2) {
-        return MediaDistance.builder()
+        MediaDistance mediaDistance = MediaDistance.builder()
                 .from(MediaReference.builder()
                         .id(volumioMedia.getTrackUri())
-                        .clazz(volumioMedia.getClass())
+                        .clazz(volumioMedia.getClass().getName())
                         .build())
                 .to(MediaReference.builder()
                         .id(volumioMedia2.getTrackUri())
-                        .clazz(volumioMedia2.getClass())
+                        .clazz(volumioMedia2.getClass().getName())
                         .build())
                 .artist(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackArtist(), volumioMedia2.getTrackTitle()))
@@ -72,5 +81,12 @@ public class TidalMediaDistanceService extends AbstractMediaDistanceService<Volu
                 .song(stringsDistanceService
                         .StringsDistance(volumioMedia.getTrackTitle(), volumioMedia2.getTrackTitle()))
                 .build();
+        volumioMediaDistanceService.save(mediaDistance);
+        return mediaDistance;
+    }
+
+    @Override
+    public boolean hasPerfectMatchRecord(VolumioMedia p) {
+        return hasPerfectMatchRecord(p.getTrackUri(), p.getClass());
     }
 }
