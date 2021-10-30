@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -29,4 +31,5 @@ public class VolumioMedia extends MusicCentralMedia {
     private String trackDuration;
     private String trackNumber;
     private String trackAudioQuality;
+    private LocalDate addedDate;
 }

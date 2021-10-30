@@ -7,18 +7,20 @@ import com.apa.common.entities.util.MatchStatus;
 import com.apa.common.entities.util.MediaDistance;
 import com.apa.common.entities.util.MediaReference;
 import com.apa.common.entities.util.StringsDistance;
+import com.apa.common.repositories.MediaDistanceRepository;
 import com.apa.common.services.media.AbstractMediaDistanceService;
 import com.apa.common.services.util.StringsDistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class VolumioMediaDistanceService extends AbstractMediaDistanceService<VolumioMedia> {
 
     @Autowired
-    private VolumioMediaDistanceService volumioMediaDistanceService;
+    private MediaDistanceRepository mediaDistanceRepository;
 
     @Autowired
     private StringsDistanceService stringsDistanceService;
@@ -54,7 +56,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                     .matchStatus(MatchStatus.AUTOMATIC_MATCH)
                     .build();
 
-            volumioMediaDistanceService.save(mediaDistance);
+            save(mediaDistance);
             return Optional.of(mediaDistance);
         }
         return Optional.empty();
@@ -91,7 +93,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                     .matchStatus(MatchStatus.AUTOMATIC_MATCH)
                     .build();
 
-            volumioMediaDistanceService.save(mediaDistance);
+            save(mediaDistance);
             return Optional.of(mediaDistance);
         }
         return Optional.empty();
@@ -128,7 +130,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                     .matchStatus(MatchStatus.AUTOMATIC_MATCH)
                     .build();
 
-            volumioMediaDistanceService.save(mediaDistance);
+            save(mediaDistance);
             return Optional.of(mediaDistance);
         }
         return Optional.empty();
@@ -137,5 +139,9 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
     @Override
     public boolean hasPerfectMatchRecord(VolumioMedia p) {
         return hasPerfectMatchRecord(p.getTrackUri(), p.getClass());
+    }
+
+    public List<MediaDistance> getMatches(VolumioMedia volumioMedia) {
+        return mediaDistanceRepository.findByFromAndTo(volumioMedia.getTrackUri(), volumioMedia.getClass().getName());
     }
 }

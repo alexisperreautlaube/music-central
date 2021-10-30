@@ -44,6 +44,7 @@ public class MatchProducer {
         all.stream().forEach(
                 from -> all.stream()
                         .filter(to -> !to.getPlexId().equals(from.getPlexId()))
+                        .filter(to -> from.getTrackIndex() != null && !from.getTrackIndex().equals(to.getTrackIndex()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_PLEX.toString())
@@ -61,6 +62,7 @@ public class MatchProducer {
         List<TidalMedia> tos = tidalMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> from.getTrackIndex() != null && !from.getTrackIndex().equals(String.valueOf(to.getTrackNumber())))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_TIDAL.toString())
@@ -79,6 +81,7 @@ public class MatchProducer {
         List<VolumioMedia> tos = volumioMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> from.getTrackIndex() != null && !from.getTrackIndex().equals(to.getTrackNumber()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_VOLUMIO.toString())
@@ -97,6 +100,7 @@ public class MatchProducer {
         List<PlexMedia> tos = plexMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> !String.valueOf(from.getTrackNumber()).equals(to.getTrackIndex()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_PLEX.toString())
@@ -116,6 +120,7 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> froms.stream()
                         .filter(to -> !from.getTidalTrackId().equals(to.getTidalTrackId()))
+                        .filter(to -> !(from.getTrackNumber() == to.getTrackNumber()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_TIDAL.toString())
@@ -134,6 +139,7 @@ public class MatchProducer {
         List<VolumioMedia> tos = volumioMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> !String.valueOf(from.getTrackNumber()).equals(to.getTrackNumber()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_VOLUMIO.toString())
@@ -152,6 +158,7 @@ public class MatchProducer {
         List<PlexMedia> tos = plexMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> from.getTrackNumber() != null && !from.getTrackNumber().equals(to.getTrackIndex()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_PLEX.toString())
@@ -170,6 +177,7 @@ public class MatchProducer {
         List<TidalMedia> tos = tidalMediaService.findAll();
         froms.stream().forEach(
                 from -> tos.stream()
+                        .filter(to -> from.getTrackNumber() != null && !from.getTrackNumber().equals(String.valueOf(to.getTrackNumber())))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_TIDAL.toString())
@@ -187,6 +195,7 @@ public class MatchProducer {
         List<VolumioMedia> froms = volumioMediaService.findAll();
         froms.stream().forEach(
                 from -> froms.stream()
+                        .filter(to -> from.getTrackNumber() != null && !from.getTrackNumber().equals(to.getTrackNumber()))
                         .filter(to -> !from.getTrackUri().equals(to.getTrackUri()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()

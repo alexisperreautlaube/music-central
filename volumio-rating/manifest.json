@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Modify volumio style so it has star rating",
+  "version": "0.1.0",
+  "description": "Modify volumio style so it has star rating",
+
+  "content_scripts": [{
+    "run_at" : "document_idle",
+    "css": ["styles.css"],
+    "js": ["content.js"],
+    "matches": ["http://192.168.1.138:3000/*"]
+  }]
+
+}

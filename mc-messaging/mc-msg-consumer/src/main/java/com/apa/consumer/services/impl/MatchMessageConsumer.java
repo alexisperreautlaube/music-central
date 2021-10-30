@@ -69,11 +69,11 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
             groupId = "${spring.kafka.consumer.group-id}",
             topics = "${spring.kafka.topic.match.message}",
             containerFactory = "importMediaDtoKafkaListenerContainerFactory",
-            concurrency = "10"
+            concurrency = "20"
     )
     public void doImport(InputMessage inputMessage) {
         MatchMessageEvent importMessageEvent = MatchMessageEvent.valueOf(inputMessage.getEvent());
-        log.info("importMessageEvent={}", importMessageEvent);
+        log.debug("importMessageEvent={}", importMessageEvent);
         log.debug("inputMessage={}", inputMessage);
         Gson gson = new Gson();
         switch (importMessageEvent) {

@@ -39,6 +39,11 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> implemen
                 .orElse(false);
     }
 
+    @Override
+    public TidalMedia findById(String id) {
+        return tidalMediaRepository.findById(id).orElseThrow(() ->  new RuntimeException("not found"));
+    }
+
     private Optional<TidalMedia> getById(TidalMedia media) {
         return tidalMediaRepository.findById(media.getTidalTrackId());
     }

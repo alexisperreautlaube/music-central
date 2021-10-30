@@ -8,4 +8,5 @@ public interface MediaService<T extends MusicCentralMedia> {
     T save(T t);
     List<T> findPerfectMatch(String artistName, String albumName, String trackTitle, String trackIndex);
     boolean existAndEquals(T media);
+    T findById(String id);
 }

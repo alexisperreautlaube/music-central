@@ -18,6 +18,7 @@ public class VolumioMediaMapper {
                 .trackDuration(volumioMediaDto.getTrackDuration())
                 .trackNumber(volumioMediaDto.getTrackNumber())
                 .trackAudioQuality(volumioMediaDto.getTrackAudioQuality())
+                .addedDate(volumioMediaDto.getAddedDate())
                 .build();
     }
 
@@ -35,6 +36,7 @@ public class VolumioMediaMapper {
                 .trackDuration(volumioMedia.getTrackDuration())
                 .trackNumber(volumioMedia.getTrackNumber())
                 .trackAudioQuality(volumioMedia.getTrackAudioQuality())
+                .addedDate(volumioMedia.getAddedDate())
                 .build();
     }
 }

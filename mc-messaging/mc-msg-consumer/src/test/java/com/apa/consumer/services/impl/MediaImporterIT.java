@@ -10,6 +10,7 @@ import com.apa.consumer.AbstractConsumerIT;
 import com.apa.core.dto.media.PlexMediaDto;
 import com.apa.core.dto.media.TidalMediaDto;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class MediaImporterIT extends AbstractConsumerIT {
 
     @Value("${spring.kafka.topic.import.message}")

@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -20,5 +22,6 @@ public class VolumioMediaDto extends MediaDto {
     private String trackDuration;
     private String trackNumber;
     private String trackAudioQuality;
+    private LocalDate addedDate;
 
 }

@@ -29,6 +29,11 @@ public class PlexMediaService extends AbstractMediaService<PlexMedia> implements
                 .orElse(false);
     }
 
+    @Override
+    public PlexMedia findById(String id) {
+        return plexMediaRepository.findById(id).orElseThrow(() ->  new RuntimeException("not found"));
+    }
+
     public List<PlexMedia> findPerfectMatch(String artistName, String albumName, String trackTitle, String trackIndex) {
         return plexMediaRepository.findByArtistNameAndAlbumNameAndTrackTitleAndTrackIndex(artistName, albumName, trackTitle, trackIndex);
     }
