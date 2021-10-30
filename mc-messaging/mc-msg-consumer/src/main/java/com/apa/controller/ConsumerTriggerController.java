@@ -31,64 +31,11 @@ public class ConsumerTriggerController {
     @Autowired
     private VolumioNewSongImportProducer volumioNewSongImportProducer;
 
-    @GetMapping(value = "/PlexPerfectMatch")
+    @GetMapping(value = "/PerfectMatch")
     public void producePlexPerfectMatchMessage() {
         perfectMatchProducer.producePlexPerfectMatchMessage();
-    }
-
-    @GetMapping(value = "/TidalPerfectMatch")
-    public void produceTidalPerfectMatchMessage() {
         perfectMatchProducer.produceTidalPerfectMatchMessage();
-    }
-
-    @GetMapping(value = "/VolumioPerfectMatch")
-    public void produceVolumioPerfectMatchMessage() {
         perfectMatchProducer.produceVolumioPerfectMatchMessage();
-    }
-
-    @GetMapping(value = "/PlexPlextMatch")
-    public void producePlexPlexMatchMessage() {
-        matchProducer.producePlexToPlex();
-    }
-
-    @GetMapping(value = "/PlexTidalMatch")
-    public void producePlexTidalMatchMessage() {
-        matchProducer.producePlexToTidal();
-    }
-
-    @GetMapping(value = "/PlexVolumioMatch")
-    public void producePlexVolumioMatchMessage() {
-        matchProducer.producePlexToVolumio();
-    }
-
-    @GetMapping(value = "/TidalPlextMatch")
-    public void produceTidalPlexMatchMessage() {
-        matchProducer.produceTidalToPlex();
-    }
-
-    @GetMapping(value = "/TidalTidalMatch")
-    public void produceTidalTidalMatchMessage() {
-        matchProducer.produceTidalToTidal();
-    }
-
-    @GetMapping(value = "/TidalVolumioMatch")
-    public void produceTidalVolumioMatchMessage() {
-        matchProducer.produceTidalToVolumio();
-    }
-
-    @GetMapping(value = "/VolumioPlextMatch")
-    public void produceVolumioPlexMatchMessage() {
-        matchProducer.produceVolumioToPlex();
-    }
-
-    @GetMapping(value = "/VolumioTidalMatch")
-    public void produceVolumioTidalMatchMessage() {
-        matchProducer.produceVolumioToTidal();
-    }
-
-    @GetMapping(value = "/VolumioVolumioMatch")
-    public void produceVolumioVolumioMatchMessage() {
-        matchProducer.produceVolumioToVolumio();
     }
 
     @GetMapping(value = "/allMediaMatch")

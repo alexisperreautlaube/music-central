@@ -52,7 +52,8 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
                             .to(plexMedia2.getTrackIndex())
                             .build())
                     .matchStatus(MatchStatus.AUTOMATIC_MATCH)
-                    .build();            plexMediaDistanceService.save(mediaDistance);
+                    .build();
+            plexMediaDistanceService.save(mediaDistance);
             return Optional.of(mediaDistance);
         }
         return Optional.empty();

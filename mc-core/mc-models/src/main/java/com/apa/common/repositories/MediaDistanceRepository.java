@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface MediaDistanceRepository extends MongoRepository<MediaDistance, String> {
-    List<MediaDistance> findByFromIdAndFromClazz(String id, String clazz);
+    List<MediaDistance> findByFromIdAndFromClazzAndMatchStatus(String id, String clazz, String matchStatus);
 
     @Query("{ $or : " +
                 "[" +

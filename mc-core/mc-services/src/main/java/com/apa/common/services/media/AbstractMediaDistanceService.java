@@ -79,6 +79,6 @@ public abstract class AbstractMediaDistanceService<M extends MusicCentralMedia> 
     public abstract boolean hasPerfectMatchRecord(M p);
 
     protected boolean hasPerfectMatchRecord(String trackUri, Class<? extends M> aClass) {
-        return !mediaDistanceRepository.findByFromIdAndFromClazz(trackUri, aClass.getName()).isEmpty();
+        return !mediaDistanceRepository.findByFromIdAndFromClazzAndMatchStatus(trackUri, aClass.getName(), MatchStatus.PERFECT_MATCH.name()).isEmpty();
     }
 }
