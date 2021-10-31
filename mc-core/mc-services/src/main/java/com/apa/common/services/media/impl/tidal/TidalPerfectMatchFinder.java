@@ -88,7 +88,7 @@ public class TidalPerfectMatchFinder implements PerfectMatchFinder<TidalMedia> {
                 tidalMedia.getAlbumName(),
                 tidalMedia.getTrackTitle(),
                 String.valueOf(tidalMedia.getTrackNumber())).stream()
-                .filter(p -> !tidalMedia.equals(p))
+                .filter(p -> !tidalMedia.getTidalTrackId().equals(p.getTidalTrackId()))
                 .collect(Collectors.toList());
 
         perfectMatch.forEach(volumioMedia -> mediaDistanceService.save(MediaDistance.builder()

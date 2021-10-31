@@ -123,7 +123,7 @@ public class VolumioPerfectMatchFinder implements PerfectMatchFinder<VolumioMedi
                 volumioMedia.getAlbumTitle(),
                 volumioMedia.getTrackTitle(),
                 volumioMedia.getTrackNumber()).stream()
-                .filter(p -> !volumioMedia.equals(p))
+                .filter(p -> !volumioMedia.getTrackUri().equals(p.getTrackUri()))
                 .collect(Collectors.toList());
 
         perfectMatch.forEach(volumioMediaTo -> mediaDistanceService.save(MediaDistance.builder()

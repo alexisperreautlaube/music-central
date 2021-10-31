@@ -43,7 +43,7 @@ public class PlexPerfectMatchFinder implements PerfectMatchFinder<PlexMedia>{
                         plexMediaFrom.getAlbumName(),
                         plexMediaFrom.getTrackTitle(),
                         plexMediaFrom.getTrackIndex()).stream()
-                .filter(p -> !plexMediaFrom.equals(p))
+                .filter(p -> !plexMediaFrom.getPlexId().equals(p.getPlexId()))
                 .collect(Collectors.toList());
 
         perfectMatch.forEach(plexMedia -> mediaDistanceService.save(MediaDistance.builder()
