@@ -52,7 +52,7 @@ public class MatchProducer {
                         .filter(to -> !to.getPlexId().equals(from.getPlexId()))
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackIndex()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                         .from(MediaReference.builder()
                                                 .id(from.getPlexId())
                                                 .clazz(from.getClass().getName())
@@ -91,7 +91,7 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(String.valueOf(to.getTrackNumber())))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getPlexId())
                                         .clazz(from.getClass().getName())
@@ -131,7 +131,7 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackNumber()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getPlexId())
                                         .clazz(from.getClass().getName())
@@ -170,7 +170,7 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackIndex()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTidalTrackId())
                                         .clazz(from.getClass().getName())
@@ -210,7 +210,7 @@ public class MatchProducer {
                 from -> froms.stream()
                         .filter(to -> !from.getTidalTrackId().equals(to.getTidalTrackId()))
                         .filter(to -> from.getTrackNumber() == to.getTrackNumber())
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTidalTrackId())
                                         .clazz(from.getClass().getName())
@@ -249,7 +249,7 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackNumber()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTidalTrackId())
                                         .clazz(from.getClass().getName())
@@ -289,7 +289,7 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackIndex()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTrackUri())
                                         .clazz(from.getClass().getName())
@@ -329,7 +329,7 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(String.valueOf(to.getTrackNumber())))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTrackUri())
                                         .clazz(from.getClass().getName())
@@ -369,7 +369,7 @@ public class MatchProducer {
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackNumber()))
                         .filter(to -> !from.getTrackUri().equals(to.getTrackUri()))
-                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
                                 .from(MediaReference.builder()
                                         .id(from.getTrackUri())
                                         .clazz(from.getClass().getName())
