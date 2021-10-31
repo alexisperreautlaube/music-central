@@ -132,9 +132,4 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
         }
         return Optional.empty();
     }
-
-    @Override
-    public boolean hasPerfectMatchRecord(TidalMedia p) {
-        return hasPerfectMatchRecord(p.getTidalTrackId(), p.getClass());
-    }
 }

@@ -129,9 +129,4 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
         }
         return Optional.empty();
     }
-
-    @Override
-    public boolean hasPerfectMatchRecord(PlexMedia p) {
-        return hasPerfectMatchRecord(p.getPlexId(), p.getClass());
-    }
 }

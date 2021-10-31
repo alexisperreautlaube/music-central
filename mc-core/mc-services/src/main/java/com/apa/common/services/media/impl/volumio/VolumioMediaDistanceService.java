@@ -136,11 +136,6 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         return Optional.empty();
     }
 
-    @Override
-    public boolean hasPerfectMatchRecord(VolumioMedia p) {
-        return hasPerfectMatchRecord(p.getTrackUri(), p.getClass());
-    }
-
     public List<MediaDistance> getMatches(VolumioMedia volumioMedia) {
         return mediaDistanceRepository.findByFromAndTo(volumioMedia.getTrackUri(), volumioMedia.getClass().getName());
     }
