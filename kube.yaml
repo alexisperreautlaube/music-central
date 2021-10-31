@@ -5,11 +5,10 @@ metadata:
 spec:
   selector:
     app: mc-msg-consumer-app
-  ports:
-    - protocol: "TCP"
-      port: 6000
-      targetPort: 8080
   type: NodePort
+  ports:
+    - port: 8086
+      nodePort: 30000
 
 ---
 
@@ -27,6 +26,9 @@ spec:
       labels:
         app: mc-msg-consumer-pod
     spec:
+      ports:
+        - port: 8086
+          nodePort: 30000
       containers:
         - name: mc-msg-consumer
           image: 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.2.8

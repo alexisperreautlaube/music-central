@@ -52,7 +52,7 @@ public class PerfectMatchProducer {
     private KafkaTemplate<String, InputMessage> inputMessageTemplate;
 
     public void producePlexPerfectMatchMessage() {
-        log.info("producePlexPerfectMatchMessage start");
+        log.debug("producePlexPerfectMatchMessage start");
         Gson gson = new Gson();
         List<PlexMedia> all = plexMediaService.findAll();
         all.stream()
@@ -61,7 +61,7 @@ public class PerfectMatchProducer {
                                 .event(MatchMessageEvent.MATCH_PLEX_PERFECT.toString())
                                 .data(gson.toJson(PlexMediaMapper.toPLexDto(p)))
                         .build()));
-        log.info("producePlexPerfectMatchMessage end");
+        log.debug("producePlexPerfectMatchMessage end");
     }
 
     public void produceTidalPerfectMatchMessage() {

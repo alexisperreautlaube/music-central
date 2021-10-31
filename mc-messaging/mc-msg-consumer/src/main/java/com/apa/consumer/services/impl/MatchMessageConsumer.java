@@ -73,7 +73,7 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
     )
     public void doImport(InputMessage inputMessage) {
         MatchMessageEvent importMessageEvent = MatchMessageEvent.valueOf(inputMessage.getEvent());
-        log.info("inputMessage={}", inputMessage);
+        log.debug("inputMessage={}", inputMessage);
         Gson gson = new Gson();
         switch (importMessageEvent) {
             case MATCH_PLEX_PERFECT:
