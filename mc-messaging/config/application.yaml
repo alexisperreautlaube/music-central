@@ -2,7 +2,7 @@ spring:
   kafka:
     listener:
       concurrency: 4
-    bootstrap-servers: 10.244.1.135:9092
+    bootstrap-servers: 10.244.1.139:9092
     topic:
       import:
         message: import.message

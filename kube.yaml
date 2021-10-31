@@ -31,6 +31,6 @@ spec:
     spec:
       containers:
         - name: mc-msg-consumer
-          image: 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.4.5
+          image: 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.4.6
           ports:
             - containerPort: 8080
