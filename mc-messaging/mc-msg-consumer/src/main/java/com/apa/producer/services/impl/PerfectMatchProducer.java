@@ -56,6 +56,7 @@ public class PerfectMatchProducer {
         Gson gson = new Gson();
         List<PlexMedia> all = plexMediaService.findAll();
         all.stream()
+                .filter(p -> !plexMediaDistanceService.hasPerfectMatchRecord(p))
                 .forEach(p -> inputMessageTemplate.send(topic, InputMessage.builder()
                                 .event(MatchMessageEvent.MATCH_PLEX_PERFECT.toString())
                                 .data(gson.toJson(PlexMediaMapper.toPLexDto(p)))
@@ -67,6 +68,7 @@ public class PerfectMatchProducer {
         Gson gson = new Gson();
         List<TidalMedia> all = tidalMediaService.findAll();
         all.stream()
+                .filter(p -> !tidalMediaDistanceService.hasPerfectMatchRecord(p))
                 .forEach(p -> inputMessageTemplate.send(topic, InputMessage.builder()
                         .event(MatchMessageEvent.MATCH_TIDAL_PERFECT.toString())
                         .data(gson.toJson(TidalMediaMapper.toTidalMediaDto(p)))
@@ -77,6 +79,7 @@ public class PerfectMatchProducer {
         Gson gson = new Gson();
         List<VolumioMedia> all = volumioMediaService.findAll();
         all.stream()
+                .filter(p -> !volumioMediaDistanceService.hasPerfectMatchRecord(p))
                 .forEach(p -> inputMessageTemplate.send(topic, InputMessage.builder()
                         .event(MatchMessageEvent.MATCH_VOLUMIO_PERFECT.toString())
                         .data(gson.toJson(VolumioMediaMapper.toVolumioMediaDto(p)))

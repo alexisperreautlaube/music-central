@@ -77,7 +77,7 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
         Gson gson = new Gson();
         switch (importMessageEvent) {
             case MATCH_PLEX_PERFECT:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 PlexMediaDto plexMediaDto = gson.fromJson(inputMessage.getData(), PlexMediaDto.class);
                 PlexMedia plexMedia = PlexMediaMapper.toPlexMedia(plexMediaDto);
                 List<PlexMedia> plexMatch = plexPerfectMatchFinder.findPlexMatch(plexMedia);
@@ -98,10 +98,10 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
                             .build());
                     return;
                 }
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_TIDAL_PERFECT:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 TidalMediaDto tidalMediaDto = gson.fromJson(inputMessage.getData(), TidalMediaDto.class);
                 TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
                 plexMatch = tidalPerfectMatchFinder.findPlexMatch(tidalMedia);
@@ -122,10 +122,10 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
                             .build());
                     return;
                 }
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_VOLUMIO_PERFECT:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
 
                 VolumioMediaDto volumioMediaDto = gson.fromJson(inputMessage.getData(), VolumioMediaDto.class);
                 VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
@@ -147,79 +147,79 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
                             .build());
                     return;
                 }
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_PLEX_PLEX:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 PlexPlexMediaData mediaMediaData = gson.fromJson(inputMessage.getData(), PlexPlexMediaData.class);
                 PlexMedia plexFrom = PlexMediaMapper.toPlexMedia(mediaMediaData.getFrom());
                 PlexMedia plexTo = PlexMediaMapper.toPlexMedia(mediaMediaData.getTo());
                 plexMediaDistanceService.distance(plexFrom, plexTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_PLEX_TIDAL:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 PlexTidalMediaData plexTidalMediaData = gson.fromJson(inputMessage.getData(), PlexTidalMediaData.class);
                 plexFrom = PlexMediaMapper.toPlexMedia(plexTidalMediaData.getFrom());
                 TidalMedia tidalTo = TidalMediaMapper.toTidalMedia(plexTidalMediaData.getTo());
                 plexMediaDistanceService.distance(plexFrom, tidalTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_PLEX_VOLUMIO:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 PlexVolumioMediaData plexVolumioMediaData = gson.fromJson(inputMessage.getData(), PlexVolumioMediaData.class);
                 plexFrom = PlexMediaMapper.toPlexMedia(plexVolumioMediaData.getFrom());
                 VolumioMedia volumioTo = VolumioMediaMapper.toVolumioMedia(plexVolumioMediaData.getTo());
                 plexMediaDistanceService.distance(plexFrom, volumioTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_TIDAL_PLEX:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 TidalPlexMediaData tidalPlexMediaData = gson.fromJson(inputMessage.getData(), TidalPlexMediaData.class);
                 TidalMedia tidalFrom = TidalMediaMapper.toTidalMedia(tidalPlexMediaData.getFrom());
                 plexTo = PlexMediaMapper.toPlexMedia(tidalPlexMediaData.getTo());
                 tidalMediaDistanceService.distance(tidalFrom, plexTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_TIDAL_TIDAL:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 TidalTidalMediaData tidalTidalMediaData = gson.fromJson(inputMessage.getData(), TidalTidalMediaData.class);
                 tidalFrom = TidalMediaMapper.toTidalMedia(tidalTidalMediaData.getFrom());
                 tidalTo = TidalMediaMapper.toTidalMedia(tidalTidalMediaData.getTo());
                 tidalMediaDistanceService.distance(tidalFrom, tidalTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_TIDAL_VOLUMIO:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 TidalVolumioMediaData tidalVolumioMediaData = gson.fromJson(inputMessage.getData(), TidalVolumioMediaData.class);
                 tidalFrom = TidalMediaMapper.toTidalMedia(tidalVolumioMediaData.getFrom());
                 volumioTo = VolumioMediaMapper.toVolumioMedia(tidalVolumioMediaData.getTo());
                 tidalMediaDistanceService.distance(tidalFrom, volumioTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_VOLUMIO_PLEX:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 VolumioPlexMediaData volumioPlexMediaData = gson.fromJson(inputMessage.getData(), VolumioPlexMediaData.class);
                 VolumioMedia volumioFrom = VolumioMediaMapper.toVolumioMedia(volumioPlexMediaData.getFrom());
                 plexTo = PlexMediaMapper.toPlexMedia(volumioPlexMediaData.getTo());
                 volumioMediaDistanceService.distance(volumioFrom, plexTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_VOLUMIO_TIDAL:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 VolumioTidalMediaData volumioTidalMediaData = gson.fromJson(inputMessage.getData(), VolumioTidalMediaData.class);
                 volumioFrom = VolumioMediaMapper.toVolumioMedia(volumioTidalMediaData.getFrom());
                 tidalFrom = TidalMediaMapper.toTidalMedia(volumioTidalMediaData.getTo());
                 volumioMediaDistanceService.distance(volumioFrom, tidalFrom);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             case MATCH_LEV_VOLUMIO_VOLUMIO:
-                log.info("importMessageEvent start={}", importMessageEvent);
+                log.debug("importMessageEvent start={}", importMessageEvent);
                 VolumioVolumioMediaData volumioVolumioMediaData = gson.fromJson(inputMessage.getData(), VolumioVolumioMediaData.class);
                 volumioFrom = VolumioMediaMapper.toVolumioMedia(volumioVolumioMediaData.getFrom());
                 volumioTo = VolumioMediaMapper.toVolumioMedia(volumioVolumioMediaData.getTo());
                 volumioMediaDistanceService.distance(volumioFrom, volumioTo);
-                log.info("importMessageEvent end={}", importMessageEvent);
+                log.debug("importMessageEvent end={}", importMessageEvent);
                 break;
             default:
                 throw new RuntimeException("not implemented yet");

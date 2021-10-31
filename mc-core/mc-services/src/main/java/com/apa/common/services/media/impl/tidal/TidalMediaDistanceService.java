@@ -9,6 +9,7 @@ import com.apa.common.entities.util.MediaReference;
 import com.apa.common.entities.util.StringsDistance;
 import com.apa.common.services.media.AbstractMediaDistanceService;
 import com.apa.common.services.util.StringsDistanceService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,111 +26,135 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
 
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, PlexMedia plexMedia) {
-        if (String.valueOf(tidalMedia.getTrackNumber()).equals(plexMedia.getTrackIndex())) {
-
-            StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), plexMedia.getArtistName());
-            StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), plexMedia.getAlbumName());
-            StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), plexMedia.getTrackTitle());
-            int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-            if (distanceTotal > 20 || distanceTotal == 0) {
-                return Optional.empty();
-            }
-            MediaDistance mediaDistance = MediaDistance.builder()
-                    .from(MediaReference.builder()
-                            .id(tidalMedia.getTidalTrackId())
-                            .clazz(tidalMedia.getClass().getName())
-                            .build())
-                    .to(MediaReference.builder()
-                            .id(plexMedia.getPlexId())
-                            .clazz(plexMedia.getClass().getName())
-                            .build())
-                    .artist(artist)
-                    .album(album)
-                    .song(song)
-                    .index(StringsDistance.builder()
-                            .distance(0)
-                            .from(plexMedia.getTrackIndex())
-                            .to(plexMedia.getTrackIndex())
-                            .build())
-                    .matchStatus(MatchStatus.AUTOMATIC_MATCH)
-                    .build();
-            tidalMediaDistanceService.save(mediaDistance);
-            return Optional.of(mediaDistance);
+        if (String.valueOf(tidalMedia.getTrackNumber()).equals(plexMedia.getTrackIndex())
+                    || StringUtils.isBlank(plexMedia.getArtistName())
+                    || StringUtils.isBlank(plexMedia.getAlbumName())
+                    || StringUtils.isBlank(plexMedia.getTrackTitle())
+                    || StringUtils.isBlank(plexMedia.getArtistName())
+                    || StringUtils.isBlank(plexMedia.getAlbumName())
+                    || StringUtils.isBlank(plexMedia.getTrackTitle())
+        ) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), plexMedia.getArtistName());
+        StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), plexMedia.getAlbumName());
+        StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), plexMedia.getTrackTitle());
+        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
+        if (distanceTotal > 20 || distanceTotal == 0) {
+            return Optional.empty();
+        }
+        MediaDistance mediaDistance = MediaDistance.builder()
+                .from(MediaReference.builder()
+                        .id(tidalMedia.getTidalTrackId())
+                        .clazz(tidalMedia.getClass().getName())
+                        .build())
+                .to(MediaReference.builder()
+                        .id(plexMedia.getPlexId())
+                        .clazz(plexMedia.getClass().getName())
+                        .build())
+                .artist(artist)
+                .album(album)
+                .song(song)
+                .index(StringsDistance.builder()
+                        .distance(0)
+                        .from(plexMedia.getTrackIndex())
+                        .to(plexMedia.getTrackIndex())
+                        .build())
+                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .build();
+        tidalMediaDistanceService.save(mediaDistance);
+        return Optional.of(mediaDistance);
+
     }
 
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, TidalMedia tidalMedia2) {
-        if (tidalMedia.getTrackNumber() ==tidalMedia2.getTrackNumber()) {
-
-            StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), tidalMedia2.getArtistName());
-            StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), tidalMedia2.getAlbumName());
-            StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), tidalMedia2.getTrackTitle());
-            int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-            if (distanceTotal > 20 || distanceTotal == 0) {
-                return Optional.empty();
-            }
-            MediaDistance mediaDistance = MediaDistance.builder()
-                    .from(MediaReference.builder()
-                            .id(tidalMedia.getTidalTrackId())
-                            .clazz(tidalMedia.getClass().getName())
-                            .build())
-                    .to(MediaReference.builder()
-                            .id(tidalMedia2.getTidalTrackId())
-                            .clazz(tidalMedia2.getClass().getName())
-                            .build())
-                    .artist(artist)
-                    .album(album)
-                    .song(song)
-                    .index(StringsDistance.builder()
-                            .distance(0)
-                            .from(String.valueOf(tidalMedia.getTrackNumber()))
-                            .to(String.valueOf(tidalMedia2.getTrackNumber()))
-                            .build())
-                    .matchStatus(MatchStatus.AUTOMATIC_MATCH)
-                    .build();
-
-            tidalMediaDistanceService.save(mediaDistance);
-            return Optional.of(mediaDistance);
+        if (tidalMedia.getTrackNumber() ==tidalMedia2.getTrackNumber()
+                    || StringUtils.isBlank(tidalMedia.getArtistName())
+                    || StringUtils.isBlank(tidalMedia.getAlbumName())
+                    || StringUtils.isBlank(tidalMedia.getTrackTitle())
+                    || StringUtils.isBlank(tidalMedia2.getArtistName())
+                    || StringUtils.isBlank(tidalMedia2.getAlbumName())
+                    || StringUtils.isBlank(tidalMedia2.getTrackTitle())
+        ) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), tidalMedia2.getArtistName());
+        StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), tidalMedia2.getAlbumName());
+        StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), tidalMedia2.getTrackTitle());
+        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
+        if (distanceTotal > 20 || distanceTotal == 0) {
+            return Optional.empty();
+        }
+        MediaDistance mediaDistance = MediaDistance.builder()
+                .from(MediaReference.builder()
+                        .id(tidalMedia.getTidalTrackId())
+                        .clazz(tidalMedia.getClass().getName())
+                        .build())
+                .to(MediaReference.builder()
+                        .id(tidalMedia2.getTidalTrackId())
+                        .clazz(tidalMedia2.getClass().getName())
+                        .build())
+                .artist(artist)
+                .album(album)
+                .song(song)
+                .index(StringsDistance.builder()
+                        .distance(0)
+                        .from(String.valueOf(tidalMedia.getTrackNumber()))
+                        .to(String.valueOf(tidalMedia2.getTrackNumber()))
+                        .build())
+                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .build();
+
+        tidalMediaDistanceService.save(mediaDistance);
+        return Optional.of(mediaDistance);
     }
 
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, VolumioMedia volumioMedia) {
-        if (String.valueOf(tidalMedia.getTrackNumber()).equals(volumioMedia.getTrackNumber())) {
-
-            StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), volumioMedia.getTrackArtist());
-            StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), volumioMedia.getAlbumTitle());
-            StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), volumioMedia.getTrackTitle());
-            int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-            if (distanceTotal > 20 || distanceTotal == 0) {
-                return Optional.empty();
-            }
-            MediaDistance mediaDistance = MediaDistance.builder()
-                    .from(MediaReference.builder()
-                            .id(tidalMedia.getTidalTrackId())
-                            .clazz(tidalMedia.getClass().getName())
-                            .build())
-                    .to(MediaReference.builder()
-                            .id(volumioMedia.getTrackUri())
-                            .clazz(volumioMedia.getClass().getName())
-                            .build())
-                    .artist(artist)
-                    .album(album)
-                    .song(song)
-                    .index(StringsDistance.builder()
-                            .distance(0)
-                            .from(String.valueOf(tidalMedia.getTrackNumber()))
-                            .to(volumioMedia.getTrackNumber())
-                            .build())
-                    .matchStatus(MatchStatus.AUTOMATIC_MATCH)
-                    .build();
-
-            tidalMediaDistanceService.save(mediaDistance);
-            return Optional.of(mediaDistance);
+        if (String.valueOf(tidalMedia.getTrackNumber()).equals(volumioMedia.getTrackNumber())
+                    || StringUtils.isBlank(tidalMedia.getArtistName())
+                    || StringUtils.isBlank(tidalMedia.getAlbumName())
+                    || StringUtils.isBlank(tidalMedia.getTrackTitle())
+                    || StringUtils.isBlank(volumioMedia.getTrackArtist())
+                    || StringUtils.isBlank(volumioMedia.getAlbumTitle())
+                    || StringUtils.isBlank(volumioMedia.getTrackTitle())
+        ) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), volumioMedia.getTrackArtist());
+        StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), volumioMedia.getAlbumTitle());
+        StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), volumioMedia.getTrackTitle());
+        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
+        if (distanceTotal > 20 || distanceTotal == 0) {
+            return Optional.empty();
+        }
+        MediaDistance mediaDistance = MediaDistance.builder()
+                .from(MediaReference.builder()
+                        .id(tidalMedia.getTidalTrackId())
+                        .clazz(tidalMedia.getClass().getName())
+                        .build())
+                .to(MediaReference.builder()
+                        .id(volumioMedia.getTrackUri())
+                        .clazz(volumioMedia.getClass().getName())
+                        .build())
+                .artist(artist)
+                .album(album)
+                .song(song)
+                .index(StringsDistance.builder()
+                        .distance(0)
+                        .from(String.valueOf(tidalMedia.getTrackNumber()))
+                        .to(volumioMedia.getTrackNumber())
+                        .build())
+                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .build();
+
+        tidalMediaDistanceService.save(mediaDistance);
+        return Optional.of(mediaDistance);
+    }
+
+    @Override
+    public boolean hasPerfectMatchRecord(TidalMedia p) {
+        return hasPerfectMatchRecord(p.getTidalTrackId(), p.getClass());
     }
 }
