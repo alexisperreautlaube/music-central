@@ -35,10 +35,17 @@ public class InputMessageConsumer implements ConsumerSeekAware {
     @Value("${spring.kafka.topic.import.resetOffset}")
     private Boolean resetOffset;
 
+    @Value("${spring.kafka.topic.import.message}")
+    private String topic;
+
     @Override
     public void onPartitionsAssigned(Map<TopicPartition, Long> assignments, ConsumerSeekCallback callback) {
         if (Boolean.TRUE.equals(resetOffset)) {
-            assignments.forEach((t, o) -> callback.seekToBeginning(t.topic(), t.partition()));
+            assignments.forEach((t, o) -> {
+                if (topic.equals(t.topic())) {
+                    callback.seekToBeginning(t.topic(), t.partition());
+                }
+            });
         }
     }
 

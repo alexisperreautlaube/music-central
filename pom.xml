@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <groupId>com.apa</groupId>
     <name>parent-modules</name>
     <artifactId>parent-modules</artifactId>
