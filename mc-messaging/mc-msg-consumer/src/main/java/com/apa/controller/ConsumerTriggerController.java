@@ -38,7 +38,7 @@ public class ConsumerTriggerController {
         perfectMatchProducer.produceVolumioPerfectMatchMessage();
     }
 
-    @GetMapping(value = "/PlexPlextMatch")
+    @GetMapping(value = "/PlexPlexMatch")
     public void producePlexPlexMatchMessage() {
         matchProducer.producePlexToPlex();
     }
@@ -53,7 +53,7 @@ public class ConsumerTriggerController {
         matchProducer.producePlexToVolumio();
     }
 
-    @GetMapping(value = "/TidalPlextMatch")
+    @GetMapping(value = "/TidalPlexMatch")
     public void produceTidalPlexMatchMessage() {
         matchProducer.produceTidalToPlex();
     }
@@ -68,7 +68,7 @@ public class ConsumerTriggerController {
         matchProducer.produceTidalToVolumio();
     }
 
-    @GetMapping(value = "/VolumioPlextMatch")
+    @GetMapping(value = "/VolumioPlexMatch")
     public void produceVolumioPlexMatchMessage() {
         matchProducer.produceVolumioToPlex();
     }

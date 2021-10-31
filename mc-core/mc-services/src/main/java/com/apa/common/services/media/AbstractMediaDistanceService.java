@@ -96,19 +96,19 @@ public abstract class AbstractMediaDistanceService<M extends MusicCentralMedia> 
                 || song.getDistance() > 5;
     }
 
-    protected boolean isValidForDistance(PlexMedia plexMedia) {
+    protected boolean isInvalidForDistance(PlexMedia plexMedia) {
         return StringUtils.isBlank(plexMedia.getArtistName())
                 || StringUtils.isBlank(plexMedia.getAlbumName())
                 || StringUtils.isBlank(plexMedia.getTrackTitle());
     }
 
-    protected boolean isValidForDistance(VolumioMedia volumioMedia) {
+    protected boolean isInvalidForDistance(VolumioMedia volumioMedia) {
         return StringUtils.isBlank(volumioMedia.getTrackArtist())
                 || StringUtils.isBlank(volumioMedia.getAlbumTitle())
                 || StringUtils.isBlank(volumioMedia.getTrackTitle());
     }
 
-    protected boolean isValidForDistance(TidalMedia tidalMedia) {
+    protected boolean isInvalidForDistance(TidalMedia tidalMedia) {
         return StringUtils.isBlank(tidalMedia.getArtistName())
                 || StringUtils.isBlank(tidalMedia.getAlbumName())
                 || StringUtils.isBlank(tidalMedia.getTrackTitle());

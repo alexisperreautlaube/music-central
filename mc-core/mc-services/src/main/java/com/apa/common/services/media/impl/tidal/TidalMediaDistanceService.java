@@ -26,8 +26,8 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, PlexMedia plexMedia) {
         if (String.valueOf(tidalMedia.getTrackNumber()).equals(plexMedia.getTrackIndex())
-                    || isValidForDistance(plexMedia)
-                    || isValidForDistance(plexMedia)
+                    || isInvalidForDistance(plexMedia)
+                    || isInvalidForDistance(plexMedia)
         ) {
             return Optional.empty();
         }
@@ -64,8 +64,8 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, TidalMedia tidalMedia2) {
         if (tidalMedia.getTrackNumber() ==tidalMedia2.getTrackNumber()
-                    || isValidForDistance(tidalMedia)
-                    || isValidForDistance(tidalMedia2)
+                    || isInvalidForDistance(tidalMedia)
+                    || isInvalidForDistance(tidalMedia2)
         ) {
             return Optional.empty();
         }
@@ -101,9 +101,9 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
 
     @Override
     public Optional<MediaDistance> distance(TidalMedia tidalMedia, VolumioMedia volumioMedia) {
-        if (String.valueOf(tidalMedia.getTrackNumber()).equals(volumioMedia.getTrackNumber())
-                    || isValidForDistance(tidalMedia)
-                    || isValidForDistance(volumioMedia)
+        if (!String.valueOf(tidalMedia.getTrackNumber()).equals(volumioMedia.getTrackNumber())
+                    || isInvalidForDistance(tidalMedia)
+                    || isInvalidForDistance(volumioMedia)
         ) {
             return Optional.empty();
         }

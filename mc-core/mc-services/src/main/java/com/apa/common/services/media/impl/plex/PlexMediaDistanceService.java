@@ -26,8 +26,8 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, PlexMedia plexMedia2) {
         if (!plexMedia.getTrackIndex().equals(plexMedia2.getTrackIndex())
-                || isValidForDistance(plexMedia)
-                || isValidForDistance(plexMedia2)
+                || isInvalidForDistance(plexMedia)
+                || isInvalidForDistance(plexMedia2)
         ) {
             return Optional.empty();
         }
@@ -63,8 +63,8 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, TidalMedia tidalMedia) {
         if (!plexMedia.getTrackIndex().equals(tidalMedia.getTrackNumber())
-                || isValidForDistance(plexMedia)
-                || isValidForDistance(tidalMedia)
+                || isInvalidForDistance(plexMedia)
+                || isInvalidForDistance(tidalMedia)
         ) {
             return Optional.empty();
         }
@@ -100,8 +100,8 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, VolumioMedia volumioMedia) {
         if (!plexMedia.getTrackIndex().equals(volumioMedia.getTrackNumber())
-                || isValidForDistance(plexMedia)
-                || isValidForDistance(volumioMedia)
+                || isInvalidForDistance(plexMedia)
+                || isInvalidForDistance(volumioMedia)
         ) {
             return Optional.empty();
         }
