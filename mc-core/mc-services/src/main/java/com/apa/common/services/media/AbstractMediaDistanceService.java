@@ -1,12 +1,17 @@
 package com.apa.common.services.media;
 
 import com.apa.common.entities.media.MusicCentralMedia;
+import com.apa.common.entities.media.PlexMedia;
+import com.apa.common.entities.media.TidalMedia;
+import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MatchStatus;
 import com.apa.common.entities.util.MediaDistance;
+import com.apa.common.entities.util.StringsDistance;
 import com.apa.common.repositories.MediaDistanceRepository;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import com.mongodb.client.result.UpdateResult;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -80,5 +85,32 @@ public abstract class AbstractMediaDistanceService<M extends MusicCentralMedia> 
 
     protected boolean hasPerfectMatchRecord(String trackUri, Class<? extends M> aClass) {
         return !mediaDistanceRepository.findByFromIdAndFromClazzAndMatchStatus(trackUri, aClass.getName(), MatchStatus.PERFECT_MATCH.name()).isEmpty();
+    }
+
+    protected boolean isTooFar(StringsDistance artist, StringsDistance album, StringsDistance song) {
+        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
+        return distanceTotal > 15
+                || distanceTotal == 0
+                || artist.getDistance() > 5
+                || album.getDistance() > 5
+                || song.getDistance() > 5;
+    }
+
+    protected boolean isValidForDistance(PlexMedia plexMedia) {
+        return StringUtils.isBlank(plexMedia.getArtistName())
+                || StringUtils.isBlank(plexMedia.getAlbumName())
+                || StringUtils.isBlank(plexMedia.getTrackTitle());
+    }
+
+    protected boolean isValidForDistance(VolumioMedia volumioMedia) {
+        return StringUtils.isBlank(volumioMedia.getTrackArtist())
+                || StringUtils.isBlank(volumioMedia.getAlbumTitle())
+                || StringUtils.isBlank(volumioMedia.getTrackTitle());
+    }
+
+    protected boolean isValidForDistance(TidalMedia tidalMedia) {
+        return StringUtils.isBlank(tidalMedia.getArtistName())
+                || StringUtils.isBlank(tidalMedia.getAlbumName())
+                || StringUtils.isBlank(tidalMedia.getTrackTitle());
     }
 }

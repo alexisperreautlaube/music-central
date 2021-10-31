@@ -9,7 +9,6 @@ import com.apa.common.entities.util.MediaReference;
 import com.apa.common.entities.util.StringsDistance;
 import com.apa.common.services.media.AbstractMediaDistanceService;
 import com.apa.common.services.util.StringsDistanceService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,20 +26,15 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, PlexMedia plexMedia2) {
         if (!plexMedia.getTrackIndex().equals(plexMedia2.getTrackIndex())
-                || StringUtils.isBlank(plexMedia.getArtistName())
-                || StringUtils.isBlank(plexMedia.getAlbumName())
-                || StringUtils.isBlank(plexMedia.getTrackTitle())
-                || StringUtils.isBlank(plexMedia2.getArtistName())
-                || StringUtils.isBlank(plexMedia2.getAlbumName())
-                || StringUtils.isBlank(plexMedia2.getTrackTitle())
+                || isValidForDistance(plexMedia)
+                || isValidForDistance(plexMedia2)
         ) {
             return Optional.empty();
         }
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), plexMedia2.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), plexMedia2.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), plexMedia2.getTrackTitle());
-        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-        if (distanceTotal > 20 || distanceTotal == 0) {
+        if (isTooFar(artist, album, song)) {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -69,20 +63,15 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, TidalMedia tidalMedia) {
         if (!plexMedia.getTrackIndex().equals(tidalMedia.getTrackNumber())
-                || StringUtils.isBlank(plexMedia.getArtistName())
-                || StringUtils.isBlank(plexMedia.getAlbumName())
-                || StringUtils.isBlank(plexMedia.getTrackTitle())
-                || StringUtils.isBlank(tidalMedia.getArtistName())
-                || StringUtils.isBlank(tidalMedia.getAlbumName())
-                || StringUtils.isBlank(tidalMedia.getTrackTitle())
+                || isValidForDistance(plexMedia)
+                || isValidForDistance(tidalMedia)
         ) {
             return Optional.empty();
         }
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), tidalMedia.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), tidalMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), tidalMedia.getTrackTitle());
-        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-        if (distanceTotal > 20 || distanceTotal == 0) {
+        if (isTooFar(artist, album, song)) {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -111,24 +100,15 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
     @Override
     public Optional<MediaDistance> distance(PlexMedia plexMedia, VolumioMedia volumioMedia) {
         if (!plexMedia.getTrackIndex().equals(volumioMedia.getTrackNumber())
-                || StringUtils.isBlank(plexMedia.getArtistName())
-                || StringUtils.isBlank(plexMedia.getAlbumName())
-                || StringUtils.isBlank(plexMedia.getTrackTitle())
-                || StringUtils.isBlank(volumioMedia.getTrackArtist())
-                || StringUtils.isBlank(volumioMedia.getAlbumTitle())
-                || StringUtils.isBlank(volumioMedia.getTrackTitle())
+                || isValidForDistance(plexMedia)
+                || isValidForDistance(volumioMedia)
         ) {
             return Optional.empty();
         }
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), volumioMedia.getTrackArtist());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), volumioMedia.getAlbumTitle());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), volumioMedia.getTrackTitle());
-        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
-        if (distanceTotal > 15
-                || distanceTotal == 0
-                || artist.getDistance() > 5
-                || album.getDistance() > 5
-                || song.getDistance() > 5) {
+        if (isTooFar(artist, album, song)) {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
