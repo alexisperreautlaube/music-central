@@ -3,12 +3,15 @@ package com.apa.producer.services.impl;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
+import com.apa.common.entities.util.MediaReference;
+import com.apa.common.entities.util.ProducedMatch;
 import com.apa.common.msg.InputMessage;
 import com.apa.common.msg.match.MatchMessageEvent;
 import com.apa.common.msg.producer.MediaMediaData;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
+import com.apa.common.services.util.ProduceMatchService;
 import com.apa.events.mapper.PlexMediaMapper;
 import com.apa.events.mapper.TidalMediaMapper;
 import com.apa.events.mapper.VolumioMediaMapper;
@@ -38,6 +41,9 @@ public class MatchProducer {
     @Autowired
     private KafkaTemplate<String, InputMessage> inputMessageTemplate;
 
+    @Autowired
+    private ProduceMatchService produceMatchService;
+
     public void producePlexToPlex() {
         Gson gson = new Gson();
         List<PlexMedia> all = plexMediaService.findAll();
@@ -46,6 +52,16 @@ public class MatchProducer {
                         .filter(to -> !to.getPlexId().equals(from.getPlexId()))
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackIndex()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                        .from(MediaReference.builder()
+                                                .id(from.getPlexId())
+                                                .clazz(from.getClass().getName())
+                                                .build())
+                                        .to(MediaReference.builder()
+                                                .id(to.getPlexId())
+                                                .clazz(to.getClass().getName())
+                                                .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_PLEX.toString())
@@ -53,6 +69,16 @@ public class MatchProducer {
                                                     .from(PlexMediaMapper.toPLexDto(from))
                                                     .to(PlexMediaMapper.toPLexDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getPlexId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getPlexId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -65,6 +91,16 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(String.valueOf(to.getTrackNumber())))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getPlexId())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTidalTrackId())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_TIDAL.toString())
@@ -72,6 +108,16 @@ public class MatchProducer {
                                                     .from(PlexMediaMapper.toPLexDto(from))
                                                     .to(TidalMediaMapper.toTidalMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getPlexId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTidalTrackId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -85,6 +131,16 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackNumber()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getPlexId())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTrackUri())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_PLEX_VOLUMIO.toString())
@@ -92,6 +148,16 @@ public class MatchProducer {
                                                     .from(PlexMediaMapper.toPLexDto(from))
                                                     .to(VolumioMediaMapper.toVolumioMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getPlexId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTrackUri())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -104,6 +170,16 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackIndex()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTidalTrackId())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getPlexId())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_PLEX.toString())
@@ -111,6 +187,16 @@ public class MatchProducer {
                                             .from(TidalMediaMapper.toTidalMediaDto(from))
                                             .to(PlexMediaMapper.toPLexDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTidalTrackId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getPlexId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -124,6 +210,16 @@ public class MatchProducer {
                 from -> froms.stream()
                         .filter(to -> !from.getTidalTrackId().equals(to.getTidalTrackId()))
                         .filter(to -> from.getTrackNumber() == to.getTrackNumber())
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTidalTrackId())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTidalTrackId())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_TIDAL.toString())
@@ -131,6 +227,16 @@ public class MatchProducer {
                                                     .from(TidalMediaMapper.toTidalMediaDto(from))
                                                     .to(TidalMediaMapper.toTidalMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTidalTrackId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTidalTrackId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -143,6 +249,16 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackNumber()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTidalTrackId())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTrackUri())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_TIDAL_VOLUMIO.toString())
@@ -150,6 +266,16 @@ public class MatchProducer {
                                             .from(TidalMediaMapper.toTidalMediaDto(from))
                                             .to(VolumioMediaMapper.toVolumioMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTidalTrackId())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTrackUri())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -163,6 +289,16 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackIndex()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTrackUri())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getPlexId())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_PLEX.toString())
@@ -170,6 +306,16 @@ public class MatchProducer {
                                             .from(VolumioMediaMapper.toVolumioMediaDto(from))
                                             .to(PlexMediaMapper.toPLexDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTrackUri())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getPlexId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -183,6 +329,16 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(String.valueOf(to.getTrackNumber())))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTrackUri())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTidalTrackId())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_TIDAL.toString())
@@ -190,6 +346,16 @@ public class MatchProducer {
                                             .from(VolumioMediaMapper.toVolumioMediaDto(from))
                                             .to(TidalMediaMapper.toTidalMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTrackUri())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTidalTrackId())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );
@@ -203,6 +369,16 @@ public class MatchProducer {
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackNumber()))
                         .filter(to -> !from.getTrackUri().equals(to.getTrackUri()))
+                        .filter(to -> produceMatchService.exist(ProducedMatch.builder()
+                                .from(MediaReference.builder()
+                                        .id(from.getTrackUri())
+                                        .clazz(from.getClass().getName())
+                                        .build())
+                                .to(MediaReference.builder()
+                                        .id(to.getTrackUri())
+                                        .clazz(to.getClass().getName())
+                                        .build())
+                                .build()))
                         .forEach(to -> {
                             inputMessageTemplate.send(topic, InputMessage.builder()
                                     .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_VOLUMIO.toString())
@@ -210,6 +386,16 @@ public class MatchProducer {
                                                     .from(VolumioMediaMapper.toVolumioMediaDto(from))
                                                     .to(VolumioMediaMapper.toVolumioMediaDto(to))
                                             .build()))
+                                    .build());
+                            produceMatchService.save(ProducedMatch.builder()
+                                    .from(MediaReference.builder()
+                                            .id(from.getTrackUri())
+                                            .clazz(from.getClass().getName())
+                                            .build())
+                                    .to(MediaReference.builder()
+                                            .id(to.getTrackUri())
+                                            .clazz(to.getClass().getName())
+                                            .build())
                                     .build());
                         })
         );

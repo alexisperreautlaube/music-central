@@ -7,8 +7,11 @@ spec:
     app: mc-msg-consumer-app
   type: NodePort
   ports:
-    - port: 8086
-      nodePort: 30000
+    - port: 8080
+      nodePort: 30300
+      protocol: TCP
+      name: http-8080
+      targetPort: 8080
 
 ---
 
@@ -26,11 +29,8 @@ spec:
       labels:
         app: mc-msg-consumer-pod
     spec:
-      ports:
-        - port: 8086
-          nodePort: 30000
       containers:
         - name: mc-msg-consumer
-          image: 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.2.8
+          image: 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.4.0
           ports:
             - containerPort: 8080
