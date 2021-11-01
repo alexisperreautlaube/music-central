@@ -5,20 +5,18 @@ import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MediaReference;
 import com.apa.common.entities.util.ProducedMatch;
-import com.apa.common.msg.InputMessage;
-import com.apa.common.msg.match.MatchMessageEvent;
-import com.apa.common.msg.producer.MediaMediaData;
+import com.apa.common.services.media.impl.plex.PlexMediaDistanceService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
+import com.apa.common.services.media.impl.plex.PlexPerfectMatchFinder;
+import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
+import com.apa.common.services.media.impl.tidal.TidalPerfectMatchFinder;
+import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
+import com.apa.common.services.media.impl.volumio.VolumioPerfectMatchFinder;
 import com.apa.common.services.util.ProduceMatchService;
-import com.apa.events.mapper.PlexMediaMapper;
-import com.apa.events.mapper.TidalMediaMapper;
-import com.apa.events.mapper.VolumioMediaMapper;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,13 +37,27 @@ public class MatchProducer {
     private VolumioMediaService volumioMediaService;
 
     @Autowired
-    private KafkaTemplate<String, InputMessage> inputMessageTemplate;
-
-    @Autowired
     private ProduceMatchService produceMatchService;
 
+    @Autowired
+    private PlexPerfectMatchFinder plexPerfectMatchFinder;
+
+    @Autowired
+    private TidalPerfectMatchFinder tidalPerfectMatchFinder;
+
+    @Autowired
+    private VolumioPerfectMatchFinder volumioPerfectMatchFinder;
+
+    @Autowired
+    private PlexMediaDistanceService plexMediaDistanceService;
+
+    @Autowired
+    private TidalMediaDistanceService tidalMediaDistanceService;
+
+    @Autowired
+    private VolumioMediaDistanceService volumioMediaDistanceService;
+
     public void producePlexToPlex() {
-        Gson gson = new Gson();
         List<PlexMedia> all = plexMediaService.findAll();
         all.stream().forEach(
                 from -> all.stream()
@@ -63,13 +75,7 @@ public class MatchProducer {
                                                 .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_PLEX_PLEX.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                                    .from(PlexMediaMapper.toPLexDto(from))
-                                                    .to(PlexMediaMapper.toPLexDto(to))
-                                            .build()))
-                                    .build());
+                            plexMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getPlexId())
@@ -84,7 +90,6 @@ public class MatchProducer {
         );
     }
     public void producePlexToTidal() {
-        Gson gson = new Gson();
         List<PlexMedia> froms = plexMediaService.findAll();
         List<TidalMedia> tos = tidalMediaService.findAll();
         froms.stream().forEach(
@@ -102,13 +107,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_PLEX_TIDAL.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                                    .from(PlexMediaMapper.toPLexDto(from))
-                                                    .to(TidalMediaMapper.toTidalMediaDto(to))
-                                            .build()))
-                                    .build());
+                            plexMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getPlexId())
@@ -124,7 +123,6 @@ public class MatchProducer {
     }
 
     public void producePlexToVolumio() {
-        Gson gson = new Gson();
         List<PlexMedia> froms = plexMediaService.findAll();
         List<VolumioMedia> tos = volumioMediaService.findAll();
         froms.stream().forEach(
@@ -142,13 +140,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_PLEX_VOLUMIO.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                                    .from(PlexMediaMapper.toPLexDto(from))
-                                                    .to(VolumioMediaMapper.toVolumioMediaDto(to))
-                                            .build()))
-                                    .build());
+                            plexMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getPlexId())
@@ -164,7 +156,6 @@ public class MatchProducer {
     }
 
     public void produceTidalToPlex() {
-        Gson gson = new Gson();
         List<TidalMedia> froms = tidalMediaService.findAll();
         List<PlexMedia> tos = plexMediaService.findAll();
         froms.stream().forEach(
@@ -181,13 +172,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_TIDAL_PLEX.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                            .from(TidalMediaMapper.toTidalMediaDto(from))
-                                            .to(PlexMediaMapper.toPLexDto(to))
-                                            .build()))
-                                    .build());
+                            tidalMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTidalTrackId())
@@ -203,7 +188,6 @@ public class MatchProducer {
     }
 
     public void produceTidalToTidal() {
-        Gson gson = new Gson();
         List<TidalMedia> froms = tidalMediaService.findAll();
 
         froms.stream().forEach(
@@ -221,13 +205,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_TIDAL_TIDAL.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                                    .from(TidalMediaMapper.toTidalMediaDto(from))
-                                                    .to(TidalMediaMapper.toTidalMediaDto(to))
-                                            .build()))
-                                    .build());
+                            tidalMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTidalTrackId())
@@ -243,7 +221,6 @@ public class MatchProducer {
     }
 
     public void produceTidalToVolumio() {
-        Gson gson = new Gson();
         List<TidalMedia> froms = tidalMediaService.findAll();
         List<VolumioMedia> tos = volumioMediaService.findAll();
         froms.stream().forEach(
@@ -260,13 +237,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_TIDAL_VOLUMIO.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                            .from(TidalMediaMapper.toTidalMediaDto(from))
-                                            .to(VolumioMediaMapper.toVolumioMediaDto(to))
-                                            .build()))
-                                    .build());
+                            tidalMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTidalTrackId())
@@ -282,7 +253,6 @@ public class MatchProducer {
     }
 
     public void produceVolumioToPlex() {
-        Gson gson = new Gson();
         List<VolumioMedia> froms = volumioMediaService.findAll();
         List<PlexMedia> tos = plexMediaService.findAll();
         froms.stream().forEach(
@@ -300,13 +270,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_PLEX.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                            .from(VolumioMediaMapper.toVolumioMediaDto(from))
-                                            .to(PlexMediaMapper.toPLexDto(to))
-                                            .build()))
-                                    .build());
+                            volumioMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTrackUri())
@@ -322,7 +286,6 @@ public class MatchProducer {
     }
 
     public void produceVolumioToTidal() {
-        Gson gson = new Gson();
         List<VolumioMedia> froms = volumioMediaService.findAll();
         List<TidalMedia> tos = tidalMediaService.findAll();
         froms.stream().forEach(
@@ -340,13 +303,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_TIDAL.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                            .from(VolumioMediaMapper.toVolumioMediaDto(from))
-                                            .to(TidalMediaMapper.toTidalMediaDto(to))
-                                            .build()))
-                                    .build());
+                            volumioMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTrackUri())
@@ -362,7 +319,6 @@ public class MatchProducer {
     }
 
     public void produceVolumioToVolumio() {
-        Gson gson = new Gson();
         List<VolumioMedia> froms = volumioMediaService.findAll();
         froms.stream().forEach(
                 from -> froms.stream()
@@ -380,13 +336,7 @@ public class MatchProducer {
                                         .build())
                                 .build()))
                         .forEach(to -> {
-                            inputMessageTemplate.send(topic, InputMessage.builder()
-                                    .event(MatchMessageEvent.MATCH_LEV_VOLUMIO_VOLUMIO.toString())
-                                    .data(gson.toJson(MediaMediaData.builder()
-                                                    .from(VolumioMediaMapper.toVolumioMediaDto(from))
-                                                    .to(VolumioMediaMapper.toVolumioMediaDto(to))
-                                            .build()))
-                                    .build());
+                            volumioMediaDistanceService.distance(from, to);
                             produceMatchService.save(ProducedMatch.builder()
                                     .from(MediaReference.builder()
                                             .id(from.getTrackUri())
