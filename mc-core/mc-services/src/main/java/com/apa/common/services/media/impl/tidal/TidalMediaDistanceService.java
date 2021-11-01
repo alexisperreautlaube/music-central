@@ -34,7 +34,12 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
         StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), plexMedia.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), plexMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), plexMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -54,7 +59,7 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
                         .from(plexMedia.getTrackIndex())
                         .to(plexMedia.getTrackIndex())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
         tidalMediaDistanceService.save(mediaDistance);
         return Optional.of(mediaDistance);
@@ -72,7 +77,12 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
         StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), tidalMedia2.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), tidalMedia2.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), tidalMedia2.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -92,7 +102,7 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
                         .from(String.valueOf(tidalMedia.getTrackNumber()))
                         .to(String.valueOf(tidalMedia2.getTrackNumber()))
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
 
         tidalMediaDistanceService.save(mediaDistance);
@@ -110,7 +120,12 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
         StringsDistance artist = stringsDistanceService.StringsDistance(tidalMedia.getArtistName(), volumioMedia.getTrackArtist());
         StringsDistance album = stringsDistanceService.StringsDistance(tidalMedia.getAlbumName(), volumioMedia.getAlbumTitle());
         StringsDistance song = stringsDistanceService.StringsDistance(tidalMedia.getTrackTitle(), volumioMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -130,7 +145,7 @@ public class TidalMediaDistanceService  extends AbstractMediaDistanceService<Tid
                         .from(String.valueOf(tidalMedia.getTrackNumber()))
                         .to(volumioMedia.getTrackNumber())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
 
         tidalMediaDistanceService.save(mediaDistance);

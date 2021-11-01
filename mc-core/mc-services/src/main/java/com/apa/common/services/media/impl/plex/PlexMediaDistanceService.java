@@ -34,7 +34,12 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), plexMedia2.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), plexMedia2.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), plexMedia2.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -54,7 +59,7 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
                         .from(plexMedia.getTrackIndex())
                         .to(plexMedia2.getTrackIndex())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
         plexMediaDistanceService.save(mediaDistance);
         return Optional.of(mediaDistance);
@@ -71,7 +76,12 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), tidalMedia.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), tidalMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), tidalMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -91,8 +101,9 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
                         .from(plexMedia.getTrackIndex())
                         .to(String.valueOf(tidalMedia.getTrackNumber()))
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
-                .build();            plexMediaDistanceService.save(mediaDistance);
+                .matchStatus(matchStatus)
+                .build();
+        plexMediaDistanceService.save(mediaDistance);
         return Optional.of(mediaDistance);
 
     }
@@ -108,7 +119,12 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
         StringsDistance artist = stringsDistanceService.StringsDistance(plexMedia.getArtistName(), volumioMedia.getTrackArtist());
         StringsDistance album = stringsDistanceService.StringsDistance(plexMedia.getAlbumName(), volumioMedia.getAlbumTitle());
         StringsDistance song = stringsDistanceService.StringsDistance(plexMedia.getTrackTitle(), volumioMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -128,7 +144,7 @@ public class PlexMediaDistanceService extends AbstractMediaDistanceService<PlexM
                         .from(plexMedia.getTrackIndex())
                         .to(volumioMedia.getTrackNumber())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
         plexMediaDistanceService.save(mediaDistance);
         return Optional.of(mediaDistance);

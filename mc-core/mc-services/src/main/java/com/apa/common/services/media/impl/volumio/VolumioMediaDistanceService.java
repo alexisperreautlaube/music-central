@@ -37,7 +37,12 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance artist = stringsDistanceService.StringsDistance(volumioMedia.getTrackArtist(), plexMedia.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), plexMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), plexMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -57,7 +62,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                         .from(volumioMedia.getTrackNumber())
                         .to(plexMedia.getTrackIndex())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
 
         save(mediaDistance);
@@ -76,7 +81,12 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance artist = stringsDistanceService.StringsDistance(volumioMedia.getTrackArtist(), tidalMedia.getArtistName());
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), tidalMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), tidalMedia.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -96,7 +106,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                         .from(volumioMedia.getTrackNumber())
                         .to(String.valueOf(tidalMedia.getTrackNumber()))
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
 
         save(mediaDistance);
@@ -115,7 +125,12 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance artist = stringsDistanceService.StringsDistance(volumioMedia.getTrackArtist(), volumioMedia2.getTrackArtist());
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), volumioMedia2.getAlbumTitle());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), volumioMedia2.getTrackTitle());
-        if (isTooFar(artist, album, song)) {
+        MatchStatus matchStatus;
+        if (isGoodForAutomaticMatch(artist, album, song)) {
+            matchStatus = MatchStatus.AUTOMATIC_MATCH;
+        } else if (isGoodForManualEvaluationFar(artist, album, song)) {
+            matchStatus = MatchStatus.POTENTIAL_MATCH;
+        } else {
             return Optional.empty();
         }
         MediaDistance mediaDistance = MediaDistance.builder()
@@ -135,7 +150,7 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
                         .from(volumioMedia.getTrackNumber())
                         .to(volumioMedia2.getTrackNumber())
                         .build())
-                .matchStatus(MatchStatus.AUTOMATIC_MATCH)
+                .matchStatus(matchStatus)
                 .build();
 
         save(mediaDistance);
