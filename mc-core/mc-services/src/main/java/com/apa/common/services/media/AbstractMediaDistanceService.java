@@ -104,7 +104,7 @@ public abstract class AbstractMediaDistanceService<M extends MusicCentralMedia> 
     protected boolean isGoodForManualEvaluationFar(StringsDistance artist, StringsDistance album, StringsDistance song) {
         int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
         return distanceTotal <= 25
-                && distanceTotal == 0
+                && distanceTotal != 0
                 && artist.getDistance() <= 10
                 && album.getDistance() <= 10
                 && song.getDistance() <= 10;
