@@ -1,9 +1,6 @@
 package com.apa.common.msg.match;
 
 public enum MatchMessageEvent {
-    MATCH_PLEX_PERFECT,
-    MATCH_TIDAL_PERFECT,
-    MATCH_VOLUMIO_PERFECT,
     MATCH_LEV_PLEX_PLEX,
     MATCH_LEV_PLEX_TIDAL,
     MATCH_LEV_PLEX_VOLUMIO,

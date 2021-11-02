@@ -7,13 +7,10 @@ import com.apa.common.entities.util.MediaReference;
 import com.apa.common.entities.util.ProducedMatch;
 import com.apa.common.services.media.impl.plex.PlexMediaDistanceService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
-import com.apa.common.services.media.impl.plex.PlexPerfectMatchFinder;
 import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
-import com.apa.common.services.media.impl.tidal.TidalPerfectMatchFinder;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
-import com.apa.common.services.media.impl.volumio.VolumioPerfectMatchFinder;
 import com.apa.common.services.util.ProduceMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,15 +35,6 @@ public class MatchProducer {
 
     @Autowired
     private ProduceMatchService produceMatchService;
-
-    @Autowired
-    private PlexPerfectMatchFinder plexPerfectMatchFinder;
-
-    @Autowired
-    private TidalPerfectMatchFinder tidalPerfectMatchFinder;
-
-    @Autowired
-    private VolumioPerfectMatchFinder volumioPerfectMatchFinder;
 
     @Autowired
     private PlexMediaDistanceService plexMediaDistanceService;

@@ -38,7 +38,9 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), plexMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), plexMedia.getTrackTitle());
         MatchStatus matchStatus;
-        if (isGoodForAutomaticMatch(artist, album, song)) {
+        if (isPerfectMatch(artist, album, song)) {
+            matchStatus = MatchStatus.PERFECT_MATCH;
+        } else if (isGoodForAutomaticMatch(artist, album, song)) {
             matchStatus = MatchStatus.AUTOMATIC_MATCH;
         } else if (isGoodForManualEvaluationFar(artist, album, song)) {
             matchStatus = MatchStatus.POTENTIAL_MATCH;
@@ -82,7 +84,9 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), tidalMedia.getAlbumName());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), tidalMedia.getTrackTitle());
         MatchStatus matchStatus;
-        if (isGoodForAutomaticMatch(artist, album, song)) {
+        if (isPerfectMatch(artist, album, song)) {
+            matchStatus = MatchStatus.PERFECT_MATCH;
+        } else if (isGoodForAutomaticMatch(artist, album, song)) {
             matchStatus = MatchStatus.AUTOMATIC_MATCH;
         } else if (isGoodForManualEvaluationFar(artist, album, song)) {
             matchStatus = MatchStatus.POTENTIAL_MATCH;
@@ -126,7 +130,9 @@ public class VolumioMediaDistanceService extends AbstractMediaDistanceService<Vo
         StringsDistance album = stringsDistanceService.StringsDistance(volumioMedia.getAlbumTitle(), volumioMedia2.getAlbumTitle());
         StringsDistance song = stringsDistanceService.StringsDistance(volumioMedia.getTrackTitle(), volumioMedia2.getTrackTitle());
         MatchStatus matchStatus;
-        if (isGoodForAutomaticMatch(artist, album, song)) {
+        if (isPerfectMatch(artist, album, song)) {
+            matchStatus = MatchStatus.PERFECT_MATCH;
+        } else if (isGoodForAutomaticMatch(artist, album, song)) {
             matchStatus = MatchStatus.AUTOMATIC_MATCH;
         } else if (isGoodForManualEvaluationFar(artist, album, song)) {
             matchStatus = MatchStatus.POTENTIAL_MATCH;

@@ -87,22 +87,27 @@ public abstract class AbstractMediaDistanceService<M extends MusicCentralMedia> 
         return !mediaDistanceRepository.findByFromIdAndFromClazzAndMatchStatus(trackUri, aClass.getName(), MatchStatus.PERFECT_MATCH.name()).isEmpty();
     }
 
+    protected boolean isPerfectMatch(StringsDistance artist, StringsDistance album, StringsDistance song) {
+        int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
+        return distanceTotal == 0;
+    }
+
     protected boolean isGoodForAutomaticMatch(StringsDistance artist, StringsDistance album, StringsDistance song) {
         int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
         return distanceTotal <= 15
-                || distanceTotal == 0
-                || artist.getDistance() <= 5
-                || album.getDistance() <= 5
-                || song.getDistance() <= 5;
+                && distanceTotal != 0
+                && artist.getDistance() <= 5
+                && album.getDistance() <= 5
+                && song.getDistance() <= 5;
     }
 
     protected boolean isGoodForManualEvaluationFar(StringsDistance artist, StringsDistance album, StringsDistance song) {
         int distanceTotal = artist.getDistance() + album.getDistance() + song.getDistance();
         return distanceTotal <= 25
-                || distanceTotal == 0
-                || artist.getDistance() <= 10
-                || album.getDistance() <= 10
-                || song.getDistance() <= 10;
+                && distanceTotal == 0
+                && artist.getDistance() <= 10
+                && album.getDistance() <= 10
+                && song.getDistance() <= 10;
     }
 
     protected boolean isInvalidForDistance(PlexMedia plexMedia) {

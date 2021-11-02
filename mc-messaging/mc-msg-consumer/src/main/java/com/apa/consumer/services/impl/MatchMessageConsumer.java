@@ -3,21 +3,12 @@ package com.apa.consumer.services.impl;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
-import com.apa.common.entities.util.MatchStatus;
-import com.apa.common.entities.util.MediaDistance;
-import com.apa.common.entities.util.MediaReference;
 import com.apa.common.msg.InputMessage;
 import com.apa.common.msg.match.MatchMessageEvent;
 import com.apa.common.msg.producer.*;
 import com.apa.common.services.media.impl.plex.PlexMediaDistanceService;
-import com.apa.common.services.media.impl.plex.PlexPerfectMatchFinder;
 import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
-import com.apa.common.services.media.impl.tidal.TidalPerfectMatchFinder;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
-import com.apa.common.services.media.impl.volumio.VolumioPerfectMatchFinder;
-import com.apa.core.dto.media.PlexMediaDto;
-import com.apa.core.dto.media.TidalMediaDto;
-import com.apa.core.dto.media.VolumioMediaDto;
 import com.apa.events.mapper.PlexMediaMapper;
 import com.apa.events.mapper.TidalMediaMapper;
 import com.apa.events.mapper.VolumioMediaMapper;
@@ -30,21 +21,11 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.ConsumerSeekAware;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component
 public class MatchMessageConsumer implements ConsumerSeekAware {
-
-    @Autowired
-    private PlexPerfectMatchFinder plexPerfectMatchFinder;
-
-    @Autowired
-    private TidalPerfectMatchFinder tidalPerfectMatchFinder;
-
-    @Autowired
-    private VolumioPerfectMatchFinder volumioPerfectMatchFinder;
 
     @Autowired
     private PlexMediaDistanceService plexMediaDistanceService;
@@ -83,79 +64,6 @@ public class MatchMessageConsumer implements ConsumerSeekAware {
         log.debug("inputMessage={}", inputMessage);
         Gson gson = new Gson();
         switch (importMessageEvent) {
-            case MATCH_PLEX_PERFECT:
-                log.debug("importMessageEvent start={}", importMessageEvent);
-                PlexMediaDto plexMediaDto = gson.fromJson(inputMessage.getData(), PlexMediaDto.class);
-                PlexMedia plexMedia = PlexMediaMapper.toPlexMedia(plexMediaDto);
-                List<PlexMedia> plexMatch = plexPerfectMatchFinder.findPlexMatch(plexMedia);
-                List<TidalMedia> tidalMatch = plexPerfectMatchFinder.findTidalMatch(plexMedia);
-                List<VolumioMedia> volumioMatch = plexPerfectMatchFinder.findVolumioMatch(plexMedia);
-                if (plexMatch.isEmpty() && tidalMatch.isEmpty() && volumioMatch.isEmpty()) {
-                    plexMediaDistanceService.save(MediaDistance.builder()
-                            .from(MediaReference.builder()
-                                    .id(plexMedia.getPlexId())
-                                    .clazz(plexMedia.getClass().getName())
-                                    .build())
-                            .to(null)
-                            .artist(null)
-                            .album(null)
-                            .index(null)
-                            .song(null)
-                            .matchStatus(MatchStatus.NO_PERFECT_MATCH)
-                            .build());
-                    return;
-                }
-                log.debug("importMessageEvent end={}", importMessageEvent);
-                break;
-            case MATCH_TIDAL_PERFECT:
-                log.debug("importMessageEvent start={}", importMessageEvent);
-                TidalMediaDto tidalMediaDto = gson.fromJson(inputMessage.getData(), TidalMediaDto.class);
-                TidalMedia tidalMedia = TidalMediaMapper.toTidalMedia(tidalMediaDto);
-                plexMatch = tidalPerfectMatchFinder.findPlexMatch(tidalMedia);
-                tidalMatch = tidalPerfectMatchFinder.findTidalMatch(tidalMedia);
-                volumioMatch = tidalPerfectMatchFinder.findVolumioMatch(tidalMedia);
-                if (plexMatch.isEmpty() && tidalMatch.isEmpty() && volumioMatch.isEmpty()) {
-                    plexMediaDistanceService.save(MediaDistance.builder()
-                            .from(MediaReference.builder()
-                                    .id(tidalMedia.getTidalTrackId())
-                                    .clazz(tidalMedia.getClass().getName())
-                                    .build())
-                            .to(null)
-                            .artist(null)
-                            .album(null)
-                            .index(null)
-                            .song(null)
-                            .matchStatus(MatchStatus.NO_PERFECT_MATCH)
-                            .build());
-                    return;
-                }
-                log.debug("importMessageEvent end={}", importMessageEvent);
-                break;
-            case MATCH_VOLUMIO_PERFECT:
-                log.debug("importMessageEvent start={}", importMessageEvent);
-
-                VolumioMediaDto volumioMediaDto = gson.fromJson(inputMessage.getData(), VolumioMediaDto.class);
-                VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
-                plexMatch = volumioPerfectMatchFinder.findPlexMatch(volumioMedia);
-                tidalMatch = volumioPerfectMatchFinder.findTidalMatch(volumioMedia);
-                volumioMatch = volumioPerfectMatchFinder.findVolumioMatch(volumioMedia);
-                if (plexMatch.isEmpty() && tidalMatch.isEmpty() && volumioMatch.isEmpty()) {
-                    plexMediaDistanceService.save(MediaDistance.builder()
-                            .from(MediaReference.builder()
-                                    .id(volumioMedia.getTrackUri())
-                                    .clazz(volumioMedia.getClass().getName())
-                                    .build())
-                            .to(null)
-                            .artist(null)
-                            .album(null)
-                            .index(null)
-                            .song(null)
-                            .matchStatus(MatchStatus.NO_PERFECT_MATCH)
-                            .build());
-                    return;
-                }
-                log.debug("importMessageEvent end={}", importMessageEvent);
-                break;
             case MATCH_LEV_PLEX_PLEX:
                 log.debug("importMessageEvent start={}", importMessageEvent);
                 PlexPlexMediaData mediaMediaData = gson.fromJson(inputMessage.getData(), PlexPlexMediaData.class);

@@ -3,7 +3,6 @@ package com.apa.controller;
 import com.apa.client.volumio.VolumioClient;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.producer.services.impl.MatchProducer;
-import com.apa.producer.services.impl.PerfectMatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +16,6 @@ import javax.ws.rs.PathParam;
 public class ConsumerTriggerController {
 
     @Autowired
-    private PerfectMatchProducer perfectMatchProducer;
-
-    @Autowired
     private MatchProducer matchProducer;
 
     @Autowired
@@ -30,13 +26,6 @@ public class ConsumerTriggerController {
 
     @Autowired
     private VolumioNewSongImportProducer volumioNewSongImportProducer;
-
-    @GetMapping(value = "/PerfectMatch")
-    public void producePlexPerfectMatchMessage() {
-        perfectMatchProducer.producePlexPerfectMatchMessage();
-        perfectMatchProducer.produceTidalPerfectMatchMessage();
-        perfectMatchProducer.produceVolumioPerfectMatchMessage();
-    }
 
     @GetMapping(value = "/PlexPlexMatch")
     public void producePlexPlexMatchMessage() {
