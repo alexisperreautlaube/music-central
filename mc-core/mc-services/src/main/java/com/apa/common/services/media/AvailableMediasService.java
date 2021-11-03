@@ -48,11 +48,11 @@ public class AvailableMediasService {
         Set<String> ids = new HashSet<>();
         List<AvailableMedias> bestOf = availableMediasRepository.findByRatingGreaterThan(3);
         Random rand = new Random();
-        while (ids.size() != 300) {
+        while (ids.size() != 300 && ids.size() < bestOf.size()) {
             ids.add(bestOf.get(rand.nextInt(bestOf.size())).getId());
         }
         List<AvailableMedias> noneRated = availableMediasRepository.findByRating(0);
-        while (ids.size() != 500) {
+        while (ids.size() != 500 && ids.size() < bestOf.size() + noneRated.size()) {
             ids.add(noneRated.get(rand.nextInt(noneRated.size())).getId());
         }
         List<String> list = new ArrayList<>(ids);
@@ -155,9 +155,6 @@ public class AvailableMediasService {
 
     private Optional<RelatedMedia> toAvailable(VolumioMedia volumioMedia, MediaDistance mediaDistance) {
         Optional<MediaReference> mediaReference = getOther(volumioMedia, mediaDistance);
-        if (!mediaReference.isPresent()) {
-            return Optional.empty();
-        }
         if (mediaReference.get().getClazz().equals(PlexMedia.class.getName())) {
             return Optional.of(getPlex(mediaReference.get()));
         } else if (mediaReference.get().getClazz().equals(TidalMedia.class.getName())) {

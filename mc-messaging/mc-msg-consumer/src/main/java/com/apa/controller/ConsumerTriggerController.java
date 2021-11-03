@@ -32,16 +32,6 @@ public class ConsumerTriggerController {
         matchProducer.producePlexToPlex();
     }
 
-    @GetMapping(value = "/PlexTidalMatch")
-    public void producePlexTidalMatchMessage() {
-        matchProducer.producePlexToTidal();
-    }
-
-    @GetMapping(value = "/PlexVolumioMatch")
-    public void producePlexVolumioMatchMessage() {
-        matchProducer.producePlexToVolumio();
-    }
-
     @GetMapping(value = "/TidalPlexMatch")
     public void produceTidalPlexMatchMessage() {
         matchProducer.produceTidalToPlex();
@@ -50,11 +40,6 @@ public class ConsumerTriggerController {
     @GetMapping(value = "/TidalTidalMatch")
     public void produceTidalTidalMatchMessage() {
         matchProducer.produceTidalToTidal();
-    }
-
-    @GetMapping(value = "/TidalVolumioMatch")
-    public void produceTidalVolumioMatchMessage() {
-        matchProducer.produceTidalToVolumio();
     }
 
     @GetMapping(value = "/VolumioPlexMatch")
@@ -74,13 +59,9 @@ public class ConsumerTriggerController {
 
     @GetMapping(value = "/allMediaMatch")
     public void allMediaMatch() {
-        matchProducer.produceVolumioToVolumio();
         matchProducer.producePlexToPlex();
-        matchProducer.producePlexToTidal();
-        matchProducer.producePlexToVolumio();
         matchProducer.produceTidalToPlex();
         matchProducer.produceTidalToTidal();
-        matchProducer.produceTidalToVolumio();
         matchProducer.produceVolumioToPlex();
         matchProducer.produceVolumioToTidal();
         matchProducer.produceVolumioToVolumio();

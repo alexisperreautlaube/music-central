@@ -3,15 +3,12 @@ package com.apa.producer.services.impl;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
-import com.apa.common.entities.util.MediaReference;
-import com.apa.common.entities.util.ProducedMatch;
 import com.apa.common.services.media.impl.plex.PlexMediaDistanceService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
-import com.apa.common.services.util.ProduceMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,9 +31,6 @@ public class MatchProducer {
     private VolumioMediaService volumioMediaService;
 
     @Autowired
-    private ProduceMatchService produceMatchService;
-
-    @Autowired
     private PlexMediaDistanceService plexMediaDistanceService;
 
     @Autowired
@@ -52,28 +46,8 @@ public class MatchProducer {
                         .filter(to -> !to.getPlexId().equals(from.getPlexId()))
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackIndex()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                        .from(MediaReference.builder()
-                                                .id(from.getPlexId())
-                                                .clazz(from.getClass().getName())
-                                                .build())
-                                        .to(MediaReference.builder()
-                                                .id(to.getPlexId())
-                                                .clazz(to.getClass().getName())
-                                                .build())
-                                .build()))
                         .forEach(to -> {
                             plexMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getPlexId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getPlexId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -84,28 +58,8 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(String.valueOf(to.getTrackNumber())))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getPlexId())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTidalTrackId())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             plexMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getPlexId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTidalTrackId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -117,28 +71,8 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackNumber()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getPlexId())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTrackUri())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             plexMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getPlexId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTrackUri())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -149,28 +83,8 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackIndex()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTidalTrackId())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getPlexId())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             tidalMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTidalTrackId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getPlexId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -182,28 +96,8 @@ public class MatchProducer {
                 from -> froms.stream()
                         .filter(to -> !from.getTidalTrackId().equals(to.getTidalTrackId()))
                         .filter(to -> from.getTrackNumber() == to.getTrackNumber())
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTidalTrackId())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTidalTrackId())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             tidalMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTidalTrackId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTidalTrackId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -214,28 +108,8 @@ public class MatchProducer {
         froms.stream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackNumber()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTidalTrackId())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTrackUri())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             tidalMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTidalTrackId())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTrackUri())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -247,28 +121,8 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackIndex()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTrackUri())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getPlexId())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             volumioMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTrackUri())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getPlexId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -280,28 +134,8 @@ public class MatchProducer {
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(String.valueOf(to.getTrackNumber())))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTrackUri())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTidalTrackId())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             volumioMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTrackUri())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTidalTrackId())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
@@ -313,28 +147,8 @@ public class MatchProducer {
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackNumber()))
                         .filter(to -> !from.getTrackUri().equals(to.getTrackUri()))
-                        .filter(to -> !produceMatchService.exist(ProducedMatch.builder()
-                                .from(MediaReference.builder()
-                                        .id(from.getTrackUri())
-                                        .clazz(from.getClass().getName())
-                                        .build())
-                                .to(MediaReference.builder()
-                                        .id(to.getTrackUri())
-                                        .clazz(to.getClass().getName())
-                                        .build())
-                                .build()))
                         .forEach(to -> {
                             volumioMediaDistanceService.distance(from, to);
-                            produceMatchService.save(ProducedMatch.builder()
-                                    .from(MediaReference.builder()
-                                            .id(from.getTrackUri())
-                                            .clazz(from.getClass().getName())
-                                            .build())
-                                    .to(MediaReference.builder()
-                                            .id(to.getTrackUri())
-                                            .clazz(to.getClass().getName())
-                                            .build())
-                                    .build());
                         })
         );
     }
