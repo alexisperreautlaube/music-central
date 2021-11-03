@@ -4,6 +4,7 @@ import com.apa.client.volumio.VolumioClient;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.producer.services.impl.MatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.PathParam;
 
+@Slf4j
 @RestController
 @RequestMapping("/mc")
 public class ConsumerTriggerController {
@@ -44,27 +46,35 @@ public class ConsumerTriggerController {
 
     @GetMapping(value = "/VolumioPlexMatch")
     public void produceVolumioPlexMatchMessage() {
+        log.info("VolumioPlexMatch start");
         matchProducer.produceVolumioToPlex();
+        log.info("VolumioPlexMatch end");
     }
 
     @GetMapping(value = "/VolumioTidalMatch")
     public void produceVolumioTidalMatchMessage() {
+        log.info("VolumioTidalMatch start");
         matchProducer.produceVolumioToTidal();
+        log.info("VolumioTidalMatch start");
     }
 
     @GetMapping(value = "/VolumioVolumioMatch")
     public void produceVolumioVolumioMatchMessage() {
+        log.info("VolumioVolumioMatch start");
         matchProducer.produceVolumioToVolumio();
+        log.info("VolumioVolumioMatch start");
     }
 
     @GetMapping(value = "/allMediaMatch")
     public void allMediaMatch() {
+        log.info("allMediaMatch start");
         matchProducer.producePlexToPlex();
         matchProducer.produceTidalToPlex();
         matchProducer.produceTidalToTidal();
         matchProducer.produceVolumioToPlex();
         matchProducer.produceVolumioToTidal();
         matchProducer.produceVolumioToVolumio();
+        log.info("allMediaMatch end");
     }
 
     @GetMapping(value = "/createAvailableTrack")

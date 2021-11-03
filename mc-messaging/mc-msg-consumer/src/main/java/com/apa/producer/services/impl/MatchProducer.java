@@ -41,7 +41,7 @@ public class MatchProducer {
 
     public void producePlexToPlex() {
         List<PlexMedia> all = plexMediaService.findAll();
-        all.stream().forEach(
+        all.parallelStream().forEach(
                 from -> all.stream()
                         .filter(to -> !to.getPlexId().equals(from.getPlexId()))
                         .filter(to -> from.getTrackIndex() != null
@@ -54,7 +54,7 @@ public class MatchProducer {
     public void producePlexToTidal() {
         List<PlexMedia> froms = plexMediaService.findAll();
         List<TidalMedia> tos = tidalMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(String.valueOf(to.getTrackNumber())))
@@ -67,7 +67,7 @@ public class MatchProducer {
     public void producePlexToVolumio() {
         List<PlexMedia> froms = plexMediaService.findAll();
         List<VolumioMedia> tos = volumioMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> from.getTrackIndex() != null
                                 && from.getTrackIndex().equals(to.getTrackNumber()))
@@ -80,7 +80,7 @@ public class MatchProducer {
     public void produceTidalToPlex() {
         List<TidalMedia> froms = tidalMediaService.findAll();
         List<PlexMedia> tos = plexMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackIndex()))
                         .forEach(to -> {
@@ -91,8 +91,7 @@ public class MatchProducer {
 
     public void produceTidalToTidal() {
         List<TidalMedia> froms = tidalMediaService.findAll();
-
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> froms.stream()
                         .filter(to -> !from.getTidalTrackId().equals(to.getTidalTrackId()))
                         .filter(to -> from.getTrackNumber() == to.getTrackNumber())
@@ -105,7 +104,7 @@ public class MatchProducer {
     public void produceTidalToVolumio() {
         List<TidalMedia> froms = tidalMediaService.findAll();
         List<VolumioMedia> tos = volumioMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> String.valueOf(from.getTrackNumber()).equals(to.getTrackNumber()))
                         .forEach(to -> {
@@ -117,7 +116,7 @@ public class MatchProducer {
     public void produceVolumioToPlex() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
         List<PlexMedia> tos = plexMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackIndex()))
@@ -130,7 +129,7 @@ public class MatchProducer {
     public void produceVolumioToTidal() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
         List<TidalMedia> tos = tidalMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> tos.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(String.valueOf(to.getTrackNumber())))
@@ -142,7 +141,7 @@ public class MatchProducer {
 
     public void produceVolumioToVolumio() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
-        froms.stream().forEach(
+        froms.parallelStream().forEach(
                 from -> froms.stream()
                         .filter(to -> from.getTrackNumber() != null
                                 && from.getTrackNumber().equals(to.getTrackNumber()))
