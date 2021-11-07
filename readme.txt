@@ -1,12 +1,12 @@
 
 
 cd /Users/alexisperreault/Documents/music-central
-mvn versions:set -DnewVersion=1.8.2 && mvn versions:commit
+mvn versions:set -DnewVersion=1.8.3 && mvn versions:commit
 mvn clean install
 cd /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer
-mvn spring-boot:build-image -Dspring-boot.build-image.imageName=mc/mc-msg-consumer:1.8.2
-docker tag docker.io/mc/mc-msg-consumer:1.8.2  192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.8.2
-docker push 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.8.2
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=mc/mc-msg-consumer:1.8.3
+docker tag docker.io/mc/mc-msg-consumer:1.8.3  192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.8.3
+docker push 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:1.8.3
 
 cd /Users/alexisperreault/Documents/music-central
 kubectl apply -f kube.yaml
