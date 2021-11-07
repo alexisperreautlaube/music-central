@@ -4,13 +4,11 @@ import com.apa.client.volumio.VolumioClient;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.producer.services.impl.MatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.ws.rs.PathParam;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -55,14 +53,14 @@ public class ConsumerTriggerController {
     public void produceVolumioTidalMatchMessage() {
         log.info("VolumioTidalMatch start");
         matchProducer.produceVolumioToTidal();
-        log.info("VolumioTidalMatch start");
+        log.info("VolumioTidalMatch end");
     }
 
     @GetMapping(value = "/VolumioVolumioMatch")
     public void produceVolumioVolumioMatchMessage() {
         log.info("VolumioVolumioMatch start");
         matchProducer.produceVolumioToVolumio();
-        log.info("VolumioVolumioMatch start");
+        log.info("VolumioVolumioMatch end");
     }
 
     @GetMapping(value = "/allMediaMatch")
@@ -79,12 +77,16 @@ public class ConsumerTriggerController {
 
     @GetMapping(value = "/createAvailableTrack")
     public void createAvailableTrack() {
+        log.info("createAvailableTrack start");
         availableMediasService.createAvailableList();
+        log.info("createAvailableTrack end");
     }
 
     @GetMapping(value = "/refreshQueue")
     public void refreshQueue() {
+        log.info("refreshQueue start");
         volumioClient.refreshQueue();
+        log.info("refreshQueue end");
     }
 
     @GetMapping(value = "/produceNewVolumioTrackMessage")
@@ -92,8 +94,15 @@ public class ConsumerTriggerController {
         volumioNewSongImportProducer.produceNewVolumioTrackMessage();
     }
 
-    @GetMapping(value = "/rating/{uri}")
-    public Integer rating(@PathParam("uri") String uri) {
+    @Getter
+    @Setter
+    private class RatingBody {
+        private String uri;
+    }
+
+    @GetMapping(value = "/rating/")
+    public Integer rating() {
+        String uri = volumioClient.getCurrentPlayedUri();
         return availableMediasService.getRating(uri);
     }
 }

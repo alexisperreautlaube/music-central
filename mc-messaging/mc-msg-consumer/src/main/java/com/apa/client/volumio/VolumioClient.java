@@ -31,6 +31,7 @@ public class VolumioClient {
 
     private static final String CLEAR_QUEUE = "/commands";
     private static final String ADD_TO_QUEUE = "/addToQueue";
+    private static final String GET_STATE = "/getState";
     private static final String BROWSE = "/browse";
     private static final String BROWSE_ALBUM = "albums://";
     private static final String BROWSE_TIDAL = "tidal://mymusic/albums/az";
@@ -44,6 +45,17 @@ public class VolumioClient {
 
     @Autowired
     private VolumioMediaService volumioMediaService;
+
+    public String getCurrentPlayedUri() {
+        Client client = ClientBuilder.newClient();
+        String response = client.target(volumioPath)
+                .path(GET_STATE)
+                .request(MediaType.APPLICATION_JSON)
+                .get(String.class);
+
+        JsonObject json = (JsonObject) JsonParser.parseString(response);
+       return json.get("uri").getAsString();
+    }
 
     public void refreshQueue() {
         Client client = ClientBuilder.newClient();

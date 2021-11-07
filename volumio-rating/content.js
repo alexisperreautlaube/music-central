@@ -1,8 +1,23 @@
+var lastTrackTitle = "";
 var titleObserver = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     console.log("volumio title mutation :" + mutation);
-    var rating = fetchRating();
-    setRating(rating);
+    window.fetch("http://localhost:8080/mc/rating",
+        {
+            method:"get",
+            headers: {'Access-Control-Allow-Origin': '*'}
+        })
+        .then(function(response) {
+          return response.json();
+        }).then(function(data) {
+            console.log("rating: " + data);
+            console.log("setRating :" + rating)
+            let byId = document.getElementById('trackInfo-title');
+            lastTrackTitle = byId.textContent + " - " + data;
+            byId.textContent = lastTrackTitle;
+        }).catch(function(e ) {
+          console.log("e:" + e);
+        });
   })
 })
 
@@ -12,7 +27,7 @@ var bodyObserver = new MutationObserver(function(mutations) {
     for (var i = 0; i < mutation.addedNodes.length; i++) {
 
       var node = mutation.addedNodes[i]
-      if (typeof node.classList !== "undefined" && node.id == 'trackInfo-title'){
+      if (typeof node.classList !== "undefined" && node.id == 'trackInfo-title' && node.textContent != lastTrackTitle){
         console.log("volumio found controls");
         titleObserver.observe(node, {
           childList: false
@@ -24,19 +39,6 @@ var bodyObserver = new MutationObserver(function(mutations) {
     }
   })
 })
-
-function setRating(rating) {
-  console.log("setRating :" + rating)
-  let byId = document.getElementById('trackInfo-title');
-  byId.textContent = byId.textContent + " - " + rating;
-}
-
-
-function fetchRating(){
-  return 4;
-}
-
-
 
 bodyObserver.observe(document.body, {
   childList: true

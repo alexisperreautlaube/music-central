@@ -16,7 +16,6 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -61,12 +60,11 @@ public class AvailableMediasService {
     }
 
     public void createAvailableList() {
-        volumioMediaService.findAll().forEach(
+        volumioMediaService.findAll().parallelStream().forEach(
             v -> createSingleAvailable(v)
         );
     }
 
-    @Transactional
     public void createSingleAvailable(VolumioMedia volumioMedia) {
         if (entryExist(volumioMedia)) {
             return;
@@ -78,7 +76,7 @@ public class AvailableMediasService {
                         .quality(MediaQuality.fromString(volumioMedia.getAlbumAudioQuality()))
                 .build());
         List<MediaDistance> matches = volumioMediaDistanceService.getMatches(volumioMedia);
-        matches.forEach(m -> {
+        matches.stream().forEach(m -> {
             Optional<RelatedMedia> relatedMedia = toAvailable(volumioMedia, m);
             if (relatedMedia.isPresent()) {
                 relatedMediaList.add(relatedMedia.get());
