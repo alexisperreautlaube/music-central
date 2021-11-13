@@ -51,7 +51,7 @@ public class RateMessageConsumer implements ConsumerSeekAware {
     public void doImport(InputMessage inputMessage) {
         RatingType ratingType = valueOf(inputMessage.getEvent());
         log.debug("ratingType={}", ratingType);
-        log.debug("inputMessage={}", inputMessage);
+        log.info("inputMessage={}", inputMessage);
         Gson gson = new Gson();
         switch (ratingType) {
             case VOLUMIO_MANUAL:

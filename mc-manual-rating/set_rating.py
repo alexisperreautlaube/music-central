@@ -5,8 +5,6 @@ import logging
 import os
 import requests
 import json
-from kafka import KafkaProducer
-from datetime import datetime
 
 script_name = os.path.basename(__file__).replace('.py', '')
 
@@ -55,56 +53,16 @@ def main(argv):
     consoleHandler.setFormatter(logFormatter)
     log.addHandler(consoleHandler)
     log.info('start - {}.py -d {}'.format(script_name, dry_run))
-    producer = KafkaProducer(bootstrap_servers=secret['kafka.url'])
 
-    volumio_url = secret['volumio.url'] + 'getState'
-    response = requests.request('GET', volumio_url)
-    #log.info('responce={}'.format(response.__dict__['_content']))
+    mc_url = secret['mc.url'] + 'ratePlaying/' + rating
+    log.info('mc_url={}'.format(mc_url))
+    response = requests.request('POST', mc_url)
     if response.status_code not in (200, 201):
         codename = response.status_code
         errtext = response.text.replace('\n', ' ')
         log.warning('BadRequest2 (%s) %s %s; %s' % (response.status_code, codename, response.url, errtext))
-    resp = response.json()
-    #log.info('resp={}'.format(resp))
-    data = {
-        'trackId': resp['uri'],
-        'rating': rating,
-        'rateDate': to_json_datetime(datetime.now())
-    }
-    #log.info('data={}'.format(data))
-    msg = {
-        'event': 'VOLUMIO_MANUAL',
-        'data': json.dumps(data)
-    }
-    log.info('msg={}'.format(msg))
-    encode = json.dumps(msg).encode('utf-8')
-    log.info('encode={}'.format(encode))
-    try:
 
-        producer.send('rating.message', encode)
-    except:
-        log
     log.info('end - {}.py -d {}'.format(script_name, dry_run))
-
-def to_json_datetime(date):
-    if date is None:
-        return None
-    return_date = {
-        'date': {
-            'year': date.year,
-            'month': date.month,
-            'day': date.day
-        },
-        'time': {
-            'hour': date.hour,
-            'minute': date.minute,
-            'second': date.second,
-            'nano': 000000000
-        }
-    }
-    return return_date
-
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

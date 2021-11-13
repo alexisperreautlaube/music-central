@@ -1,7 +1,12 @@
 package com.apa.controller;
 
 import com.apa.client.volumio.VolumioClient;
+import com.apa.common.entities.enums.RatingType;
+import com.apa.common.entities.media.Rating;
+import com.apa.common.entities.media.VolumioMedia;
+import com.apa.common.entities.util.MediaReference;
 import com.apa.common.services.media.AvailableMediasService;
+import com.apa.common.services.media.impl.RatingService;
 import com.apa.producer.services.impl.MatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
 import lombok.Getter;
@@ -9,6 +14,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -26,6 +33,9 @@ public class ConsumerTriggerController {
 
     @Autowired
     private VolumioNewSongImportProducer volumioNewSongImportProducer;
+
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping(value = "/PlexPlexMatch")
     public void producePlexPlexMatchMessage() {
@@ -104,5 +114,19 @@ public class ConsumerTriggerController {
     public Integer rating() {
         String uri = volumioClient.getCurrentPlayedUri();
         return availableMediasService.getRating(uri);
+    }
+
+    @PostMapping(value = "/ratePlaying/{rating}")
+    public void ratePlaying(@PathVariable("rating") Integer rating) {
+        String uri = volumioClient.getCurrentPlayedUri();
+        ratingService.save(Rating.builder()
+                        .rating(rating)
+                        .mediaReference(MediaReference.builder()
+                                .clazz(VolumioMedia.class.getName())
+                                .id(uri)
+                                .build())
+                        .ratingType(RatingType.VOLUMIO_MANUAL)
+                        .rateDate(LocalDateTime.now())
+                .build());
     }
 }
