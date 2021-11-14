@@ -111,7 +111,7 @@ fi
 
 echo "Using maven command: $MVN"
 
-git commit . -m "release commit"
+git commit . -m "release commit ${RELEASE_VERSION}" || die_with "Failed release commit"
 #########################################
 # BAIL IF THERE ARE UNCOMMITTED CHANGES #
 #########################################
