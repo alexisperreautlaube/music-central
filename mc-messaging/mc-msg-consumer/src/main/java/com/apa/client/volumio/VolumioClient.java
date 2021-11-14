@@ -205,9 +205,7 @@ public class VolumioClient {
         List<VolumioMediaDto> list = new ArrayList<>();
         albums.forEach(a -> {
                 String uri = a.getAsJsonObject().get("uri").getAsString();
-            if (!volumioMediaService.existByAlbumUri(uri)) {
                 list.addAll(getTidalTracks(uri));
-            }
         });
 
         List<VolumioMediaDto> collect = list.stream()
