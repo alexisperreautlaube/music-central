@@ -208,10 +208,17 @@ echo ""
 
 
 # build and deploy the release
-$MVN -DperformRelease=true clean deploy || rollback_and_die_with "Build/Deploy failure. Release failed."
+$MVN -DperformRelease=true clean install || rollback_and_die_with "Build/Deploy failure. Release failed."
 
 # tag the release (N.B. should this be before perform the release?)
 git tag "v${RELEASE_VERSION}" || die_with "Failed to create tag ${RELEASE_VERSION}! Release has been deployed, however"
+cd /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer
+$MVN spring-boot:build-image -Dspring-boot.build-image.imageName=mc/mc-msg-consumer:${RELEASE_VERSION}
+docker tag docker.io/mc/mc-msg-consumer:${RELEASE_VERSION}  192.168.1.82:32037/docker.io/mc/mc-msg-consumer:${RELEASE_VERSION}
+docker push 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:${RELEASE_VERSION}
+cd /Users/alexisperreault/Documents/music-central
+export RELEASE_VERSION=${RELEASE_VERSION}
+envsubst < kube.yaml | kubectl apply -f -
 
 ######################################
 # START THE NEXT DEVELOPMENT PROCESS #
