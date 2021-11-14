@@ -97,7 +97,7 @@ public class VolumioClient {
         });
 
         List<VolumioMediaDto> collect = list.stream()
-                .filter(v -> !volumioMediaService.exist(VolumioMediaMapper.toVolumioMedia(v)))
+                .filter(v -> !volumioMediaService.existAndEquals(VolumioMediaMapper.toVolumioMedia(v)))
                 .filter(v -> !EXCLUDE_TRACK_TYPE.contains(v.getTrackType().toLowerCase()))
                 .filter(v -> !EXCLUDE_ALBUM.contains(v.getAlbumTitle().toLowerCase()))
                 .collect(Collectors.toList());
@@ -179,7 +179,7 @@ public class VolumioClient {
                             .trackArtist(getNotNullString(m.getAsJsonObject(), "artist"))
                             .trackUri(getNotNullString(m.getAsJsonObject(), "uri"))
                             .trackDuration(getNotNullString(m.getAsJsonObject(), "duration"))
-                            .trackNumber(getNotNullString(m.getAsJsonObject(), "trackNumber"))
+                            .trackNumber(getNotNullString(m.getAsJsonObject(), "track_number"))
                             .trackAudioQuality(getNotNullString(m.getAsJsonObject(), "audioQuality"))
                             .trackTitle(getNotNullString(m.getAsJsonObject(), "title"))
                             .build())
