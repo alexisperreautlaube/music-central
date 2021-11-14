@@ -63,7 +63,7 @@ function usage() {
 # HANDLE COMMAND-LINE OPTIONS #
 ###############################
 
-while getopts "ahr:n:c:i" o; do
+while getopts "ahr:n:c:i:d" o; do
 	case "${o}" in
 		a)
 			RELEASE_VERSION="auto"
@@ -80,6 +80,9 @@ while getopts "ahr:n:c:i" o; do
 			;;
 		i)
 			IGNORE_UNTRACKED=true
+			;;
+    d)
+      DEPLOY=true
 			;;
 		h)
 			usage
@@ -217,9 +220,10 @@ $MVN spring-boot:build-image -Dspring-boot.build-image.imageName=mc/mc-msg-consu
 docker tag docker.io/mc/mc-msg-consumer:${RELEASE_VERSION}  192.168.1.82:32037/docker.io/mc/mc-msg-consumer:${RELEASE_VERSION} || die_with "Failed docker tag"
 docker push 192.168.1.82:32037/docker.io/mc/mc-msg-consumer:${RELEASE_VERSION} || die_with "Failed docker push"
 cd /Users/alexisperreault/Documents/music-central || die_with "Failed cd"
-export RELEASE_VERSION=${RELEASE_VERSION} || die_with "Failed export"
-envsubst < kube.yaml | kubectl apply -f - || die_with "Failed envsubst"
-
+if [ "$DEPLOY" = true ] ; then
+  export RELEASE_VERSION=${RELEASE_VERSION} || die_with "Failed export"
+  envsubst < kube.yaml | kubectl apply -f - || die_with "Failed envsubst"
+fi
 ######################################
 # START THE NEXT DEVELOPMENT PROCESS #
 ######################################
