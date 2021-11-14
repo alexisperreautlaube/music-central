@@ -63,7 +63,7 @@ function usage() {
 # HANDLE COMMAND-LINE OPTIONS #
 ###############################
 
-while getopts "ahr:n:c:i:d" o; do
+while getopts "ahr:n:c:i:d:" o; do
 	case "${o}" in
 		a)
 			RELEASE_VERSION="auto"
