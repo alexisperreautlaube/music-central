@@ -101,7 +101,19 @@ public class ConsumerTriggerController {
 
     @GetMapping(value = "/produceNewVolumioTrackMessage")
     public void produceNewVolumioTrackMessage() {
+        log.info("produceNewVolumioTrackMessage start");
         volumioNewSongImportProducer.produceNewVolumioTrackMessage();
+        log.info("produceNewVolumioTrackMessage end");
+    }
+
+    @GetMapping(value = "/nightly")
+    public void nightly() {
+        log.info("nightly start");
+        produceNewVolumioTrackMessage();
+        allMediaMatch();
+        createAvailableTrack();
+        refreshQueue();
+        log.info("nightly end");
     }
 
     @Getter
