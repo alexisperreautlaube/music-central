@@ -54,7 +54,7 @@ def main(argv):
     log.addHandler(consoleHandler)
     log.info('start - {}.py -d {}'.format(script_name, dry_run))
 
-    mc_url = secret['mc.url'] + 'ratePlaying/' + rating
+    mc_url = secret['mc.url'] + 'ratePlaying/' + str(rating)
     log.info('mc_url={}'.format(mc_url))
     response = requests.request('POST', mc_url)
     if response.status_code not in (200, 201):
