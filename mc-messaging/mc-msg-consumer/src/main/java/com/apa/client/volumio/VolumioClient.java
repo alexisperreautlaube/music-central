@@ -211,7 +211,7 @@ public class VolumioClient {
         });
 
         List<VolumioMediaDto> collect = list.stream()
-                .filter(v -> !volumioMediaService.exist(VolumioMediaMapper.toVolumioMedia(v)))
+                .filter(v -> !volumioMediaService.existAndEquals(VolumioMediaMapper.toVolumioMedia(v)))
                 .collect(Collectors.toList());
         return collect;
     }
