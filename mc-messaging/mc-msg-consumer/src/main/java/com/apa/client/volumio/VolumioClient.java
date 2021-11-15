@@ -54,7 +54,7 @@ public class VolumioClient {
                 .get(String.class);
 
         JsonObject json = (JsonObject) JsonParser.parseString(response);
-       return json.get("uri").getAsString();
+       return json.get("uri").getAsString().replace("mnt/", "music-library/");
     }
 
     public void refreshQueue() {
