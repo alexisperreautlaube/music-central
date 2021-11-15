@@ -12,6 +12,7 @@ import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Slf4j
 @Component
 public class AvailableMediasService {
 
@@ -207,6 +209,7 @@ public class AvailableMediasService {
     }
 
     public Integer getRating(String uri) {
+        log.info("getRating for uri={}", uri);
         return availableMediasRepository.findById(uri).map(AvailableMedias::getRating).orElse(0);
     }
 
