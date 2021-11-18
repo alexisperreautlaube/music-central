@@ -8,6 +8,7 @@ import com.apa.common.entities.util.MediaReference;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.common.services.media.impl.RatingService;
 import com.apa.core.dto.media.VolumioMediaDto;
+import com.apa.events.executor.impl.VolumioMediaImporter;
 import com.apa.events.mapper.VolumioMediaMapper;
 import com.apa.producer.services.impl.MatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
@@ -40,6 +41,9 @@ public class ConsumerTriggerController {
 
     @Autowired
     private RatingService ratingService;
+
+    @Autowired
+    private VolumioMediaImporter volumioMediaImporter;
 
     @GetMapping(value = "/PlexPlexMatch")
     public void producePlexPlexMatchMessage() {
@@ -114,6 +118,7 @@ public class ConsumerTriggerController {
     public void nightly() {
         log.info("nightly start");
         List<VolumioMediaDto> volumioMediaDtos = volumioNewSongImportProducer.produceNewVolumioTrackMessage();
+        volumioMediaDtos.parallelStream().forEach(v -> volumioMediaImporter.execute(v));
         matchProducer.produceVolumioToPlex(volumioMediaDtos);
         matchProducer.produceVolumioToTidal(volumioMediaDtos);
         matchProducer.produceVolumioToVolumio(volumioMediaDtos);

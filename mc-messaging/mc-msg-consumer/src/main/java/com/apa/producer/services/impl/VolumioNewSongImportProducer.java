@@ -6,6 +6,7 @@ import com.apa.common.msg.impor.ImportMessageEvent;
 import com.apa.core.dto.media.VolumioMediaDto;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -29,10 +30,16 @@ public class VolumioNewSongImportProducer {
     private VolumioClient volumioClient;
 
     public List<VolumioMediaDto> produceNewVolumioTrackMessage() {
+        List<VolumioMediaDto> volumioMediaDtos = getNewVolumioTrack();
+        volumioMediaDtos.parallelStream().forEach(v -> produceAndSendMsg(v));
+        return volumioMediaDtos;
+    }
+
+    @NotNull
+    private List<VolumioMediaDto> getNewVolumioTrack() {
         List<VolumioMediaDto> notSavedVolumioLocalAlbum = volumioClient.getNotSavedVolumioLocalAlbum();
         List<VolumioMediaDto> notSavedVolumioTidalAlbum = volumioClient.getNotSavedVolumioTidalAlbum();
         List<VolumioMediaDto> volumioMediaDtos = Stream.concat(notSavedVolumioLocalAlbum.stream(), notSavedVolumioTidalAlbum.stream()).collect(Collectors.toList());
-        volumioMediaDtos.parallelStream().forEach(v -> produceAndSendMsg(v));
         return volumioMediaDtos;
     }
 
