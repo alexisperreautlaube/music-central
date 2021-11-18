@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Slf4j
 @Component
 public class VolumioNewSongImportProducer {
@@ -24,14 +28,16 @@ public class VolumioNewSongImportProducer {
     @Autowired
     private VolumioClient volumioClient;
 
-    public void produceNewVolumioTrackMessage() {
-        volumioClient.getNotSavedVolumioLocalAlbum().forEach(v -> produceAndSendMsg(v));
-        volumioClient.getNotSavedVolumioTidalAlbum().forEach(v -> produceAndSendMsg(v));
+    public List<VolumioMediaDto> produceNewVolumioTrackMessage() {
+        List<VolumioMediaDto> notSavedVolumioLocalAlbum = volumioClient.getNotSavedVolumioLocalAlbum();
+        List<VolumioMediaDto> notSavedVolumioTidalAlbum = volumioClient.getNotSavedVolumioTidalAlbum();
+        List<VolumioMediaDto> volumioMediaDtos = Stream.concat(notSavedVolumioLocalAlbum.stream(), notSavedVolumioTidalAlbum.stream()).collect(Collectors.toList());
+        volumioMediaDtos.parallelStream().forEach(v -> produceAndSendMsg(v));
+        return volumioMediaDtos;
     }
 
     private void produceAndSendMsg(VolumioMediaDto v) {
         Gson gson = new Gson();
-        log.info("produceAndSendMsg={}", v);
         InputMessage inputMessage = InputMessage.builder()
                 .event(ImportMessageEvent.IMPORT_VOLUMIO.toString())
                 .data(gson.toJson(v))

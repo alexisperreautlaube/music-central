@@ -62,7 +62,10 @@ public class AvailableMediasService {
     }
 
     public void createAvailableList() {
-        volumioMediaService.findAll().parallelStream().forEach(
+        createAvailableList(volumioMediaService.findAll());
+    }
+    public void createAvailableList(List<VolumioMedia> volumioMedias) {
+        volumioMedias.parallelStream().forEach(
             v -> createSingleAvailable(v)
         );
     }
@@ -209,7 +212,6 @@ public class AvailableMediasService {
     }
 
     public Integer getRating(String uri) {
-        log.info("getRating for uri={}", uri);
         return availableMediasRepository.findById(uri).map(AvailableMedias::getRating).orElse(0);
     }
 

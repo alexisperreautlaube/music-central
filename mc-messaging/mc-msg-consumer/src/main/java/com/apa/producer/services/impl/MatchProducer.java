@@ -9,11 +9,14 @@ import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
+import com.apa.core.dto.media.VolumioMediaDto;
+import com.apa.events.mapper.VolumioMediaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MatchProducer {
@@ -115,6 +118,14 @@ public class MatchProducer {
 
     public void produceVolumioToPlex() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
+        privateProduceVolumioToPlex(froms);
+    }
+
+    public void produceVolumioToPlex(List<VolumioMediaDto> volumioMediaDtos) {
+        privateProduceVolumioToPlex(volumioMediaDtos.parallelStream().map(v -> VolumioMediaMapper.toVolumioMedia(v)).collect(Collectors.toList()));
+    }
+
+    private void privateProduceVolumioToPlex(List<VolumioMedia> froms) {
         List<PlexMedia> tos = plexMediaService.findAll();
         froms.parallelStream().forEach(
                 from -> tos.stream()
@@ -128,6 +139,14 @@ public class MatchProducer {
 
     public void produceVolumioToTidal() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
+        privateProduceVolumioToTidal(froms);
+    }
+
+    public void produceVolumioToTidal(List<VolumioMediaDto> volumioMediaDtos) {
+        privateProduceVolumioToTidal(volumioMediaDtos.parallelStream().map(v -> VolumioMediaMapper.toVolumioMedia(v)).collect(Collectors.toList()));
+    }
+
+    private void privateProduceVolumioToTidal(List<VolumioMedia> froms) {
         List<TidalMedia> tos = tidalMediaService.findAll();
         froms.parallelStream().forEach(
                 from -> tos.stream()
@@ -141,6 +160,12 @@ public class MatchProducer {
 
     public void produceVolumioToVolumio() {
         List<VolumioMedia> froms = volumioMediaService.findAll();
+        privateProduceVolumioToVolumio(froms);
+    }
+    public void produceVolumioToVolumio(List<VolumioMediaDto> volumioMediaDtos) {
+        privateProduceVolumioToVolumio(volumioMediaDtos.parallelStream().map(v -> VolumioMediaMapper.toVolumioMedia(v)).collect(Collectors.toList()));
+    }
+    private void privateProduceVolumioToVolumio(List<VolumioMedia> froms) {
         froms.parallelStream().forEach(
                 from -> froms.stream()
                         .filter(to -> from.getTrackNumber() != null

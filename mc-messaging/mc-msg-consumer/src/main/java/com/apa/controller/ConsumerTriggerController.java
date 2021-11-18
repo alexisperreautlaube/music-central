@@ -7,6 +7,8 @@ import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MediaReference;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.common.services.media.impl.RatingService;
+import com.apa.core.dto.media.VolumioMediaDto;
+import com.apa.events.mapper.VolumioMediaMapper;
 import com.apa.producer.services.impl.MatchProducer;
 import com.apa.producer.services.impl.VolumioNewSongImportProducer;
 import lombok.Getter;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -109,11 +113,25 @@ public class ConsumerTriggerController {
     @GetMapping(value = "/nightly")
     public void nightly() {
         log.info("nightly start");
+        List<VolumioMediaDto> volumioMediaDtos = volumioNewSongImportProducer.produceNewVolumioTrackMessage();
+        matchProducer.produceVolumioToPlex(volumioMediaDtos);
+        matchProducer.produceVolumioToTidal(volumioMediaDtos);
+        matchProducer.produceVolumioToVolumio(volumioMediaDtos);
+        availableMediasService.createAvailableList(volumioMediaDtos.parallelStream()
+                .map(v -> VolumioMediaMapper.toVolumioMedia(v))
+                .collect(Collectors.toList()));
+        refreshQueue();
+        log.info("nightly end");
+    }
+
+    @GetMapping(value = "/weekly")
+    public void weekly() {
+        log.info("weekly start");
         produceNewVolumioTrackMessage();
         allMediaMatch();
         createAvailableTrack();
         refreshQueue();
-        log.info("nightly end");
+        log.info("weekly end");
     }
 
     @Getter
