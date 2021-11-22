@@ -38,6 +38,10 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
         return volumioMediaRepository.findFirstByAlbumUri(uri).isPresent();
     }
 
+    public boolean exist(String artist, String album) {
+        return !volumioMediaRepository.findByAlbumArtistAndAlbumTitle(artist, album).isEmpty();
+    }
+
     @Override
     public VolumioMedia findById(String id) {
         return volumioMediaRepository.findById(id).orElseThrow(() ->  new RuntimeException("not found"));
