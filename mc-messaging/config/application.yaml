@@ -2,7 +2,7 @@ spring:
   kafka:
     listener:
       concurrency: 4
-    bootstrap-servers: 10.244.1.175:9092
+    bootstrap-servers: 10.244.1.12:9092
     topic:
       import:
         message: import.message
@@ -18,7 +18,7 @@ spring:
   data:
     mongodb:
       database: local
-      host: 10.244.1.165
+      host: 10.244.1.14
       port: 27017
 
 volumio:
