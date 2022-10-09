@@ -110,7 +110,8 @@ public class ConsumerTriggerController {
     @GetMapping(value = "/produceNewVolumioTrackMessage")
     public void produceNewVolumioTrackMessage() {
         log.info("produceNewVolumioTrackMessage start");
-        volumioNewSongImportProducer.produceNewVolumioTrackMessage();
+        List<VolumioMediaDto> volumioMediaDtos = volumioNewSongImportProducer.produceNewVolumioTrackMessage();
+        volumioMediaDtos.parallelStream().forEach(v -> volumioMediaImporter.execute(v));
         log.info("produceNewVolumioTrackMessage end");
     }
 

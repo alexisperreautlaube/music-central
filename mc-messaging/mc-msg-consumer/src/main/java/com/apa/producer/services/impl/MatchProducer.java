@@ -12,7 +12,6 @@ import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
 import com.apa.events.mapper.VolumioMediaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,9 +19,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class MatchProducer {
-
-    @Value("${spring.kafka.topic.match.message}")
-    private String topic;
 
     @Autowired
     private PlexMediaService plexMediaService;

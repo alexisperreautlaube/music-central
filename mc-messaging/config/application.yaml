@@ -1,24 +1,8 @@
 spring:
-  kafka:
-    listener:
-      concurrency: 4
-    bootstrap-servers: 10.244.1.12:9092
-    topic:
-      import:
-        message: import.message
-        resetOffset: false
-      match:
-        message: match.message
-        resetOffset: false
-      rate:
-        message: rating.message
-        resetOffset: false
-    consumer:
-      group-id: mc.message
   data:
     mongodb:
       database: local
-      host: 10.244.1.14
+      host: 10.244.0.4
       port: 27017
 
 volumio:

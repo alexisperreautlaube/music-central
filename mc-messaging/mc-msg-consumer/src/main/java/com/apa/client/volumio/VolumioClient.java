@@ -1,5 +1,6 @@
 package com.apa.client.volumio;
 
+import com.apa.common.entities.enums.MediaErrorStatus;
 import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.common.services.media.impl.MediaErrorService;
@@ -171,8 +172,8 @@ public class VolumioClient {
                             .build())
             );
         } catch (Throwable e) {
-            log.error("response={}, uri={}", response, uri);
-            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album);
+            log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
+            mediaErrorService.saveDetemineStatus(uri, VolumioMedia.class.getName(), artist, album);
         }
         return mediaDtos;
     }
@@ -224,15 +225,25 @@ public class VolumioClient {
                             .build())
             );
         } catch (Throwable e) {
-            log.error("response={}, uri={}", response, uri);
             if (artist != null && album != null) {
-                if (!mediaErrorService.doesNotExistOrExistWithErrorStatus(artist, album)) {
+                if (mediaErrorService.doesNotExistOrExistWithErrorStatus(uri, VolumioMedia.class.getName())) {
                     Collection<? extends VolumioMediaDto> search = search(artist, album);
-                    search.stream()
-                            .forEach(m ->
-                                    volumioMediaService.save(VolumioMediaMapper.toVolumioMedia(m)));
+                    if (!search.isEmpty()) {
+                        if (!volumioMediaService.existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
+                            search.stream()
+                                    .forEach(m -> volumioMediaService.save(VolumioMediaMapper.toVolumioMedia(m)));
+                        }
+                        mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_REPLACEMENT);
+                    } else {
+                        if (mediaErrorService.doesNotExistOrExistWithStatusElse(uri, VolumioMedia.class.getName(), MediaErrorStatus.ERROR)) {
+                            log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
+                            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR);
+                        }
+                    }
                 }
-                mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album);
+
+            } else {
+                log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
             }
         }
         return mediaDtos;

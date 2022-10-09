@@ -1,6 +1,4 @@
 spring:
-  kafka:
-    bootstrap-servers: "192.168.1.82:30000"
   data:
     mongodb:
       database: local

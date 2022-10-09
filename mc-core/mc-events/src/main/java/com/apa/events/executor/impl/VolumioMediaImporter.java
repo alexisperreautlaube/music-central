@@ -20,7 +20,7 @@ public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
     protected void doExecute(VolumioMediaDto volumioMediaDto) {
         VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
         volumioMediaService.save(volumioMedia);
-        log.debug("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
+        log.info("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
     }
 
     @Override

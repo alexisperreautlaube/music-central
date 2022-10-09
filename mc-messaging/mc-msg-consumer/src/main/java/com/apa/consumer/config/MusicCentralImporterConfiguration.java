@@ -19,9 +19,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 @Import({
         MusicCentralEventsConfiguration.class,
-        KafkaTopicConfiguration.class,
-        KafkaProducerConfiguration.class,
-        KafkaConsumerConfiguration.class
 })
 @ComponentScan(basePackages = "com.apa.consumer.services")
 public class MusicCentralImporterConfiguration {
