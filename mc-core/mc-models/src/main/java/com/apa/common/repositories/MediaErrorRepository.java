@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface MediaErrorRepository extends MongoRepository<MediaError, String> {
     Optional<MediaError> findByMediaReferenceIdAndMediaReferenceClazz(String id, String clazz);
+    void deleteByMediaReferenceIdAndMediaReferenceClazz(String id, String clazz);
 }

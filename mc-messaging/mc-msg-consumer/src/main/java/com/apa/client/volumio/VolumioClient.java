@@ -88,6 +88,36 @@ public class VolumioClient {
                 }).orElse(Collections.EMPTY_LIST);
     }
 
+    public Collection<? extends VolumioMediaDto> searchTrack(String artist, String album) {
+        Client client = ClientBuilder.newClient();
+        String response = client.target(volumioPath)
+                .path(SEARCH)
+                .queryParam("query", artist)
+                .request(MediaType.APPLICATION_JSON)
+                .get(String.class);
+        JsonObject json = (JsonObject) JsonParser.parseString(response);
+        JsonObject navigation = json.get("navigation").getAsJsonObject();
+        JsonArray lists = navigation.getAsJsonArray("lists");
+        List<? extends VolumioMediaDto> songsMatchingAlbum = StreamSupport.stream(Spliterators.spliteratorUnknownSize(lists.iterator(), Spliterator.ORDERED), false)
+                .filter(subList -> TIDAL_ALBUMS_SEARCH_SECTION.equalsIgnoreCase(subList.getAsJsonObject().get("title").getAsString()))
+                .map(subList -> {
+                    JsonArray items = subList.getAsJsonObject().get("items").getAsJsonArray();
+                    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(items.iterator(), Spliterator.ORDERED), false)
+                            .map(item -> getTidalTracks(item.getAsJsonObject().get("uri").getAsString()))
+                            .filter(list -> !list.isEmpty())
+                            .filter(list -> list.stream().anyMatch(t -> artist.equals(t.getAlbumArtist())))
+                            .collect(Collectors.toList());
+
+                }).flatMap(Collection::stream)
+                .flatMap(Collection::stream)
+                .filter(m -> m.getTrackTitle().equals(album))
+                .collect(Collectors.toList());
+        return songsMatchingAlbum.stream().map(
+                songMatchingAlbum -> getTidalTracks(songMatchingAlbum.getAlbumUri()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
     public void refreshQueue() {
         Client client = ClientBuilder.newClient();
         Response response = client.target(volumioPath)
@@ -203,50 +233,86 @@ public class VolumioClient {
                 .get(String.class);
         List<VolumioMediaDto> mediaDtos = new ArrayList<>();
         try {
-            JsonObject json = (JsonObject) JsonParser.parseString(response);
-            JsonObject navigation = json.get("navigation").getAsJsonObject();
-            JsonArray lists = navigation.getAsJsonArray("lists");
-            JsonArray tracks = lists.get(0).getAsJsonObject().getAsJsonArray("items");
+            int retry = 0;
+            boolean success = false;
+            while (!success) {
+                try {
+                    JsonObject json = (JsonObject) JsonParser.parseString(response);
+                    JsonObject navigation = json.get("navigation").getAsJsonObject();
+                    JsonArray lists = navigation.getAsJsonArray("lists");
+                    JsonArray tracks = lists.get(0).getAsJsonObject().getAsJsonArray("items");
 
-            tracks.forEach(m ->
-                    mediaDtos.add(VolumioMediaDto.builder()
-                            .albumTitle(getNotNullString(m.getAsJsonObject(), "album"))
-                            .albumUri(uri)
-                            .albumTrackType("tidal")
-                            .albumArtist(getNotNullString(m.getAsJsonObject(), "artist"))
-                            .albumAudioQuality(getNotNullString(m.getAsJsonObject(), "audioQuality"))
-                            .trackType(getNotNullString(m.getAsJsonObject(), "trackType"))
-                            .trackArtist(getNotNullString(m.getAsJsonObject(), "artist"))
-                            .trackUri(getNotNullString(m.getAsJsonObject(), "uri"))
-                            .trackDuration(getNotNullString(m.getAsJsonObject(), "duration"))
-                            .trackNumber(getNotNullString(m.getAsJsonObject(), "track_number"))
-                            .trackAudioQuality(getNotNullString(m.getAsJsonObject(), "audioQuality"))
-                            .trackTitle(getNotNullString(m.getAsJsonObject(), "title"))
-                            .build())
-            );
+                    tracks.forEach(m ->
+                            mediaDtos.add(VolumioMediaDto.builder()
+                                    .albumTitle(getNotNullString(m.getAsJsonObject(), "album"))
+                                    .albumUri(uri)
+                                    .albumTrackType("tidal")
+                                    .albumArtist(getNotNullString(m.getAsJsonObject(), "artist"))
+                                    .albumAudioQuality(getNotNullString(m.getAsJsonObject(), "audioQuality"))
+                                    .trackType(getNotNullString(m.getAsJsonObject(), "trackType"))
+                                    .trackArtist(getNotNullString(m.getAsJsonObject(), "artist"))
+                                    .trackUri(getNotNullString(m.getAsJsonObject(), "uri"))
+                                    .trackDuration(getNotNullString(m.getAsJsonObject(), "duration"))
+                                    .trackNumber(getNotNullString(m.getAsJsonObject(), "track_number"))
+                                    .trackAudioQuality(getNotNullString(m.getAsJsonObject(), "audioQuality"))
+                                    .trackTitle(getNotNullString(m.getAsJsonObject(), "title"))
+                                    .build())
+                    );
+                    success = true;
+                } catch (Throwable throwable) {
+                    Thread.sleep(3000);
+                    retry++;
+                    if (retry > 3) {
+                        throw throwable;
+                    }
+                }
+            }
+            mediaErrorService.remove(uri, VolumioMedia.class.getName());
         } catch (Throwable e) {
             if (artist != null && album != null) {
                 if (mediaErrorService.doesNotExistOrExistWithErrorStatus(uri, VolumioMedia.class.getName())) {
-                    Collection<? extends VolumioMediaDto> search = search(artist, album);
-                    if (!search.isEmpty()) {
-                        if (!volumioMediaService.existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
-                            search.stream()
-                                    .forEach(m -> volumioMediaService.save(VolumioMediaMapper.toVolumioMedia(m)));
-                        }
-                        mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_REPLACEMENT);
-                    } else {
-                        if (mediaErrorService.doesNotExistOrExistWithStatusElse(uri, VolumioMedia.class.getName(), MediaErrorStatus.ERROR)) {
-                            log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
-                            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR);
+                    boolean existingAlbumMatch = existingAlbumMatch(uri, artist, album, response);
+                    if (!existingAlbumMatch) {
+                        boolean existingTrackMatch = existingTrackMatch(uri, artist, album, response);
+                        if (!existingTrackMatch) {
+                            if (mediaErrorService.doesNotExistOrExistWithStatusElse(uri, VolumioMedia.class.getName(), MediaErrorStatus.ERROR)) {
+                                log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
+                                mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR);
+                            }
                         }
                     }
                 }
 
             } else {
-                log.error("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
+                log.debug("response={}, uri={}, artist={}, album={}, uri={}", response, uri, artist, album, volumioPath + BROWSE + "?uri=" + uri);
             }
         }
         return mediaDtos;
+    }
+
+    private boolean existingTrackMatch(String uri, String artist, String album, String response) {
+        Collection<? extends VolumioMediaDto> search = searchTrack(artist, album);
+        if (!search.isEmpty()) {
+            if (!volumioMediaService.existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
+                search.stream()
+                        .forEach(m -> volumioMediaService.save(VolumioMediaMapper.toVolumioMedia(m)));
+            }
+            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_ALBUM_AS_TRACK_IN_ALBUM);
+            return true;
+        }
+        return false;
+    }
+    private boolean existingAlbumMatch(String uri, String artist, String album, String response) {
+        Collection<? extends VolumioMediaDto> search = search(artist, album);
+        if (!search.isEmpty()) {
+            if (!volumioMediaService.existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
+                search.stream()
+                        .forEach(m -> volumioMediaService.save(VolumioMediaMapper.toVolumioMedia(m)));
+            }
+            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_REPLACEMENT);
+            return true;
+        }
+        return false;
     }
 
     public List<VolumioMediaDto> getNotSavedVolumioTidalAlbum() {

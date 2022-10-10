@@ -85,4 +85,8 @@ public class MediaErrorService {
         }
         return MediaErrorStatus.ERROR;
     }
+
+    public void remove(String uri, String name) {
+        mediaErrorRepository.deleteByMediaReferenceIdAndMediaReferenceClazz(uri, name);
+    }
 }

@@ -19,8 +19,11 @@ public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
     @Override
     protected void doExecute(VolumioMediaDto volumioMediaDto) {
         VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
+        boolean log = volumioMediaService.findById(volumioMedia.getTrackUri()) == null;
         volumioMediaService.save(volumioMedia);
-        log.info("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
+        if (log) {
+            VolumioMediaImporter.log.info("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
+        }
     }
 
     @Override
