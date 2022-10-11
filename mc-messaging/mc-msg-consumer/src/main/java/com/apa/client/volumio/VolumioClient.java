@@ -260,9 +260,9 @@ public class VolumioClient {
                     );
                     success = true;
                 } catch (Throwable throwable) {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000 * retry);
                     retry++;
-                    if (retry > 3) {
+                    if (retry > 5) {
                         throw throwable;
                     }
                 }
