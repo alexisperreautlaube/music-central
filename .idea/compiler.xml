@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="importer" />
+        <module name="mc-services" />
+        <module name="mc-events" />
+        <module name="mc-models" />
+        <module name="mc-dtos" />
+        <module name="mc-msg-consumer" />
+        <module name="mc-msg-common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="importer" options="-parameters" />
+      <module name="mc-dtos" options="-parameters" />
+      <module name="mc-events" options="-parameters" />
+      <module name="mc-messaging" options="" />
+      <module name="mc-models" options="-parameters" />
+      <module name="mc-msg-common" options="-parameters" />
+      <module name="mc-msg-consumer" options="-parameters" />
+      <module name="mc-services" options="-parameters" />
+      <module name="parent-modules" options="" />
+    </option>
+  </component>
+</project>

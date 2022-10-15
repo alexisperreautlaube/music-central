@@ -1,0 +1,16 @@
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/PlexTidalMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/error/ErrorMessageRepository.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/error/ErrorMessageService.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/VolumioVolumioMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/VolumioPlexMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/InputMessage.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/TidalTidalMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/VolumioTidalMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/TidalPlexMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/TidalVolumioMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/match/MatchMessageEvent.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/MediaMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/error/ErrorMessage.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/PlexVolumioMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/producer/PlexPlexMediaData.java
+/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-common/src/main/java/com/apa/common/msg/impor/ImportMessageEvent.java

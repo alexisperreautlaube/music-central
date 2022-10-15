@@ -1,0 +1,17 @@
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/PerfectMatchFinder.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/RatingService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/plex/PlexMediaDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/plex/PlexMediaService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/volumio/VolumioMediaService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/tidal/TidalMediaDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/MediaService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/AbstractMediaDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/util/impl/StringsDistanceServiceImpl.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/MediaErrorService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/AvailableMediasService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/tidal/TidalMediaService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/config/MusicCentralServicesConfiguration.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/impl/volumio/VolumioMediaDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/media/MediaDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/util/StringsDistanceService.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/main/java/com/apa/common/services/AbstractMediaService.java

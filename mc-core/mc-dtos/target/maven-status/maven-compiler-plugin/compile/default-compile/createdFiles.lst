@@ -1,0 +1,14 @@
+com/apa/core/dto/media/MediaDto.class
+com/apa/core/dto/media/MediaDto$MediaDtoBuilder.class
+com/apa/core/dto/media/PlexMediaDto$PlexMediaDtoBuilderImpl.class
+com/apa/core/dto/media/RatingDto$RatingDtoBuilder.class
+com/apa/core/dto/media/TidalMediaDto$TidalMediaDtoBuilder.class
+com/apa/core/dto/media/VolumioMediaDto$VolumioMediaDtoBuilderImpl.class
+com/apa/core/dto/media/VolumioMediaDto.class
+com/apa/core/dto/media/PlexMediaDto$PlexMediaDtoBuilder.class
+com/apa/core/dto/media/TidalMediaDto.class
+com/apa/core/dto/media/TidalMediaDto$TidalMediaDtoBuilderImpl.class
+com/apa/core/dto/media/VolumioMediaDto$VolumioMediaDtoBuilder.class
+com/apa/core/dto/media/PlexMediaDto.class
+com/apa/core/dto/media/RatingDto.class
+com/apa/core/dto/media/MediaDto$MediaDtoBuilderImpl.class

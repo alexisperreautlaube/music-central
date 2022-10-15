@@ -1,0 +1,17 @@
+com/apa/common/services/util/impl/StringsDistanceServiceImpl.class
+com/apa/common/services/media/impl/tidal/TidalMediaService.class
+com/apa/common/services/media/MediaService.class
+com/apa/common/services/media/impl/MediaErrorService.class
+com/apa/common/services/util/StringsDistanceService.class
+com/apa/common/services/media/MediaDistanceService.class
+com/apa/common/services/media/impl/tidal/TidalMediaDistanceService.class
+com/apa/common/services/media/impl/volumio/VolumioMediaService.class
+com/apa/common/services/media/impl/RatingService.class
+com/apa/common/services/media/impl/plex/PlexMediaDistanceService.class
+com/apa/common/services/media/impl/plex/PlexMediaService.class
+com/apa/common/services/AbstractMediaService.class
+com/apa/common/services/media/impl/volumio/VolumioMediaDistanceService.class
+com/apa/common/services/media/PerfectMatchFinder.class
+com/apa/common/services/media/AvailableMediasService.class
+com/apa/common/config/MusicCentralServicesConfiguration.class
+com/apa/common/services/media/AbstractMediaDistanceService.class

@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -354,7 +355,7 @@ public class VolumioClient {
                     .album(byId.getAlbumTitle())
                     .type("song")
                     .trackNumber(0)
-                    .duration(byId.getTrackDuration() != null ? Integer.valueOf(byId.getTrackDuration()) : 0)
+                    .duration(StringUtils.isNotBlank(byId.getTrackDuration()) ? Integer.valueOf(byId.getTrackDuration()) : 0)
                     .trackType(byId.getTrackType())
                     .build());
         });

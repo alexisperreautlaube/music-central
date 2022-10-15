@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      database: local
+      host: 10.244.0.4
+      port: 27017
+
+volumio:
+  path: http://192.168.1.138:3000/api/v1/

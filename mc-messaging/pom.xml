@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>com.apa</groupId>
-        <version>2.2.2</version>
+        <version>2.2.5</version>
         <artifactId>parent-modules</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
