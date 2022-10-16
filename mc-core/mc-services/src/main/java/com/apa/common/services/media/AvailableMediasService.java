@@ -39,6 +39,7 @@ public class AvailableMediasService {
     @Autowired
     private TidalMediaService tidalMediaService;
 
+
     @Autowired
     private VolumioMediaService volumioMediaService;
 

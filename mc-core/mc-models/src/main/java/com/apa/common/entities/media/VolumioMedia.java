@@ -31,5 +31,6 @@ public class VolumioMedia extends MusicCentralMedia {
     private String trackDuration;
     private String trackNumber;
     private String trackAudioQuality;
+    private LocalDate albumReleaseDate;
     private LocalDate addedDate;
 }

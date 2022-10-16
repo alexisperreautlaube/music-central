@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Component
 public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
@@ -25,10 +27,11 @@ public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
         } catch (Throwable throwable) {
             log = true;
         }
-        volumioMediaService.save(volumioMedia);
         if (log) {
             VolumioMediaImporter.log.info("Success, {} - {} - {}", volumioMedia.getTrackArtist(), volumioMedia.getAlbumTitle(), volumioMedia.getTrackTitle());
+            volumioMedia.setAddedDate(LocalDate.now());
         }
+        volumioMediaService.save(volumioMedia);
     }
 
     @Override

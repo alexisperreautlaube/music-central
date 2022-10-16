@@ -10,4 +10,6 @@ public interface VolumioMediaRepository extends MongoRepository<VolumioMedia, St
     List<VolumioMedia> findByAlbumArtistAndAlbumTitle(String artistName, String albumName);
     List<VolumioMedia> findByAlbumArtistAndAlbumTitleAndTrackTitleAndTrackNumber(String artistName, String albumName, String trackTitle, String index);
     Optional<VolumioMedia> findFirstByAlbumUri(String uti);
+    List<VolumioMedia> findByAlbumReleaseDateIsNull();
+
 }

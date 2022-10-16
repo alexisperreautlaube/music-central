@@ -48,6 +48,10 @@ public class TidalMediaService extends AbstractMediaService<TidalMedia> implemen
         return tidalMediaRepository.findById(media.getTidalTrackId());
     }
 
+    public Optional<TidalMedia> getById(String id) {
+        return tidalMediaRepository.findById(id);
+    }
+
     @Override
     public List<TidalMedia> findAll() {
         return tidalMediaRepository.findAll();

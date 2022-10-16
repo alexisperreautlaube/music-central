@@ -7,6 +7,7 @@ import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MediaReference;
 import com.apa.common.services.media.AvailableMediasService;
 import com.apa.common.services.media.impl.RatingService;
+import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
 import com.apa.events.executor.impl.VolumioMediaImporter;
 import com.apa.events.mapper.VolumioMediaMapper;
@@ -44,6 +45,9 @@ public class ConsumerTriggerController {
 
     @Autowired
     private VolumioMediaImporter volumioMediaImporter;
+
+    @Autowired
+    private VolumioMediaService volumioMediaService;
 
     @GetMapping(value = "/PlexPlexMatch")
     public void producePlexPlexMatchMessage() {
@@ -164,5 +168,15 @@ public class ConsumerTriggerController {
                         .ratingType(RatingType.VOLUMIO_MANUAL)
                         .rateDate(LocalDateTime.now())
                 .build());
+    }
+
+    @GetMapping(value = "/syncDbTidalReleaseDate")
+    public void syncDbTidalReleaseDate() {
+        volumioMediaService.syncTidalReleaseDate();
+    }
+
+    @GetMapping(value = "/syncTrackArtistAndAlbumArtist")
+    public void syncTrackArtistAndAlbumArtist() {
+        volumioMediaService.syncTrackArtistAndAlbumArtist();
     }
 }
