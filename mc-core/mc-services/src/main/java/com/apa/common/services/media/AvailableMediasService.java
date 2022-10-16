@@ -104,7 +104,8 @@ public class AvailableMediasService {
                 relatedMediaList.add(relatedMedia.get());
             }
         });
-        availableMediasRepository.save(initAvailableMedias(relatedMediaList, volumioMedia.getAlbumReleaseDate()));
+        LocalDate albumReleaseDate = volumioMedia.getAlbumReleaseDate() != null ? volumioMedia.getAlbumReleaseDate() : volumioMedia.getAddedDate();
+        availableMediasRepository.save(initAvailableMedias(relatedMediaList, albumReleaseDate));
     }
 
     private AvailableMedias initAvailableMedias(List<RelatedMedia> relatedMediaList, LocalDate releaseDate) {
