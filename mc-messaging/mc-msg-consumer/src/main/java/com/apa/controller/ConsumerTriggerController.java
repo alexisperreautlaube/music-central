@@ -179,4 +179,9 @@ public class ConsumerTriggerController {
     public void syncTrackArtistAndAlbumArtist() {
         volumioMediaService.syncTrackArtistAndAlbumArtist();
     }
+
+    @GetMapping(value = "/syncPlexDate")
+    public void syncPlexDate() {
+        volumioMediaService.syncPlexDate();
+    }
 }

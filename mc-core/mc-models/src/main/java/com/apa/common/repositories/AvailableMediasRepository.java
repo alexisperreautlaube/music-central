@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AvailableMediasRepository extends MongoRepository<AvailableMedias, String> {
     List<AvailableMedias> findByRatingGreaterThan(Integer rating);
-    List<AvailableMedias> findByRating(Integer rating);
+    List<AvailableMedias> findByRatingOrderByReleaseDateDesc(Integer rating);
 }

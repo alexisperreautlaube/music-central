@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
@@ -53,7 +54,25 @@ public class AvailableMediasService {
         while (ids.size() != 300 && ids.size() < bestOf.size()) {
             ids.add(bestOf.get(rand.nextInt(bestOf.size())).getId());
         }
-        List<AvailableMedias> noneRated = availableMediasRepository.findByRating(0);
+        List<AvailableMedias> tempNoneRated = availableMediasRepository.findByRatingOrderByReleaseDateDesc(0);
+        int tier = tempNoneRated.size() / 3;
+        int rendu = 0;
+        List<AvailableMedias> noneRated = new ArrayList<>();
+        while (rendu <= tier) {
+            noneRated.add(tempNoneRated.get(rendu));
+            noneRated.add(tempNoneRated.get(rendu));
+            noneRated.add(tempNoneRated.get(rendu));
+            rendu++;
+        }
+        while (rendu <= tier * 2) {
+            noneRated.add(tempNoneRated.get(rendu));
+            noneRated.add(tempNoneRated.get(rendu));
+            rendu++;
+        }
+        while (rendu <= tier * 3 && rendu < tempNoneRated.size()) {
+            noneRated.add(tempNoneRated.get(rendu));
+            rendu++;
+        }
         while (ids.size() != 500 && ids.size() < bestOf.size() + noneRated.size()) {
             ids.add(noneRated.get(rand.nextInt(noneRated.size())).getId());
         }
@@ -72,9 +91,6 @@ public class AvailableMediasService {
     }
 
     public void createSingleAvailable(VolumioMedia volumioMedia) {
-        if (entryExist(volumioMedia)) {
-            return;
-        }
         List<RelatedMedia> relatedMediaList = new ArrayList<>();
         relatedMediaList.add(RelatedMedia.builder()
                         .id(volumioMedia.getTrackUri())
@@ -88,11 +104,12 @@ public class AvailableMediasService {
                 relatedMediaList.add(relatedMedia.get());
             }
         });
-        availableMediasRepository.save(initAvailableMedias(relatedMediaList));
+        availableMediasRepository.save(initAvailableMedias(relatedMediaList, volumioMedia.getAlbumReleaseDate()));
     }
 
-    private AvailableMedias initAvailableMedias(List<RelatedMedia> relatedMediaList) {
+    private AvailableMedias initAvailableMedias(List<RelatedMedia> relatedMediaList, LocalDate releaseDate) {
         AvailableMedias availableMedias = initIdAndRelatedList(relatedMediaList);
+        availableMedias.setReleaseDate(releaseDate);
         initPlayCount(availableMedias);
         initImportRating(availableMedias);
         initManualRating(availableMedias);

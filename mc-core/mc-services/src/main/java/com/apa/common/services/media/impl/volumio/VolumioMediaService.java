@@ -1,10 +1,15 @@
 package com.apa.common.services.media.impl.volumio;
 
+import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
+import com.apa.common.entities.util.MatchStatus;
+import com.apa.common.entities.util.MediaDistance;
+import com.apa.common.repositories.MediaDistanceRepository;
 import com.apa.common.repositories.VolumioMediaRepository;
 import com.apa.common.services.AbstractMediaService;
 import com.apa.common.services.media.MediaService;
+import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +29,10 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
     private final VolumioMediaRepository volumioMediaRepository;
 
     private final TidalMediaService tidalMediaService;
+
+    private final MediaDistanceRepository mediaDistanceRepository;
+
+    private final PlexMediaService plexMediaService;
 
     @Override
     @Transactional
@@ -94,4 +103,39 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
     }
 
 
+    public void syncPlexDate() {
+        List<VolumioMedia> allVolumio = volumioMediaRepository.findAll();
+        allVolumio.forEach(volumioMedia -> {
+            List<MediaDistance> perfectMediaDistances = mediaDistanceRepository.findByFromIdAndFromClazzAndMatchStatus(volumioMedia.getTrackUri(), VolumioMedia.class.getName(), MatchStatus.PERFECT_MATCH.name());
+            if (!perfectMediaDistances.isEmpty()) {
+                updateVolumioMedia(volumioMedia, perfectMediaDistances);
+            } else {
+                List<MediaDistance> autoMediaDistances = mediaDistanceRepository.findByFromIdAndFromClazzAndMatchStatus(volumioMedia.getTrackUri(), VolumioMedia.class.getName(), MatchStatus.AUTOMATIC_MATCH.name());
+                if (!autoMediaDistances.isEmpty()) {
+                    updateVolumioMedia(volumioMedia, autoMediaDistances);
+                }
+            }
+        });
+    }
+
+    private void updateVolumioMedia(VolumioMedia volumioMedia, List<MediaDistance> mediaDistances) {
+        Optional<MediaDistance> to = mediaDistances.stream().filter(mediaDistance -> mediaDistance.getTo().getClazz().equals(PlexMedia.class.getName()))
+                .findFirst();
+        if (to.isPresent()) {
+
+            PlexMedia plexMedia = plexMediaService.findById(to.get().getTo().getId());
+            boolean updated = false;
+            if (volumioMedia.getAlbumReleaseDate() == null && plexMedia.getAlbumOriginallyAvailableAt() != null) {
+                volumioMedia.setAlbumReleaseDate(plexMedia.getAlbumOriginallyAvailableAt());
+                updated = true;
+            }
+            if (volumioMedia.getAddedDate() == null & plexMedia.getAddedAt() != null) {
+                volumioMedia.setAddedDate(plexMedia.getAddedAt().toLocalDate());
+                updated = true;
+            }
+            if (updated) {
+                volumioMediaRepository.save(volumioMedia);
+            }
+        }
+    }
 }
