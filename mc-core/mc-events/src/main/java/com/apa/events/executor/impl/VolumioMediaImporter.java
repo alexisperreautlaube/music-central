@@ -36,7 +36,10 @@ public class VolumioMediaImporter extends EventExecutor<VolumioMediaDto> {
 
     @Override
     protected boolean existAndEquals(VolumioMediaDto volumioMediaDto) {
-        VolumioMedia volumioMedia = VolumioMediaMapper.toVolumioMedia(volumioMediaDto);
-        return volumioMediaService.existAndEquals(volumioMedia);
+        try {
+            return volumioMediaService.findById(volumioMediaDto.getTrackUri()) != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.apa</groupId>
         <artifactId>mc-messaging</artifactId>
-        <version>2.2.8</version>
+        <version>2.2.9</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

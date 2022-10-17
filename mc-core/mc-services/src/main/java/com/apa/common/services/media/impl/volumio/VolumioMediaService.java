@@ -17,9 +17,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 @Slf4j
 @Component
@@ -136,6 +142,30 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
             if (updated) {
                 volumioMediaRepository.save(volumioMedia);
             }
+        }
+    }
+
+    public List<VolumioMedia> updateTidalReleaseDate() {
+        return volumioMediaRepository.findByAlbumReleaseDateIsNullAndTrackType("tidal");
+
+    }
+
+    public void syncTidalDateFromFile() {
+        try (Stream<String> lines = Files.lines(Paths.get("/Users/alexisperreault/Documents/music-central/script/target/out_.cvs"), Charset.defaultCharset())) {
+            lines.forEachOrdered(line -> {
+                String[] split = line.split(";");
+                Optional<VolumioMedia> byId = volumioMediaRepository.findById(split[0]);
+                if (byId.isPresent()){
+                    VolumioMedia volumioMedia = byId.get();
+                    int year = Integer.valueOf(split[1].substring(0,4));
+                    int month = Integer.valueOf(split[1].substring(5,7));
+                    int day = Integer.valueOf(split[1].substring(8,10));
+                    volumioMedia.setAlbumReleaseDate(LocalDate.of(year, month, day));
+                    volumioMediaRepository.save(volumioMedia);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

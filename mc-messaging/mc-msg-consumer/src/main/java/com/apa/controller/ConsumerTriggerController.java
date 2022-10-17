@@ -184,4 +184,9 @@ public class ConsumerTriggerController {
     public void syncPlexDate() {
         volumioMediaService.syncPlexDate();
     }
+
+    @GetMapping(value = "/syncTidalDateFromFile")
+    public void syncTidalDateFromFile() {
+        volumioMediaService.syncTidalDateFromFile();
+    }
 }
