@@ -53,15 +53,16 @@ def main(argv):
         start = volumio_media['_id'].rfind('/') + 1
         id = volumio_media['_id'][start:]
         #log.info('original id={}, id={}'.format(volumio_media['_id'], id))
-
-        try:
-            tidalTrack = session.track()._get(id).tidal_release_date
-            log.info('{};{}'.format(volumio_media['_id'], tidalTrack))
-        except Exception:
-            time.sleep(1)
-        time.sleep(0.5)
+        if i >= 0:
+            try:
+                tidalTrack = session.track()._get(id).tidal_release_date
+                log.info('{};{}'.format(volumio_media['_id'], tidalTrack))
+            except Exception:
+                time.sleep(0.1)
+            time.sleep(0.2)
         i = i + 1
-
+        if i > 1055:
+            break
 
     log.info('end - {}.py'.format(script_name))
 
