@@ -44,6 +44,9 @@ public class VolumioClient {
     @Value("${volumio.path}")
     private String volumioPath;
 
+    @Value("#{'${volumio.paths}'.split(',')}")
+    private String[] volumioPaths;
+
     @Autowired
     private AvailableMediasService availableMediasService;
 
@@ -121,24 +124,28 @@ public class VolumioClient {
 
     public void refreshQueue() {
         Client client = ClientBuilder.newClient();
-        Response response = client.target(volumioPath)
-                .path(CLEAR_QUEUE)
-                .queryParam("cmd", "clearQueue")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        if (response.getStatus() != 200 ) {
-            throw new RuntimeException("not able to clear queue");
-        }
-        getList().forEach(i -> {
-            Response res = client.target(volumioPath)
-                    .path(ADD_TO_QUEUE)
+        Arrays.stream(volumioPaths).forEach(path -> {
+            Response response = client.target(path)
+                    .path(CLEAR_QUEUE)
+                    .queryParam("cmd", "clearQueue")
                     .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(i));
-            if (res.getStatus() != 200 ) {
+                    .get();
+            if (response.getStatus() != 200 ) {
                 throw new RuntimeException("not able to clear queue");
             }
         });
 
+        getList().forEach(i ->
+                Arrays.stream(volumioPaths).forEach(path -> {
+                    Response res = client.target(path)
+                            .path(ADD_TO_QUEUE)
+                            .request(MediaType.APPLICATION_JSON)
+                            .post(Entity.json(i));
+                    if (res.getStatus() != 200) {
+                        throw new RuntimeException("not able to add to queue");
+                    }
+                })
+        );
     }
 
     public List<VolumioMediaDto> getNotSavedVolumioLocalAlbum() {
