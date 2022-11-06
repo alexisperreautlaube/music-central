@@ -56,9 +56,19 @@ public class VolumioClient {
     @Autowired
     private MediaErrorService mediaErrorService;
 
-    public String getCurrentPlayedUri() {
+    public String getCurrentPlayedUri1() {
         Client client = ClientBuilder.newClient();
-        String response = client.target(volumioPath)
+        String response = client.target(volumioPaths[0])
+                .path(GET_STATE)
+                .request(MediaType.APPLICATION_JSON)
+                .get(String.class);
+
+        JsonObject json = (JsonObject) JsonParser.parseString(response);
+       return json.get("uri").getAsString().replace("mnt/", "music-library/");
+    }
+    public String getCurrentPlayedUri2() {
+        Client client = ClientBuilder.newClient();
+        String response = client.target(volumioPaths[1])
                 .path(GET_STATE)
                 .request(MediaType.APPLICATION_JSON)
                 .get(String.class);

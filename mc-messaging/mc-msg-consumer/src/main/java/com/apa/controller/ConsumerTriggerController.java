@@ -150,15 +150,35 @@ public class ConsumerTriggerController {
         private String uri;
     }
 
-    @GetMapping(value = "/rating/")
-    public Integer rating() {
-        String uri = volumioClient.getCurrentPlayedUri();
+    @GetMapping(value = "/rating1/")
+    public Integer rating1() {
+        String uri = volumioClient.getCurrentPlayedUri1();
         return availableMediasService.getRating(uri);
     }
 
-    @PostMapping(value = "/ratePlaying/{rating}")
-    public void ratePlaying(@PathVariable("rating") Integer rating) {
-        String uri = volumioClient.getCurrentPlayedUri();
+    @GetMapping(value = "/rating2/")
+    public Integer rating2() {
+        String uri = volumioClient.getCurrentPlayedUri1();
+        return availableMediasService.getRating(uri);
+    }
+
+    @PostMapping(value = "/ratePlaying1/{rating}")
+    public void ratePlaying1(@PathVariable("rating") Integer rating) {
+        String uri = volumioClient.getCurrentPlayedUri1();
+        ratingService.save(Rating.builder()
+                        .rating(rating)
+                        .mediaReference(MediaReference.builder()
+                                .clazz(VolumioMedia.class.getName())
+                                .id(uri)
+                                .build())
+                        .ratingType(RatingType.VOLUMIO_MANUAL)
+                        .rateDate(LocalDateTime.now())
+                .build());
+    }
+
+    @PostMapping(value = "/ratePlaying2/{rating}")
+    public void ratePlaying2(@PathVariable("rating") Integer rating) {
+        String uri = volumioClient.getCurrentPlayedUri2();
         ratingService.save(Rating.builder()
                         .rating(rating)
                         .mediaReference(MediaReference.builder()
