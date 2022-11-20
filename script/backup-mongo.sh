@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo mount -a
 rm -rf /tmp/local
 mkdir /tmp/local
 mongodump --db local --host 192.168.1.163 --out /tmp/local --forceTableScan
