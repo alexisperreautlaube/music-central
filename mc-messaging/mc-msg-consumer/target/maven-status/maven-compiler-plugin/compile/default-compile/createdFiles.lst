@@ -1,6 +1,3 @@
-com/apa/client/volumio/VolumioClient.class
-com/apa/producer/services/impl/VolumioNewSongImportProducer.class
 com/apa/producer/services/impl/MatchProducer.class
-com/apa/client/volumio/VolumioClientSong.class
+com/apa/producer/services/impl/VolumioNewSongImportProducer.class
 com/apa/consumer/config/MusicCentralImporterConfiguration.class
-com/apa/client/volumio/VolumioClientSong$VolumioClientSongBuilder.class

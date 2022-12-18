@@ -10,8 +10,10 @@
         <module name="importer" />
         <module name="mc-services" />
         <module name="mc-events" />
+        <module name="mc-server" />
         <module name="mc-models" />
         <module name="mc-dtos" />
+        <module name="mc-tp-client" />
         <module name="mc-msg-consumer" />
         <module name="mc-msg-common" />
       </profile>
@@ -26,7 +28,9 @@
       <module name="mc-models" options="-parameters" />
       <module name="mc-msg-common" options="-parameters" />
       <module name="mc-msg-consumer" options="-parameters" />
+      <module name="mc-server" options="-parameters" />
       <module name="mc-services" options="-parameters" />
+      <module name="mc-tp-client" options="-parameters" />
       <module name="parent-modules" options="" />
     </option>
   </component>
