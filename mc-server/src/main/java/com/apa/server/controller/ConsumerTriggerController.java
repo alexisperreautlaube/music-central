@@ -1,4 +1,4 @@
-package com.apa.controller;
+package com.apa.server.controller;
 
 import com.apa.client.volumio.VolumioClient;
 import com.apa.common.entities.enums.RatingType;

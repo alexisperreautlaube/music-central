@@ -1,8 +1,5 @@
 /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/client/volumio/VolumioClient.java
 /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/producer/services/impl/VolumioNewSongImportProducer.java
-/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/controller/ConsumerTriggerController.java
 /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/client/volumio/VolumioClientSong.java
 /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/producer/services/impl/MatchProducer.java
 /Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/consumer/config/MusicCentralImporterConfiguration.java
-/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/controller/ControllerAdvisor.java
-/Users/alexisperreault/Documents/music-central/mc-messaging/mc-msg-consumer/src/main/java/com/apa/ImporterSpringBootApplication.java

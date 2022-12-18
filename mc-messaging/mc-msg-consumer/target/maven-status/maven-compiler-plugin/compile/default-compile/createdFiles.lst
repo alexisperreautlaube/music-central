@@ -1,9 +1,5 @@
-com/apa/controller/ControllerAdvisor.class
-com/apa/controller/ConsumerTriggerController$RatingBody.class
-com/apa/ImporterSpringBootApplication.class
 com/apa/client/volumio/VolumioClient.class
 com/apa/producer/services/impl/VolumioNewSongImportProducer.class
-com/apa/controller/ConsumerTriggerController.class
 com/apa/producer/services/impl/MatchProducer.class
 com/apa/client/volumio/VolumioClientSong.class
 com/apa/consumer/config/MusicCentralImporterConfiguration.class

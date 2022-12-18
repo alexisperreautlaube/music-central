@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mc-msg-consumer-service
+  name: mc-server-service
   labels:
-    app: mc-msg-consumer
+    app: mc-server
 spec:
   selector:
-    app: mc-msg-consumer
+    app: mc-server
   type: NodePort
   ports:
   - name: http-8080
@@ -20,22 +20,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mc-msg-consumer
+  name: mc-server
   labels:
-    app: mc-msg-consumer
+    app: mc-server
 spec:
   selector:
     matchLabels:
-      app: mc-msg-consumer
+      app: mc-server
   replicas: 1
   template:
     metadata:
       labels:
-        app: mc-msg-consumer
+        app: mc-server
     spec:
       containers:
-        - name: mc-msg-consumer-service
-          image: 192.168.1.163:32037/docker.io/mc/mc-msg-consumer:version
+        - name: mc-server-service
+          image: 192.168.1.163:32037/docker.io/mc/mc-server:version
           ports:
           - containerPort: 8080
             name: service-port
@@ -45,9 +45,9 @@ spec:
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: mc-msg-consumer
+  name: mc-server
   labels:
-    app: mc-msg-consumer
+    app: mc-server
 subsets:
   - addresses:
       - ip: 10.244.1.172
