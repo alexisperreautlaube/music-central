@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       database: local
-      host: 10.244.0.44
+      host: 10.244.0.42
       port: 27017
 
 volumio:
