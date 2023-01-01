@@ -16,7 +16,6 @@
 
     <modules>
         <module>mc-msg-common</module>
-        <module>mc-msg-consumer</module>
     </modules>
 
 </project>

@@ -1,4 +1,4 @@
-package com.apa.events.mapper;
+package com.apa.common.mapper;
 
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.core.dto.media.PlexMediaDto;

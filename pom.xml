@@ -19,7 +19,8 @@
 
     <properties>
         <java.version>11</java.version>
-
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
         <!-- spring -->
         <spring-kafka.version>2.7.2</spring-kafka.version>
         <spring-boot-starter.version>2.4.3</spring-boot-starter.version>
@@ -44,6 +45,7 @@
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <jersey-bom.version>2.35</jersey-bom.version>
+        <mockito-all.version>2.0.2-beta</mockito-all.version>
     </properties>
 
     <dependencyManagement>
@@ -90,11 +92,6 @@
             <dependency>
                 <groupId>com.apa</groupId>
                 <artifactId>mc-msg-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.apa</groupId>
-                <artifactId>mc-msg-consumer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -181,6 +178,12 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito-all.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

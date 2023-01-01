@@ -9,7 +9,6 @@ import com.apa.common.services.media.impl.RatingService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
-import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +38,6 @@ public class AvailableMediasService {
 
     @Autowired
     private TidalMediaService tidalMediaService;
-
-
-    @Autowired
-    private VolumioMediaService volumioMediaService;
 
     @Autowired
     private RatingService ratingService;
@@ -81,16 +76,13 @@ public class AvailableMediasService {
         return list;
     }
 
-    public void createAvailableList() {
-        createAvailableList(volumioMediaService.findAll());
-    }
-    public void createAvailableList(List<VolumioMedia> volumioMedias) {
+    public void createAvailableList(List<VolumioMedia> volumioMedias, GetVolumioInterface getVolumioInterface) {
         volumioMedias.parallelStream().forEach(
-            v -> createSingleAvailable(v)
+            v -> createSingleAvailable(v, getVolumioInterface)
         );
     }
 
-    public void createSingleAvailable(VolumioMedia volumioMedia) {
+    public void createSingleAvailable(VolumioMedia volumioMedia, GetVolumioInterface getVolumioInterface) {
         List<RelatedMedia> relatedMediaList = new ArrayList<>();
         relatedMediaList.add(RelatedMedia.builder()
                         .id(volumioMedia.getTrackUri())
@@ -99,7 +91,7 @@ public class AvailableMediasService {
                 .build());
         List<MediaDistance> matches = volumioMediaDistanceService.getMatches(volumioMedia);
         matches.stream().forEach(m -> {
-            Optional<RelatedMedia> relatedMedia = toAvailable(volumioMedia, m);
+            Optional<RelatedMedia> relatedMedia = toAvailable(volumioMedia, m, getVolumioInterface);
             if (relatedMedia.isPresent()) {
                 relatedMediaList.add(relatedMedia.get());
             }
@@ -175,14 +167,14 @@ public class AvailableMediasService {
         throw new IllegalArgumentException("no volumio media");
     }
 
-    private Optional<RelatedMedia> toAvailable(VolumioMedia volumioMedia, MediaDistance mediaDistance) {
+    private Optional<RelatedMedia> toAvailable(VolumioMedia volumioMedia, MediaDistance mediaDistance, GetVolumioInterface getVolumioInterface) {
         Optional<MediaReference> mediaReference = getOther(volumioMedia, mediaDistance);
         if (mediaReference.get().getClazz().equals(PlexMedia.class.getName())) {
             return Optional.of(getPlex(mediaReference.get()));
         } else if (mediaReference.get().getClazz().equals(TidalMedia.class.getName())) {
             return Optional.of(getTidal(mediaReference.get()));
         } else if (mediaReference.get().getClazz().equals(VolumioMedia.class.getName())) {
-            return Optional.of(getVolumio(mediaReference.get()));
+            return Optional.of(getVolumio(mediaReference.get(), getVolumioInterface));
         }
         throw new IllegalArgumentException("invalid clazz");
     }
@@ -211,8 +203,12 @@ public class AvailableMediasService {
                 .build();
     }
 
-    private RelatedMedia getVolumio(MediaReference mediaReference) {
-        VolumioMedia byId = volumioMediaService.findById(mediaReference.getId());
+    public interface GetVolumioInterface {
+        VolumioMedia findById(String id);
+    }
+
+    private RelatedMedia getVolumio(MediaReference mediaReference, GetVolumioInterface getVolumioInterface) {
+        VolumioMedia byId = getVolumioInterface.findById(mediaReference.getId());
         return RelatedMedia.builder()
                 .id(byId.getTrackUri())
                 .clazz(byId.getClass().getName())

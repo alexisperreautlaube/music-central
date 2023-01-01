@@ -5,7 +5,7 @@ import com.apa.common.entities.media.MediaError;
 import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MediaReference;
 import com.apa.common.repositories.MediaErrorRepository;
-import com.apa.common.services.media.impl.volumio.VolumioMediaService;
+import com.apa.common.repositories.VolumioMediaRepository;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,10 +21,9 @@ import java.util.Optional;
 public class MediaErrorService {
 
     @Autowired
-    private MediaErrorRepository mediaErrorRepository;
-
+    private VolumioMediaRepository volumioMediaRepository;
     @Autowired
-    private VolumioMediaService volumioMediaService;
+    private MediaErrorRepository mediaErrorRepository;
 
     @Autowired
     private MongoTemplate template;
@@ -80,7 +79,7 @@ public class MediaErrorService {
         if (!VolumioMedia.class.getName().equals(clazz)) {
             return MediaErrorStatus.ERROR;
         }
-        if (volumioMediaService.exist(artist, album)) {
+        if (exist(artist, album)) {
             return MediaErrorStatus.DUPLICATED;
         }
         return MediaErrorStatus.ERROR;
@@ -88,5 +87,8 @@ public class MediaErrorService {
 
     public void remove(String uri, String name) {
         mediaErrorRepository.deleteByMediaReferenceIdAndMediaReferenceClazz(uri, name);
+    }
+    public boolean exist(String artist, String album) {
+        return !volumioMediaRepository.findByAlbumArtistAndAlbumTitle(artist, album).isEmpty();
     }
 }

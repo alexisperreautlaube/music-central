@@ -4,7 +4,7 @@ import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
 import com.apa.events.executor.EventExecutor;
-import com.apa.events.mapper.VolumioMediaMapper;
+import com.apa.common.mapper.VolumioMediaMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

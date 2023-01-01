@@ -1,10 +1,6 @@
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/config/MusicCentralEventsConfiguration.java
-/Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/mapper/VolumioMediaMapper.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/executor/EventExecutor.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/executor/impl/VolumioMediaImporter.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/executor/impl/TidalMediaImporter.java
-/Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/mapper/RatingMapper.java
-/Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/mapper/PlexMediaMapper.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/executor/impl/PlexMediaImporter.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/entities/enums/MusicCentralEventStates.java
-/Users/alexisperreault/Documents/music-central/mc-core/mc-events/src/main/java/com/apa/events/mapper/TidalMediaMapper.java

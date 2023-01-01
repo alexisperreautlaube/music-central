@@ -14,17 +14,19 @@
         <module name="mc-models" />
         <module name="mc-dtos" />
         <module name="mc-tp-client" />
-        <module name="mc-msg-consumer" />
         <module name="mc-msg-common" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mc-msg-consumer" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="importer" options="-parameters" />
       <module name="mc-dtos" options="-parameters" />
       <module name="mc-events" options="-parameters" />
-      <module name="mc-messaging" options="" />
+      <module name="mc-messaging" options="-parameters" />
       <module name="mc-models" options="-parameters" />
       <module name="mc-msg-common" options="-parameters" />
       <module name="mc-msg-consumer" options="-parameters" />

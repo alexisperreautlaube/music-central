@@ -1,4 +1,5 @@
 /Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/test/java/com/apa/ServicesSpringBootTestApplication.java
+/Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/test/java/com/apa/common/services/newsongs/VolumioNewSongImportProducerTest.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/test/java/com/apa/common/services/media/impl/TidalMediaServiceIT.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/test/java/com/apa/common/services/media/impl/PlexMediaServiceIT.java
 /Users/alexisperreault/Documents/music-central/mc-core/mc-services/src/test/java/com/apa/common/services/util/impl/StringsDistanceServiceImplIT.java

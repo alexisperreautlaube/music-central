@@ -1,8 +1,8 @@
-package com.apa.producer.services.impl;
+package com.apa.common.services.newsongs;
 
 import com.apa.client.volumio.VolumioClient;
+import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
-import com.apa.events.executor.impl.VolumioMediaImporter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,18 +16,19 @@ import java.util.stream.Stream;
 public class VolumioNewSongImportProducer {
 
     @Autowired
-    private VolumioMediaImporter volumioMediaImporter;
+    private VolumioMediaService volumioMediaService;
+
     @Autowired
     private VolumioClient volumioClient;
 
-    public List<VolumioMediaDto> produceNewVolumioTrackMessage() {
+    public List<VolumioMediaDto> getNewVolumioTracks() {
         List<VolumioMediaDto> volumioMediaDtos = getNewVolumioTrack();
         return volumioMediaDtos;
     }
 
     private List<VolumioMediaDto> getNewVolumioTrack() {
-        List<VolumioMediaDto> notSavedVolumioLocalAlbum = volumioClient.getNotSavedVolumioLocalAlbum();
-        List<VolumioMediaDto> notSavedVolumioTidalAlbum = volumioClient.getNotSavedVolumioTidalAlbum();
+        List<VolumioMediaDto> notSavedVolumioLocalAlbum = volumioMediaService.getNotSavedVolumioLocalAlbum();
+        List<VolumioMediaDto> notSavedVolumioTidalAlbum = volumioMediaService.getNotSavedVolumioTidalAlbum();
         List<VolumioMediaDto> volumioMediaDtos = Stream.concat(notSavedVolumioLocalAlbum.stream(), notSavedVolumioTidalAlbum.stream()).collect(Collectors.toList());
         return volumioMediaDtos;
     }

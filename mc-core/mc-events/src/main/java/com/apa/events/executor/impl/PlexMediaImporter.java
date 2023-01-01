@@ -4,7 +4,7 @@ import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.core.dto.media.PlexMediaDto;
 import com.apa.events.executor.EventExecutor;
-import com.apa.events.mapper.PlexMediaMapper;
+import com.apa.common.mapper.PlexMediaMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

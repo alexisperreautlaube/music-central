@@ -1,8 +1,9 @@
-package com.apa.producer.services.impl;
+package com.apa.common.services.match;
 
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
+import com.apa.common.mapper.VolumioMediaMapper;
 import com.apa.common.services.media.impl.plex.PlexMediaDistanceService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaDistanceService;
@@ -10,7 +11,6 @@ import com.apa.common.services.media.impl.tidal.TidalMediaService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaDistanceService;
 import com.apa.common.services.media.impl.volumio.VolumioMediaService;
 import com.apa.core.dto.media.VolumioMediaDto;
-import com.apa.events.mapper.VolumioMediaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

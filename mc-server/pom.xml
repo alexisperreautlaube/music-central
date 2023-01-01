@@ -15,9 +15,12 @@
     <dependencies>
         <dependency>
             <groupId>com.apa</groupId>
-            <artifactId>mc-msg-consumer</artifactId>
+            <artifactId>mc-services</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.apa</groupId>
+            <artifactId>mc-events</artifactId>
+        </dependency>
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

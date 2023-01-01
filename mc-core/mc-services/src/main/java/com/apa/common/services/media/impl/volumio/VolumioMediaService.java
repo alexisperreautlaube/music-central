@@ -1,16 +1,23 @@
 package com.apa.common.services.media.impl.volumio;
 
+import com.apa.client.volumio.VolumioClient;
+import com.apa.client.volumio.VolumioClientSong;
+import com.apa.common.entities.enums.MediaErrorStatus;
 import com.apa.common.entities.media.PlexMedia;
 import com.apa.common.entities.media.TidalMedia;
 import com.apa.common.entities.media.VolumioMedia;
 import com.apa.common.entities.util.MatchStatus;
 import com.apa.common.entities.util.MediaDistance;
+import com.apa.common.mapper.VolumioMediaMapper;
 import com.apa.common.repositories.MediaDistanceRepository;
 import com.apa.common.repositories.VolumioMediaRepository;
 import com.apa.common.services.AbstractMediaService;
+import com.apa.common.services.media.AvailableMediasService;
 import com.apa.common.services.media.MediaService;
+import com.apa.common.services.media.impl.MediaErrorService;
 import com.apa.common.services.media.impl.plex.PlexMediaService;
 import com.apa.common.services.media.impl.tidal.TidalMediaService;
+import com.apa.core.dto.media.VolumioMediaDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,15 +29,20 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class VolumioMediaService extends AbstractMediaService<VolumioMedia> implements MediaService<VolumioMedia> {
+
+    private static final List<String> EXCLUDE_TRACK_TYPE = List.of("avi", "mpg", "mov");
 
     private final VolumioMediaRepository volumioMediaRepository;
 
@@ -40,6 +52,11 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
 
     private final PlexMediaService plexMediaService;
 
+    private final VolumioClient volumioClient;
+
+    private final MediaErrorService mediaErrorService;
+
+    private final AvailableMediasService availableMediasService;
     @Override
     @Transactional
     public VolumioMedia save(VolumioMedia volumioMedia) {
@@ -66,7 +83,10 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
         return !volumioMediaRepository.findByAlbumArtistAndAlbumTitle(artist, album).isEmpty();
     }
 
-    @Override
+    public VolumioMedia doFindById(String id) {
+        return findById(id);
+    }
+        @Override
     public VolumioMedia findById(String id) {
         return volumioMediaRepository.findById(id).orElseThrow(() ->  new RuntimeException("not found"));
     }
@@ -167,5 +187,102 @@ public class VolumioMediaService extends AbstractMediaService<VolumioMedia> impl
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean existingTrackMatch(String uri, String artist, String album) {
+        Collection<? extends VolumioMediaDto> search = volumioClient.searchTrack(artist, album, this::getTidalTracks);
+        if (!search.isEmpty()) {
+            if (!existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
+                search.stream()
+                        .forEach(m -> save(VolumioMediaMapper.toVolumioMedia(m)));
+            }
+            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_ALBUM_AS_TRACK_IN_ALBUM);
+            return true;
+        }
+        return false;
+    }
+    public boolean existingAlbumMatch(String uri, String artist, String album) {
+        Collection<? extends VolumioMediaDto> search = volumioClient.search(artist, album, this::getTidalTracks);
+        if (!search.isEmpty()) {
+            if (!existByAlbumUri(search.stream().findFirst().get().getAlbumUri())) {
+                search.stream()
+                        .forEach(m -> save(VolumioMediaMapper.toVolumioMedia(m)));
+            }
+            mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR_WITH_REPLACEMENT);
+            return true;
+        }
+        return false;
+    }
+
+    public List<VolumioClientSong> getList() {
+        List<String> triageIdList = availableMediasService.createTriageIdList();
+        List<VolumioClientSong> volumioClientSongs = new ArrayList<>();
+        triageIdList.stream().forEach(id -> {
+            VolumioMedia byId = findById(id);
+            volumioClientSongs.add(VolumioClientSong.builder()
+                    .uri(byId.getTrackUri())
+                    .service(byId.getAlbumTrackType().equals("tidal") ? "tidal" : "mpd")
+                    .title(byId.getTrackTitle())
+                    .artist(byId.getTrackArtist())
+                    .album(byId.getAlbumTitle())
+                    .type("song")
+                    .trackNumber(0)
+                    .duration(StringUtils.isNotBlank(byId.getTrackDuration()) ? Integer.valueOf(byId.getTrackDuration()) : 0)
+                    .trackType(byId.getTrackType())
+                    .build());
+        });
+
+        return volumioClientSongs;
+    }
+
+    public List<VolumioMediaDto> getNotSavedVolumioTidalAlbum() {
+        List<VolumioMediaDto> list = volumioClient.getVolumioTidalMedias(this::getTidalTracks);
+
+        return list.stream()
+                .filter(v -> !existAndEquals(VolumioMediaMapper.toVolumioMedia(v)))
+                .collect(Collectors.toList());
+    }
+
+    private Collection<? extends VolumioMediaDto> getTidalTracks(String uri) {
+        return getTidalTracks(uri, null, null);
+    }
+
+    private Collection<? extends VolumioMediaDto> getTidalTracks(String uri, String artist, String album) {
+        List<VolumioMediaDto> mediaDtos;
+        try {
+            mediaDtos = volumioClient.extracted(uri);
+            mediaErrorService.remove(uri, VolumioMedia.class.getName());
+            return mediaDtos;
+        } catch (Throwable e) {
+            if (artist != null && album != null) {
+                if (mediaErrorService.doesNotExistOrExistWithErrorStatus(uri, VolumioMedia.class.getName())) {
+                    boolean existingAlbumMatch = existingAlbumMatch(uri, artist, album);
+                    if (!existingAlbumMatch) {
+                        boolean existingTrackMatch = existingTrackMatch(uri, artist, album);
+                        if (!existingTrackMatch) {
+                            if (mediaErrorService.doesNotExistOrExistWithStatusElse(uri, VolumioMedia.class.getName(), MediaErrorStatus.ERROR)) {
+                                log.error("uri={}, artist={}, album={}, uri={}", uri, artist, album, uri);
+                                mediaErrorService.save(uri, VolumioMedia.class.getName(), artist, album, MediaErrorStatus.ERROR);
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                log.debug("artist={}, album={}, uri={}", artist, album, uri);
+            }
+        }
+        return List.of();
+    }
+
+    public List<VolumioMediaDto> getNotSavedVolumioLocalAlbum() {
+        return volumioClient.getVolumioLocalMedias(mediaErrorService::saveDetemineStatus).stream()
+                .filter(v -> !existAndEquals(VolumioMediaMapper.toVolumioMedia(v)))
+                .filter(v -> !EXCLUDE_TRACK_TYPE.contains(v.getTrackType().toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public void createAvailableList() {
+        availableMediasService.createAvailableList(findAll(), this::findById);
     }
 }
