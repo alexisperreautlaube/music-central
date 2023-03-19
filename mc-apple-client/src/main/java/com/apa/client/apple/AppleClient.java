@@ -54,7 +54,8 @@ public class AppleClient {
 
     public void playPause() {
         try {
-            AppleScript as = new AppleScript(playPauseScript.getFile());
+            String text = new String(playPauseScript.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
             String result = as.executeAsString();
             log.info(result);
         } catch (IOException e) {
@@ -66,7 +67,8 @@ public class AppleClient {
 
     public void getCurrentTrack() {
         try {
-            AppleScript as = new AppleScript(getCurrentTrack.getFile());
+            String text = new String(getCurrentTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             AppleTrack appleTrack = AppleTrackMapper.fromAppleScriptList(result);
             log.info("" + appleTrack);
@@ -79,11 +81,10 @@ public class AppleClient {
 
     public AppleTrack getAppleTrackById(int id) {
         try {
-            File file = getPropertiesOfTrack.getFile();
-            List<String> lines = Files.readLines(file, Charsets.UTF_8);
-            String joined = Joiner.on(" ").join(lines);
-            joined = joined.replace("${track_id}", "" + id);
-            AppleScript as = new AppleScript(joined);
+            String text = new String(getPropertiesOfTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
+
+            text = text.replace("${track_id}", "" + id);
+            AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             return AppleTrackMapper.fromAppleScriptList(result);
         } catch (IOException e) {
@@ -98,12 +99,10 @@ public class AppleClient {
             String str = "id is " + ids.stream()
                     .map(i->i.toString())
                     .collect(Collectors.joining(" or id is "));
+            String text = new String(getPropertiesOfTracks.getInputStream().readAllBytes(), Charsets.UTF_8);
 
-            File file = getPropertiesOfTracks.getFile();
-            List<String> lines = Files.readLines(file, Charsets.UTF_8);
-            String joined = Joiner.on(" ").join(lines);
-            joined = joined.replace("${track_ids}", str);
-            AppleScript as = new AppleScript(joined);
+            text = text.replace("${track_ids}", str);
+            AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             List<AppleTrack> list  = new ArrayList<>();
             result.getList().stream().forEach( a-> list.add(AppleTrackMapper.fromAppleScriptMap(a)));
@@ -118,7 +117,8 @@ public class AppleClient {
     public List<Integer> getAllTracksIds() {
         try {
             List<Integer> list = new ArrayList<>();
-            AppleScript as = new AppleScript(getAllTracks.getFile());
+            String text = new String(getAllTracks.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             result.getList().forEach( a-> {
                 try {
@@ -137,7 +137,8 @@ public class AppleClient {
 
     public void search() {
         try {
-            AppleScript as = new AppleScript(search.getFile());
+            String text = new String(search.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             log.info(result.getString());
         } catch (IOException e) {
@@ -153,11 +154,9 @@ public class AppleClient {
 
     public void emptyList(String playlist) {
         try {
-            File file = emptyPlaylist.getFile();
-            List<String> lines = Files.readLines(file, Charsets.UTF_8);
-            String joined = Joiner.on(" ").join(lines);
-            joined = joined.replace("${play_list_name}", "" + playlist);
-            AppleScript as = new AppleScript(joined);
+            String text = new String(emptyPlaylist.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("${play_list_name}", "" + playlist);
+            AppleScript as = new AppleScript(text);
             as.executeAsObject();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -180,12 +179,10 @@ public class AppleClient {
             int retry = 0;
             while (!inserted && retry < 4)
             try {
-                File file = addTrackToPlayList.getFile();
-                List<String> lines = Files.readLines(file, Charsets.UTF_8);
-                String joined = Joiner.on(" ").join(lines);
-                joined = joined.replace("${play_list_name}", "" + playlist);
-                joined = joined.replace("${track_id}", "" + id);
-                AppleScript as = new AppleScript(joined);
+                String text = new String(addTrackToPlayList.getInputStream().readAllBytes(), Charsets.UTF_8);
+                text = text.replace("${play_list_name}", "" + playlist);
+                text = text.replace("${track_id}", "" + id);
+                AppleScript as = new AppleScript(text);
                 as.executeAsObject();
                 inserted = true;
             } catch (IOException e) {
@@ -204,12 +201,10 @@ public class AppleClient {
                 .map(i->i.toString())
                 .collect(Collectors.joining(" or id is "));
         try {
-            File file = addTracksToPlayList.getFile();
-            List<String> lines = Files.readLines(file, Charsets.UTF_8);
-            String joined = Joiner.on(" ").join(lines);
-            joined = joined.replace("${play_list_name}", "" + playlist);
-            joined = joined.replace("${track_ids}", str);
-            AppleScript as = new AppleScript(joined);
+            String text = new String(addTracksToPlayList.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("${play_list_name}", "" + playlist);
+            text = text.replace("${track_ids}", str);
+            AppleScript as = new AppleScript(text);
             as.executeAsObject();
         } catch (IOException e) {
             throw new RuntimeException(e);
