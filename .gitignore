@@ -29,3 +29,7 @@ secret.properties
 kube.yaml
 
 target
+
+#react
+mc-ui/node_modules
+mc-ui/build

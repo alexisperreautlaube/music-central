@@ -1,7 +1,0 @@
-com/apa/common/services/media/impl/PlexMediaServiceIT.class
-com/apa/common/services/util/impl/StringsDistanceServiceImplIT.class
-com/apa/common/services/media/impl/VolumioMediaServiceIT.class
-com/apa/common/AbstractCommonIT.class
-com/apa/common/services/media/impl/TidalMediaServiceIT.class
-com/apa/ServicesSpringBootTestApplication.class
-com/apa/common/services/newsongs/VolumioNewSongImportProducerTest.class

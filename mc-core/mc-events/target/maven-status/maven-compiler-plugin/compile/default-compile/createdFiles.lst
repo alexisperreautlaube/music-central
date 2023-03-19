@@ -1,6 +1,0 @@
-com/apa/events/config/MusicCentralEventsConfiguration.class
-com/apa/events/executor/impl/TidalMediaImporter.class
-com/apa/events/executor/impl/PlexMediaImporter.class
-com/apa/events/entities/enums/MusicCentralEventStates.class
-com/apa/events/executor/EventExecutor.class
-com/apa/events/executor/impl/VolumioMediaImporter.class

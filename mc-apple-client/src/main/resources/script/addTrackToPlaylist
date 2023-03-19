@@ -1,0 +1,1 @@
+tell application "Music" to duplicate track id "${track_id}" to playlist "${play_list_name}"

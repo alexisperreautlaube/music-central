@@ -7,32 +7,36 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="importer" />
-        <module name="mc-services" />
-        <module name="mc-events" />
         <module name="mc-server" />
+        <module name="importer" />
         <module name="mc-models" />
-        <module name="mc-dtos" />
-        <module name="mc-tp-client" />
-        <module name="mc-msg-common" />
+        <module name="mc-apple-client" />
+        <module name="mc-executable" />
+        <module name="mc-services" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="mc-core" target="11" />
+      <module name="mc-dtos" target="11" />
+      <module name="mc-events" target="11" />
+      <module name="mc-messaging" target="11" />
+      <module name="mc-msg-common" target="11" />
       <module name="mc-msg-consumer" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="importer" options="-parameters" />
+      <module name="mc-apple-client" options="-parameters" />
       <module name="mc-dtos" options="-parameters" />
       <module name="mc-events" options="-parameters" />
+      <module name="mc-executable" options="-parameters" />
       <module name="mc-messaging" options="-parameters" />
       <module name="mc-models" options="-parameters" />
       <module name="mc-msg-common" options="-parameters" />
       <module name="mc-msg-consumer" options="-parameters" />
       <module name="mc-server" options="-parameters" />
       <module name="mc-services" options="-parameters" />
-      <module name="mc-tp-client" options="-parameters" />
       <module name="parent-modules" options="" />
     </option>
   </component>

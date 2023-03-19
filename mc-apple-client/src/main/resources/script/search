@@ -1,0 +1,5 @@
+tell application "Music"
+
+    set mysongs to every track whose name contains "Alestorm"
+
+end tell

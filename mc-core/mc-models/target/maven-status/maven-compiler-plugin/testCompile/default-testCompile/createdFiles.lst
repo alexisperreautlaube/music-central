@@ -1,8 +1,0 @@
-com/apa/common/repositories/TidalMediaRepositoryIT.class
-com/apa/common/ModelsSpringBootTestApplication.class
-com/apa/common/repositories/PlexMediaRepositoryIT.class
-com/apa/common/entities/media/PlexMediaTest.class
-com/apa/common/entities/media/VolumioMediaTest.class
-com/apa/common/AbstractModelsIT.class
-com/apa/common/entities/media/TidalMediaTest.class
-com/apa/common/repositories/VolumioMediaRepositoryIT.class

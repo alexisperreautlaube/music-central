@@ -1,0 +1,4 @@
+tell application "Music"
+    set albumSongs to (id of every track of library playlist 1)
+end tell
+
