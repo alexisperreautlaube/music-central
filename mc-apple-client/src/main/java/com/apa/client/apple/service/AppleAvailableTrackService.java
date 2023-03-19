@@ -76,7 +76,9 @@ public class AppleAvailableTrackService {
                             weightAlbum(appleAvailableTrack);
             appleAvailableTrack.setWeight(weight);
             appleAvailableTrackRepository.save(appleAvailableTrack);
-            log.info("{}/{}", rendu.get(), noneRated.size());
+            if (rendu.get() % 100 == 0) {
+                log.info("{}/{}", rendu.get(), noneRated.size());
+            }
         });
     }
 
@@ -92,7 +94,9 @@ public class AppleAvailableTrackService {
                             (appleAvailableTrack.getRating() / 20);
             appleAvailableTrack.setWeight(weight);
             appleAvailableTrackRepository.save(appleAvailableTrack);
-            log.info("{}/{}", rendu.get(), bestOf.size());
+            if (rendu.get() % 100 == 0) {
+                log.info("{}/{}", rendu.get(), bestOf.size());
+            }
         });
     }
 

@@ -47,11 +47,14 @@ public class AppleTrackService {
         AtomicInteger renduPage = new AtomicInteger(0);
         subSets.parallelStream().forEach( t ->{
             renduPage.getAndIncrement();
-            log.info("Page {}/{}", renduPage.get(), totalPage);
+            if(renduPage.get() % 5 == 0) {
+                log.info("Page {}/{}", renduPage.get(), totalPage);
+            }
             List<AppleTrack> appleTrackByIds = appleClient.getAppleTrackByIds(t);
             appleTrackByIds.parallelStream().forEach(a -> {
                 Optional<AppleTrack> byId = appleTrackRepository.findById(a.getId());
-                if (!byId.isPresent() || byId.get().getModificationDate().isAfter(a.getModificationDate())){
+                if (!byId.isPresent()
+                        || (a.getModificationDate() != null && a.getModificationDate().isAfter(byId.get().getModificationDate()))){
                     log.info("Saving Artist={}, Album={}, Track={}, {}/{}", a.getArtist(), a.getAlbum(), a.getName(), rendu.get(), total);
                     appleTrackRepository.save(a);
                 }
