@@ -17,7 +17,9 @@ import java.util.stream.Stream;
 @Component
 public class AppleAvailableTrackService {
 
-    public static final Short MINIMAL_RATING = Short.valueOf("80");
+    public static final Short TWO_STARS = Short.valueOf("40");
+    public static final Short THREE_STARS = Short.valueOf("60");
+    public static final Short FOUR_STARS = Short.valueOf("80");
     public static final Short NONE_RATING = Short.valueOf("0");
     @Autowired
     private AppleTrackService appleTrackService;
@@ -28,20 +30,32 @@ public class AppleAvailableTrackService {
     public List<Long> createTriageList() {
         Set<Long> bestOfTriageList = createBestOfTriageList();
         Set<Long> noneRatedTriageList = createNoneRatedTriageList(bestOfTriageList.size());
-        List<Long> collect = Stream.concat(bestOfTriageList.stream(), noneRatedTriageList.stream()).collect(Collectors.toList());
+        Set<Long> reRatedTriageList = createReRatedTriageList(bestOfTriageList.size());
+        List<Long> collect = new ArrayList<>();
+        collect.addAll(bestOfTriageList);
+        collect.addAll(noneRatedTriageList);
+        collect.addAll(reRatedTriageList);
         Collections.shuffle(collect);
         return collect;
     }
 
     private Set<Long> createNoneRatedTriageList(int size) {
         List<AppleAvailableTrack> noneRated = appleAvailableTrackRepository.findAppleTrackByRatingEqualsOrderByReleaseDateDesc(NONE_RATING);
-        int max = size / 2 + size / 4;
+        int max = size / 2;
 
         return generateList(noneRated, max);
     }
+    private Set<Long> createReRatedTriageList(int size) {
+        List<AppleAvailableTrack> two = appleAvailableTrackRepository.findAppleTrackByRatingEqualsOrderByReleaseDateDesc(TWO_STARS);
+        List<AppleAvailableTrack> three = appleAvailableTrackRepository.findAppleTrackByRatingEqualsOrderByReleaseDateDesc(THREE_STARS);
+        int max = size / 4;
+        List<AppleAvailableTrack> collect = Stream.concat(two.stream(), three.stream()).collect(Collectors.toList());
+
+        return generateList(collect, max);
+    }
 
     private Set<Long> createBestOfTriageList() {
-        List<AppleAvailableTrack> bestOf = appleAvailableTrackRepository.findAppleTrackByRatingGreaterThanEqualOrderByReleaseDateDesc(MINIMAL_RATING);
+        List<AppleAvailableTrack> bestOf = appleAvailableTrackRepository.findAppleTrackByRatingGreaterThanEqualOrderByReleaseDateDesc(FOUR_STARS);
         int max = bestOf.size() > 100 ? 100 : bestOf.size();
         return generateList(bestOf, max);
     }
@@ -84,7 +98,7 @@ public class AppleAvailableTrackService {
     }
 
     public void refreshBestOfWeight() {
-        List<AppleAvailableTrack> bestOf = appleAvailableTrackRepository.findAppleTrackByRatingGreaterThanEqualOrderByReleaseDateDesc(MINIMAL_RATING);
+        List<AppleAvailableTrack> bestOf = appleAvailableTrackRepository.findAppleTrackByRatingGreaterThanEqualOrderByReleaseDateDesc(FOUR_STARS);
         AtomicInteger rendu = new AtomicInteger(1);
         bestOf.stream().parallel().forEach(appleAvailableTrack -> {
             int weight =
@@ -106,11 +120,11 @@ public class AppleAvailableTrackService {
         if (StringUtils.isBlank(appleAvailableTrack.getAlbum())) {
             return 0;
         }
-        return appleAvailableTrackRepository.countAppleAvailableTrackByArtistEqualsIgnoreCaseAndAndAlbumEqualsIgnoreCaseAndRatingGreaterThanEqual(appleAvailableTrack.getArtist(), appleAvailableTrack.getAlbum(), MINIMAL_RATING);
+        return appleAvailableTrackRepository.countAppleAvailableTrackByArtistEqualsIgnoreCaseAndAndAlbumEqualsIgnoreCaseAndRatingGreaterThanEqual(appleAvailableTrack.getArtist(), appleAvailableTrack.getAlbum(), FOUR_STARS);
     }
 
     private int weightArtist(AppleAvailableTrack appleAvailableTrack) {
-        return appleAvailableTrackRepository.countAppleAvailableTrackByArtistEqualsIgnoreCaseAndRatingGreaterThanEqual(appleAvailableTrack.getArtist(), MINIMAL_RATING);
+        return appleAvailableTrackRepository.countAppleAvailableTrackByArtistEqualsIgnoreCaseAndRatingGreaterThanEqual(appleAvailableTrack.getArtist(), FOUR_STARS);
     }
 
     private int weightReleaseDate(int rank, int listSize) {
@@ -154,12 +168,20 @@ public class AppleAvailableTrackService {
 
 
     public void refreshAppleAvailableTrack() {
+        appleAvailableTrackRepository.deleteAll();
         refreshBestOf();
         refreshNoneRated();
+        refreshTwoThreeStars();
     }
 
     private void refreshNoneRated() {
         List<AppleAvailableTrack> noneRated = appleTrackService.findNoneRated().stream().map(appleTrack ->
+                fromAppleTrack(appleTrack)
+        ).collect(Collectors.toList());
+        appleAvailableTrackRepository.saveAll(noneRated);
+    }
+    private void refreshTwoThreeStars() {
+        List<AppleAvailableTrack> noneRated = appleTrackService.findTwoAndThreeStars().stream().map(appleTrack ->
                 fromAppleTrack(appleTrack)
         ).collect(Collectors.toList());
         appleAvailableTrackRepository.saveAll(noneRated);

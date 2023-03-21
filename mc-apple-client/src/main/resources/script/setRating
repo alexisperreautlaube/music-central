@@ -1,0 +1,3 @@
+tell application "Music"
+    set rating of the track id ${track_id} to {$rating}
+end tell

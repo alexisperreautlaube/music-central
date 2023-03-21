@@ -30,6 +30,8 @@ kube.yaml
 
 target
 
+.DS_Store
+
 #react
 mc-ui/node_modules
 mc-ui/build
