@@ -41,9 +41,7 @@ public class AppleTrackService {
     public void saveAllTracksByList(){
         List<Integer> allTracks = appleClient.getAllTracksIds();
         List<List<Integer>> subSets = Lists.partition(allTracks, 300);
-        int total = allTracks.size();
         int totalPage = subSets.size();
-        AtomicInteger rendu = new AtomicInteger(1);
         AtomicInteger renduPage = new AtomicInteger(0);
         subSets.parallelStream().forEach( t ->{
             renduPage.getAndIncrement();
@@ -51,15 +49,7 @@ public class AppleTrackService {
                 log.info("Page {}/{}", renduPage.get(), totalPage);
             }
             List<AppleTrack> appleTrackByIds = appleClient.getAppleTrackByIds(t);
-            appleTrackByIds.parallelStream().forEach(a -> {
-                Optional<AppleTrack> byId = appleTrackRepository.findById(a.getId());
-                if (!byId.isPresent()
-                        || (a.getModificationDate() != null && a.getModificationDate().isAfter(byId.get().getModificationDate()))){
-                    log.info("Saving Artist={}, Album={}, Track={}, {}/{}", a.getArtist(), a.getAlbum(), a.getName(), rendu.get(), total);
-                    appleTrackRepository.save(a);
-                }
-                rendu.getAndIncrement();
-            });
+            appleTrackRepository.saveAll(appleTrackByIds);
         });
     }
 

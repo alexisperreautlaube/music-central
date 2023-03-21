@@ -4,6 +4,7 @@ import com.apa.client.apple.entity.AppleAvailableTrack;
 import com.apa.client.apple.entity.AppleTrack;
 import com.apa.client.apple.repository.AppleAvailableTrackRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -102,6 +103,9 @@ public class AppleAvailableTrackService {
 
 
     private int weightAlbum(AppleAvailableTrack appleAvailableTrack) {
+        if (StringUtils.isBlank(appleAvailableTrack.getAlbum())) {
+            return 0;
+        }
         return appleAvailableTrackRepository.countAppleAvailableTrackByArtistEqualsIgnoreCaseAndAndAlbumEqualsIgnoreCaseAndRatingGreaterThanEqual(appleAvailableTrack.getArtist(), appleAvailableTrack.getAlbum(), MINIMAL_RATING);
     }
 
