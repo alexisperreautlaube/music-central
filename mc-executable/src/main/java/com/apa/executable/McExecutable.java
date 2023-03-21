@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -24,8 +23,13 @@ public class McExecutable {
         AppleClient client = context.getBean(AppleClient.class);
         AppleAvailableTrackService appleAvailableTrackService = context.getBean(AppleAvailableTrackService.class);
         AppleTrackService appleTrackService = context.getBean(AppleTrackService.class);
+
         log.info("args={}", args);
         //saveAllTrackByList(appleTrackService);
+        //refreshAppleAvailableTrack(appleAvailableTrackService);
+        //refreshWeight(appleAvailableTrackService);
+        //createTriageList(client, appleAvailableTrackService);
+
         if (ArrayUtils.contains(args, "doAll")) {
             doAll(client, appleAvailableTrackService, appleTrackService);
         }
@@ -44,7 +48,6 @@ public class McExecutable {
         if (ArrayUtils.contains(args, "createBestOf")) {
             createBestOf(client, appleAvailableTrackService);
         }
-
     }
 
     private static void doAll(AppleClient client, AppleAvailableTrackService appleAvailableTrackService, AppleTrackService appleTrackService) {

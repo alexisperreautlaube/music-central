@@ -33,15 +33,9 @@ public class ClientController {
 
     @GetMapping(value = "/doItAll")
     public void doItAll() {
-        saveAllTracks();
         createAvailableTracks();
         createTriageList();
         createBestOf();
-    }
-
-    @GetMapping(value = "/saveAllTracks")
-    public void saveAllTracks() {
-        appleTrackService.saveAllTracks();
     }
 
     @GetMapping(value = "/refreshAvailableTracks")

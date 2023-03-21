@@ -37,7 +37,7 @@
       <module name="mc-msg-consumer" options="-parameters" />
       <module name="mc-server" options="-parameters" />
       <module name="mc-services" options="-parameters" />
-      <module name="parent-modules" options="-parameters" />
+      <module name="parent-modules" options="" />
     </option>
   </component>
 </project>

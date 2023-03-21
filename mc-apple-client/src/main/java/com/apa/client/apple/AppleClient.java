@@ -6,14 +6,11 @@ import com.github.pireba.applescript.AppleScript;
 import com.github.pireba.applescript.AppleScriptException;
 import com.github.pireba.applescript.AppleScriptObject;
 import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
-import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +48,24 @@ public class AppleClient {
 
     @Value("classpath:script/addTracksToPlaylist")
     private Resource addTracksToPlayList;
+
+    @Value("classpath:script/setRating")
+    private Resource setRating;
+
+    public void setRating(int rating, long id) {
+        try {
+            String text = new String(setRating.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("${track_id}", "" + id);
+            text = text.replace("{$rating}", "" + rating);
+            //log.info("setRating script={}", text);
+            AppleScript as = new AppleScript(text);
+            as.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void playPause() {
         try {

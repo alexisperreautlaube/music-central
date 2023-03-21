@@ -1,2 +1,1 @@
-
 tell application "Music" to get properties of (every track of library playlist 1 whose ${track_ids})
