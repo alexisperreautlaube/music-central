@@ -52,6 +52,38 @@ public class AppleClient {
     @Value("classpath:script/setRating")
     private Resource setRating;
 
+    @Value("classpath:script/setRatingOfCurrentTrack")
+    private Resource setRatingOfCurrentTrack;
+
+    @Value("classpath:script/setRatingOfCurrentTrackAndSkip")
+    private Resource setRatingOfCurrentTrackAndSkip;
+
+    public void setRatingOfCurrentTrackAndSkip(int rating) {
+        try {
+            String text = new String(setRatingOfCurrentTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("{$rating}", "" + rating);
+            AppleScript as = new AppleScript(text);
+            as.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setRatingOfCurrentTrack(int rating) {
+        try {
+            String text = new String(setRatingOfCurrentTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("{$rating}", "" + rating);
+            AppleScript as = new AppleScript(text);
+            as.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void setRating(int rating, long id) {
         try {
             String text = new String(setRating.getInputStream().readAllBytes(), Charsets.UTF_8);
@@ -80,13 +112,14 @@ public class AppleClient {
         }
     }
 
-    public void getCurrentTrack() {
+    public AppleTrack getCurrentTrack() {
         try {
             String text = new String(getCurrentTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
             AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             AppleTrack appleTrack = AppleTrackMapper.fromAppleScriptList(result);
             log.info("" + appleTrack);
+            return appleTrack;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (AppleScriptException e) {

@@ -3,7 +3,8 @@ export const properties_set = {
         env: "prod"
     },
     local: {
-        env: "local"
+        env: "local",
+        serverUrl: "http://localhost:8080/mc"
     }
 };
 

@@ -42,5 +42,6 @@
   "scripts": {
     "start": "REACT_ENV=prod react-scripts start",
     "start-local": "REACT_ENV=local react-scripts start"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

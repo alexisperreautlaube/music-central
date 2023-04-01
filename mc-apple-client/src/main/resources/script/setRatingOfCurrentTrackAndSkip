@@ -1,0 +1,6 @@
+tell application "Music"
+    set rating of of current track to {$rating}
+    if {$rating} < 80 then
+        next track
+    end if
+end tell

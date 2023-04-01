@@ -50,14 +50,5 @@ public class TriggerController {
         private String uri;
     }
 
-    @GetMapping(value = "/rating")
-    public String rating() {
-       return "";
-    }
-
-    @PostMapping(value = "/ratePlaying1/{rating}")
-    public void ratePlaying1(@PathVariable("rating") Integer rating) {
-
-    }
 
 }
