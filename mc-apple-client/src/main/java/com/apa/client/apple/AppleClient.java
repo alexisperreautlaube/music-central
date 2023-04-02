@@ -212,9 +212,9 @@ public class AppleClient {
     }
 
     public void fillListBatch(String playlist, List<Long> ids) {
-        String str = "id is " + ids.stream()
+        String str = ids.stream()
                 .map(i->i.toString())
-                .collect(Collectors.joining(" or id is "));
+                .collect(Collectors.joining(", "));
         try {
             String text = new String(addTracksToPlayList.getInputStream().readAllBytes(), Charsets.UTF_8);
             text = text.replace("${play_list_name}", "" + playlist);

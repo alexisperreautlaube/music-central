@@ -78,6 +78,7 @@ public class AppleAvailableTrackService {
     public void refreshWeight() {
         refreshBestOfWeight();
         refreshNoneRatedWeight();
+        refreshTwoThreeStarsWeight();
     }
 
     public void refreshNoneRatedWeight() {
@@ -93,6 +94,24 @@ public class AppleAvailableTrackService {
             appleAvailableTrackRepository.save(appleAvailableTrack);
             if (rendu.get() % 100 == 0) {
                 log.info("{}/{}", rendu.get(), noneRated.size());
+            }
+        });
+    }
+
+    public void refreshTwoThreeStarsWeight() {
+        List<AppleAvailableTrack> twoThreeStarsList = appleAvailableTrackRepository.findAppleTrackByRatingEqualsOrderByReleaseDateDesc(TWO_STARS);
+        twoThreeStarsList.addAll(appleAvailableTrackRepository.findAppleTrackByRatingEqualsOrderByReleaseDateDesc(THREE_STARS));
+        AtomicInteger rendu = new AtomicInteger(1);
+        twoThreeStarsList.stream().parallel().forEach(appleAvailableTrack -> {
+            int weight =
+                    weightPlayedCount(appleAvailableTrack, twoThreeStarsList) +
+                            weightReleaseDate(rendu.getAndIncrement(), twoThreeStarsList.size()) +
+                            weightArtist(appleAvailableTrack) +
+                            weightAlbum(appleAvailableTrack);
+            appleAvailableTrack.setWeight(weight);
+            appleAvailableTrackRepository.save(appleAvailableTrack);
+            if (rendu.get() % 100 == 0) {
+                log.info("{}/{}", rendu.get(), twoThreeStarsList.size());
             }
         });
     }

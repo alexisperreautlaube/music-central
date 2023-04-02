@@ -1,1 +1,6 @@
-tell application "Music" to duplicate (every track of library playlist 1 whose ${track_ids}) to playlist "${play_list_name}"
+tell application "Music"
+	set myList to {${track_ids}}
+	repeat with t in myList
+		duplicate track id t to playlist "${play_list_name}"
+	end repeat
+end tell
