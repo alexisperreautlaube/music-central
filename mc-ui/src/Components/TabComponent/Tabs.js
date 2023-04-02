@@ -1,13 +1,15 @@
+import './Tabs.css';
+
 import React, { useState } from "react";
-import DistanceTab from "../AllTabs/DistanceTab";
+import RatingTab from "../AllTabs/RatingTab";
 import SecondTab from "../AllTabs/SecondTab";
 
 const Tabs = () => {
-    const [activeTab, setActiveTab] = useState("distanceTab");
+    const [activeTab, setActiveTab] = useState("ratingTab");
     //  Functions to handle Tab Switching
-    const handleDistance = () => {
+    const handlerating = () => {
         // update the state to tab1
-        setActiveTab("distanceTab");
+        setActiveTab("ratingTab");
     };
     const handleTab2 = () => {
         // update the state to tab2
@@ -17,10 +19,10 @@ const Tabs = () => {
         <div className="Tabs">
             <ul className="nav">
                 <li
-                    className={activeTab === "distanceTab" ? "active" : ""}
-                    onClick={handleDistance}
+                    className={activeTab === "ratingTab" ? "active" : ""}
+                    onClick={handlerating}
                 >
-                    Distance
+                    Rating
                 </li>
                 <li
                     className={activeTab === "tab2" ? "active" : ""}
@@ -31,7 +33,7 @@ const Tabs = () => {
             </ul>
 
             <div className="outlet">
-                {activeTab === "distanceTab" ? <DistanceTab /> : <SecondTab />}
+                {activeTab === "ratingTab" ? <RatingTab /> : <SecondTab />}
             </div>
         </div>
     );
