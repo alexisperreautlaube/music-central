@@ -2,7 +2,7 @@ import './Tabs.css';
 
 import React, { useState } from "react";
 import RatingTab from "../AllTabs/RatingTab";
-import SecondTab from "../AllTabs/SecondTab";
+import TriggersTab from "../AllTabs/TriggersTab";
 
 const Tabs = () => {
     const [activeTab, setActiveTab] = useState("ratingTab");
@@ -13,7 +13,7 @@ const Tabs = () => {
     };
     const handleTab2 = () => {
         // update the state to tab2
-        setActiveTab("tab2");
+        setActiveTab("triggersTab");
     };
     return (
         <div className="Tabs">
@@ -25,15 +25,15 @@ const Tabs = () => {
                     Rating
                 </li>
                 <li
-                    className={activeTab === "tab2" ? "active" : ""}
+                    className={activeTab === "triggersTab" ? "active" : ""}
                     onClick={handleTab2}
                 >
-                    Tab 2
+                    Triggers
                 </li>
             </ul>
 
             <div className="outlet">
-                {activeTab === "ratingTab" ? <RatingTab /> : <SecondTab />}
+                {activeTab === "ratingTab" ? <RatingTab /> : <TriggersTab />}
             </div>
         </div>
     );

@@ -1,54 +1,82 @@
 package com.apa.server.controller;
 
+import com.apa.client.apple.AppleClient;
+import com.apa.client.apple.service.AppleAvailableTrackService;
 import com.apa.client.apple.service.AppleTrackService;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/mc/trigger")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TriggerController {
 
     @Autowired
     private AppleTrackService appleTrackService;
 
-    @GetMapping(value = "/createAvailableTrack")
-    public void createAvailableTrack() {
-        log.info("createAvailableTrack start");
-
-        log.info("createAvailableTrack end");
+    @Autowired
+    private AppleClient appleClient;
+    
+    @Autowired
+    private AppleAvailableTrackService appleAvailableTrackService;
+    
+    @GetMapping(value = "/doAll")
+    public void doAll() {
+        log.info("doAll start");
+        saveAllTrackByList();
+        refreshAppleAvailableTrack();
+        refreshWeight();
+        createTriageList();
+        createBestOf();
+        log.info("doAll end");
     }
 
-    @GetMapping(value = "/refreshQueue")
-    public void refreshQueue() {
-        log.info("refreshQueue start");
-
-        log.info("refreshQueue end");
+    @GetMapping(value = "/saveAllTrackByList")
+    public void saveAllTrackByList() {
+        log.info("saveAllTrackByList start");
+        appleTrackService.saveAllTracksByList();
+        log.info("saveAllTrackByList end");
     }
 
-    @GetMapping(value = "/nightly")
-    public void nightly() {
-        log.info("nightly start");
-        log.info("nightly end");
+    @GetMapping(value = "/refreshAppleAvailableTrack")
+    public void refreshAppleAvailableTrack() {
+        log.info("refreshAppleAvailableTrack start");
+        appleAvailableTrackService.refreshAppleAvailableTrack();
+        log.info("refreshAppleAvailableTrack end");
+    }
+    @GetMapping(value = "/createTriageList")
+    public void createTriageList() {
+        log.info("createTriageList start");
+        List<Long> triageList = appleAvailableTrackService.createTriageList();
+        appleClient.emptyTriageList();
+        appleClient.fillTriageList(triageList);
+        log.info("createTriageList end");
     }
 
-    @GetMapping(value = "/weekly")
-    public void weekly() {
-        log.info("weekly start");
-        createAvailableTrack();
-        refreshQueue();
-        log.info("weekly end");
+    @GetMapping(value = "/refreshWeight")
+    public void refreshWeight() {
+        log.info("refreshWeight start");
+        appleAvailableTrackService.refreshWeight();
+        log.info("refreshWeight end");
     }
 
-    @Getter
-    @Setter
-    private class RatingBody {
-        private String uri;
+    @GetMapping(value = "/createBestOf")
+    public void createBestOf() {
+        log.info("createBestOf start");
+        List<Long> bestOf = appleAvailableTrackService.createBestOf();
+        appleClient.emptyBestOf();
+        appleClient.fillBestOf(bestOf);
+        log.info("createBestOf end");
     }
-
-
+    @GetMapping(value = "/playPause")
+    public void playPause() {
+        log.info("playPause start");
+        appleClient.playPause();
+        log.info("playPause end");
+    }
 }

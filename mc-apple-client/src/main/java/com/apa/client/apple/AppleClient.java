@@ -60,7 +60,7 @@ public class AppleClient {
 
     public void setRatingOfCurrentTrackAndSkip(int rating) {
         try {
-            String text = new String(setRatingOfCurrentTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
+            String text = new String(setRatingOfCurrentTrackAndSkip.getInputStream().readAllBytes(), Charsets.UTF_8);
             text = text.replace("{$rating}", "" + rating);
             AppleScript as = new AppleScript(text);
             as.execute();
@@ -118,7 +118,6 @@ public class AppleClient {
             AppleScript as = new AppleScript(text);
             AppleScriptObject result = as.executeAsObject();
             AppleTrack appleTrack = AppleTrackMapper.fromAppleScriptList(result);
-            log.info("" + appleTrack);
             return appleTrack;
         } catch (IOException e) {
             throw new RuntimeException(e);

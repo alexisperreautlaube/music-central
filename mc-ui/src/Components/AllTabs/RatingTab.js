@@ -57,15 +57,23 @@ const RatingTab = () => {
         });
     }
 
+    function playPause() {
+        console.log('createBestOf');
+        fetch(properties.serverUrl + '/trigger/playPause', {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+    }
 
     return (
         <div className="RatingTab">
-            <p>Rating Tab!!</p>
             <div className="Rating">
                 <ul className="nav">
-                    <li className="rating" id="rating">
-                        rating
-                    </li>
                     <li className="artist" id="artist">
                         artist
                     </li>
@@ -74,6 +82,13 @@ const RatingTab = () => {
                     </li>
                     <li className="track" id="track">
                         track
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul className="nav">
+                    <li className="rating" id="rating">
+                        rating
                     </li>
                 </ul>
             </div>
@@ -88,21 +103,24 @@ const RatingTab = () => {
                     <li onClick={() => { rate(2); }}>
                         * *
                     </li>
-                </ul>
-                <ul className="nav">
                     <li onClick={() => { rate(3); }}>
                         * * *
                     </li>
                     <li onClick={() => { rate(4); }}>
                         * * * *
                     </li>
-                </ul>
-                <ul className="nav">
                     <li onClick={() => { rate(5); }}>
                         * * * * *
                     </li>
+                </ul>
+                <ul className="nav">
                     <li onClick={() => { startRefresh(); }}>
                        Start Refresh
+                    </li>
+                </ul>
+                <ul className="nav">
+                    <li onClick={() => { playPause(); }}>
+                       Play/Pause
                     </li>
                 </ul>
             </div>

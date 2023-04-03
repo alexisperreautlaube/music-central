@@ -18,7 +18,7 @@ public class RatingController {
     @PostMapping(value = "/rate/{rating}")
     public void ratePlaying1(@PathVariable("rating") Integer rating) {
         log.info("rate={}", rating);
-        //appleClient.setRatingOfCurrentTrackAndSkip(rating);
+        appleClient.setRatingOfCurrentTrackAndSkip(rating * 20);
     }
 
 }
