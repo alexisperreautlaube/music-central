@@ -30,17 +30,71 @@ const RatingTab = () => {
             document.getElementById('album').innerText = myJson.album;
             document.getElementById('track').innerText = myJson.name;
             if (myJson.rating == 100) {
-                document.getElementById('rating').innerText = '* * * * *';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.add("ratingSelected");
             } else if(myJson.rating == 80) {
-                document.getElementById('rating').innerText = '* * * * ';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.add("ratingSelected");
+                document.getElementById("rating5").classList.add("ratingUnselected");
             } else if (myJson.rating == 60) {
-                document.getElementById('rating').innerText = '* * *';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.add("ratingSelected");
+                document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.add("ratingUnselected");
             } else if (myJson.rating == 40) {
-                document.getElementById('rating').innerText = '* *';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.add("ratingSelected");
+                document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.add("ratingUnselected");
             } else if(myJson.rating == 20) {
-                document.getElementById('rating').innerText = '*';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingSelected");
+                document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.add("ratingUnselected");
             } else if (myJson.rating == 0) {
-                document.getElementById('rating').innerText = '';
+                document.getElementById("rating1").classList.remove("ratingSelected");
+                document.getElementById("rating2").classList.remove("ratingSelected");
+                document.getElementById("rating3").classList.remove("ratingSelected");
+                document.getElementById("rating4").classList.remove("ratingSelected");
+                document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.add("ratingUnselected");
             }
         });
     }
@@ -80,47 +134,42 @@ const RatingTab = () => {
                     <li className="album" id="album">
                         album
                     </li>
+                </ul>
+            </div>
+            <div className="Rating">
+                <ul className="nav">
                     <li className="track" id="track">
                         track
                     </li>
                 </ul>
             </div>
-            <div>
-                <ul className="nav">
-                    <li className="rating" id="rating">
-                        rating
-                    </li>
-                </ul>
-            </div>
             <div className="Rating">
                 <ul className="nav">
-                    <li onClick={() => {
+                    <li className="ratingSelected" id="rating1" onClick={() => {
                         rate(1);
                         getCurrentSong();
                     }}>
                         *
                     </li>
-                    <li onClick={() => { rate(2); }}>
+                    <li className="ratingUnselected" id="rating2" onClick={() => { rate(2); }}>
                         * *
                     </li>
-                    <li onClick={() => { rate(3); }}>
+                    <li className="ratingUnselected" id="rating3" onClick={() => { rate(3); }}>
                         * * *
                     </li>
-                    <li onClick={() => { rate(4); }}>
+                    <li className="ratingUnselected" id="rating4" onClick={() => { rate(4); }}>
                         * * * *
                     </li>
-                    <li onClick={() => { rate(5); }}>
+                    <li className="ratingUnselected" id="rating5" onClick={() => { rate(5); }}>
                         * * * * *
                     </li>
                 </ul>
                 <ul className="nav">
+                    <li onClick={() => { playPause(); }}>
+                        Play/Pause
+                    </li>
                     <li onClick={() => { startRefresh(); }}>
                        Start Refresh
-                    </li>
-                </ul>
-                <ul className="nav">
-                    <li onClick={() => { playPause(); }}>
-                       Play/Pause
                     </li>
                 </ul>
             </div>

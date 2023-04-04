@@ -1,0 +1,12 @@
+li {
+    font-size: 35px;
+}
+
+.ratingSelected {
+    color: red;
+}
+
+.ratingUnselected {
+    color: whitesmoke;
+}
+
