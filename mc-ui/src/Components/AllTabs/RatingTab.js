@@ -3,7 +3,7 @@
 import './RatingTab.css';
 import React from "react";
 import { properties } from '../../properties/properties.js';
-
+import Equalizers from "../equalizer/Equalizer";
 const RatingTab = () => {
 
     function startRefresh() {
@@ -146,10 +146,6 @@ const RatingTab = () => {
                     <li className="album" id="album">
                         album
                     </li>
-                </ul>
-            </div>
-            <div className="Rating">
-                <ul className="nav">
                     <li className="track" id="track">
                         track
                     </li>
@@ -157,32 +153,15 @@ const RatingTab = () => {
             </div>
             <div className="Rating">
                 <ul className="nav">
-                    <li className="ratingSelected" id="rating1" onClick={() => {
-                        rate(1);
-                        getCurrentSong();
-                    }}>
-                        *
-                    </li>
-                    <li className="ratingUnselected" id="rating2" onClick={() => { rate(2); }}>
-                        * *
-                    </li>
-                    <li className="ratingUnselected" id="rating3" onClick={() => { rate(3); }}>
-                        * * *
-                    </li>
-                    <li className="ratingUnselected" id="rating4" onClick={() => { rate(4); }}>
-                        * * * *
-                    </li>
-                    <li className="ratingUnselected" id="rating5" onClick={() => { rate(5); }}>
-                        * * * * *
-                    </li>
-                </ul>
-                <ul className="nav">
                     <li onClick={() => { playPause(); }}>
                         Play/Pause
                     </li>
                     <li onClick={() => { startRefresh(); }}>
                        Start Refresh
                     </li>
+                </ul>
+                <ul>
+                    {<Equalizers />}
                 </ul>
                 <ul className="nav">
                     <li onClick={() => { setEqualizer('Rock'); }}>
@@ -204,6 +183,26 @@ const RatingTab = () => {
                     </li>
                     <li onClick={() => { setEqualizer('Flat'); }}>
                        Flat
+                    </li>
+                </ul>
+                <ul className="nav">
+                    <li className="ratingSelected" id="rating1" onClick={() => {
+                        rate(1);
+                        getCurrentSong();
+                    }}>
+                        *
+                    </li>
+                    <li className="ratingUnselected" id="rating2" onClick={() => { rate(2); }}>
+                        * *
+                    </li>
+                    <li className="ratingUnselected" id="rating3" onClick={() => { rate(3); }}>
+                        * * *
+                    </li>
+                    <li className="ratingUnselected" id="rating4" onClick={() => { rate(4); }}>
+                        * * * *
+                    </li>
+                    <li className="ratingUnselected" id="rating5" onClick={() => { rate(5); }}>
+                        * * * * *
                     </li>
                 </ul>
             </div>

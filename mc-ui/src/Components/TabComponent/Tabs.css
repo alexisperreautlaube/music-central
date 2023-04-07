@@ -8,7 +8,7 @@
 /* Tab Navigation */
 ul.nav {
     width: 90%;
-    margin: 0 auto 2rem;
+    margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
