@@ -1,3 +1,6 @@
 tell application "Music"
-	set the current EQ preset to EQ preset "${equalizer}"
+	set eqNames to (name of every EQ preset)
+	if "${equalizer}" is in eqNames then
+		set current EQ preset to EQ preset "${equalizer}"
+	end if
 end tell
