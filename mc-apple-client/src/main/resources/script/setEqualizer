@@ -1,0 +1,3 @@
+tell application "Music"
+	set the current EQ preset to EQ preset "${equalizer}"
+end tell

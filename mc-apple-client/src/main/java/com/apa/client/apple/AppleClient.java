@@ -58,6 +58,22 @@ public class AppleClient {
     @Value("classpath:script/setRatingOfCurrentTrackAndSkip")
     private Resource setRatingOfCurrentTrackAndSkip;
 
+    @Value("classpath:script/setEqualizer")
+    private Resource setEqualizer;
+
+    public void setEqualizer(String equalizer) {
+        try {
+            String text = new String(setEqualizer.getInputStream().readAllBytes(), Charsets.UTF_8);
+            text = text.replace("${equalizer}", equalizer);
+            AppleScript as = new AppleScript(text);
+            as.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void setRatingOfCurrentTrackAndSkip(int rating) {
         try {
             String text = new String(setRatingOfCurrentTrackAndSkip.getInputStream().readAllBytes(), Charsets.UTF_8);

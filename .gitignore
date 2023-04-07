@@ -30,6 +30,8 @@ kube.yaml
 
 target
 
+.idea
+
 .DS_Store
 
 #react

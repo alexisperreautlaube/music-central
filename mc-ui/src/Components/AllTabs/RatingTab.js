@@ -34,51 +34,51 @@ const RatingTab = () => {
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
-                document.getElementById("rating5").classList.remove("ratingSelected");
                 document.getElementById("rating1").classList.add("ratingUnselected");
                 document.getElementById("rating2").classList.add("ratingUnselected");
                 document.getElementById("rating3").classList.add("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
+                document.getElementById("rating5").classList.remove("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingSelected");
             } else if(myJson.rating == 80) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
-                document.getElementById("rating4").classList.remove("ratingSelected");
                 document.getElementById("rating5").classList.remove("ratingSelected");
                 document.getElementById("rating1").classList.add("ratingUnselected");
                 document.getElementById("rating2").classList.add("ratingUnselected");
                 document.getElementById("rating3").classList.add("ratingUnselected");
+                document.getElementById("rating4").classList.remove("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingSelected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
             } else if (myJson.rating == 60) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
-                document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
                 document.getElementById("rating5").classList.remove("ratingSelected");
                 document.getElementById("rating1").classList.add("ratingUnselected");
                 document.getElementById("rating2").classList.add("ratingUnselected");
+                document.getElementById("rating3").classList.remove("ratingUnselected");
                 document.getElementById("rating3").classList.add("ratingSelected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
             } else if (myJson.rating == 40) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
-                document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
                 document.getElementById("rating5").classList.remove("ratingSelected");
                 document.getElementById("rating1").classList.add("ratingUnselected");
+                document.getElementById("rating2").classList.remove("ratingUnselected");
                 document.getElementById("rating2").classList.add("ratingSelected");
                 document.getElementById("rating3").classList.add("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
             } else if(myJson.rating == 20) {
-                document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
                 document.getElementById("rating5").classList.remove("ratingSelected");
+                document.getElementById("rating1").classList.remove("ratingUnselected");
                 document.getElementById("rating1").classList.add("ratingSelected");
                 document.getElementById("rating2").classList.add("ratingUnselected");
                 document.getElementById("rating3").classList.add("ratingUnselected");
@@ -101,6 +101,18 @@ const RatingTab = () => {
     function rate(i) {
         console.log('rate:' + i);
         fetch(properties.serverUrl+'/rate/' + i, {
+            method: 'POST',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+    }
+    function setEqualizer(eq) {
+        console.log('eq:' + eq);
+        fetch(properties.serverUrl+'/eq/' + eq, {
             method: 'POST',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -170,6 +182,28 @@ const RatingTab = () => {
                     </li>
                     <li onClick={() => { startRefresh(); }}>
                        Start Refresh
+                    </li>
+                </ul>
+                <ul className="nav">
+                    <li onClick={() => { setEqualizer('Rock'); }}>
+                        Rock
+                    </li>
+                    <li onClick={() => { setEqualizer('Electronic'); }}>
+                       Electronic
+                    </li>
+                    <li onClick={() => { setEqualizer('Pop'); }}>
+                       Pop
+                    </li>
+                </ul>
+                <ul className="nav">
+                    <li onClick={() => { setEqualizer('Jazz'); }}>
+                        Jazz
+                    </li>
+                    <li onClick={() => { setEqualizer('Dance'); }}>
+                       Dance
+                    </li>
+                    <li onClick={() => { setEqualizer('Flat'); }}>
+                       Flat
                     </li>
                 </ul>
             </div>

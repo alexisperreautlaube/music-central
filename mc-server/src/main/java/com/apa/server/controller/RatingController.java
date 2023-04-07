@@ -21,4 +21,10 @@ public class RatingController {
         appleClient.setRatingOfCurrentTrackAndSkip(rating * 20);
     }
 
+    @PostMapping(value = "/eq/{equalizer}")
+    public void setEqualizer(@PathVariable("equalizer") String equalizer) {
+        log.info("equalizer={}", equalizer);
+        appleClient.setEqualizer(equalizer);
+    }
+
 }
