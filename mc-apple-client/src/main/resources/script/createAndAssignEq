@@ -1,0 +1,31 @@
+tell application "Music"
+	set currentTime to current date
+	log "Start time: " & currentTime as string
+	set knowEq to {}
+	set searchTrack to (tracks of playlist "Library")
+	repeat with aTrack in searchTrack
+		set artistName to album artist of aTrack
+		set eqName to "_" & artistName
+		if eqName is not in knowEq then
+			set eqPresets to EQ presets
+			set eqPresetNames to {}
+
+			repeat with eqPreset in eqPresets
+				set end of eqPresetNames to name of eqPreset
+			end repeat
+			if eqName is not in eqPresetNames then
+				log "creating eq: " & eqName
+				set myEQPreset to make new EQ preset with properties {name:eqName}
+			end if
+			set end of knowEq to eqName
+		end if
+
+		if EQ of aTrack is not eqName then
+			log "set eq of " & name of aTrack & " to " & eqName
+			set EQ of aTrack to eqName
+		end if
+
+	end repeat
+	set currentTime to current date
+	log "End time: " & currentTime as string
+end tell

@@ -10,3 +10,15 @@ li {
     color: whitesmoke;
 }
 
+.nav-sep {
+    width: 90%;
+    margin: 0 auto 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #39A2DB;
+    border-radius: 2rem;
+    @media (max-width: 768px) {
+        width: 90%;
+    }
+}

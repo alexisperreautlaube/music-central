@@ -61,6 +61,20 @@ public class AppleClient {
     @Value("classpath:script/setEqualizer")
     private Resource setEqualizer;
 
+    @Value("classpath:script/createAndAssignEq")
+    private Resource createAndAssignEq;
+
+    public void createAndAssignEq() {
+        try {
+            String text = new String(createAndAssignEq.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
+            as.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void setEqualizer(String equalizer) {
         try {
             String text = new String(setEqualizer.getInputStream().readAllBytes(), Charsets.UTF_8);

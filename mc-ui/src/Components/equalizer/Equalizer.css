@@ -1,36 +1,71 @@
 .equalizer-container {
     font-family: Arial, Helvetica, sans-serif;
-    margin: 0px;
+    margin: 1px;
 }
 
 .band-container {
     display: flex;
-    justify-content: space-between;
+    width: 90%;
+    margin: 1px;
+    margin-left: 10 px;
 }
 
 .band-slider {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 5px;
-    height: 250px;
+    margin: 1px;
+    height: 320px;
+    width: 90%;
+    padding: unset;
 }
 
 .frequency-label {
-    margin-bottom: 5px;
+    margin-bottom: 1px;
 }
 
 .slider-container {
-    width: 70px;
-    height: 100%;
+    width: 90px;
+    height: 90%;
+    padding: 0px;
+}
+
+input {
+    margin-left: -23px;
 }
 
 .slider {
-    width: 160%;
+    width: 170%;
     height: 100%;
     transform: rotate(270deg);
 }
 
 .gain-label {
     margin-top: 5px;
+}
+
+/* Tab Navigation */
+ul.eq {
+    width: 6.5%;
+    margin: 0 auto 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #39A2DB;
+    border-radius: 2rem;
+    padding: 0px;
+    @media (max-width: 768px) {
+        width: 90%;
+    }
+}
+
+ul.nav {
+    width: 90%;
+    padding: 0px;
+}
+li.plusmoins {
+    height: 1px;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
 }

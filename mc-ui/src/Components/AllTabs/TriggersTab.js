@@ -63,9 +63,23 @@ const TriggersTab = () => {
             }
         })
     }
+
     function createBestOf() {
         console.log('createBestOf');
         fetch(properties.serverUrl + '/trigger/createBestOf', {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+    }
+
+    function createAndAssignEq() {
+        console.log('createAndAssignEq');
+        fetch(properties.serverUrl + '/trigger/createAndAssignEq', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -130,6 +144,15 @@ const TriggersTab = () => {
                         createBestOf();
                     }}>
                         Create Best of
+                    </li>
+                </ul>
+            </div>
+            <div className="Trigger">
+                <ul className="nav">
+                    <li onClick={() => {
+                        createAndAssignEq();
+                    }}>
+                        Create And Assign Eq
                     </li>
                 </ul>
             </div>

@@ -33,6 +33,7 @@ public class TriggerController {
         refreshWeight();
         createTriageList();
         createBestOf();
+        createAndAssignEq();
         log.info("doAll end");
     }
 
@@ -73,10 +74,20 @@ public class TriggerController {
         appleClient.fillBestOf(bestOf);
         log.info("createBestOf end");
     }
+
     @GetMapping(value = "/playPause")
     public void playPause() {
         log.info("playPause start");
         appleClient.playPause();
         log.info("playPause end");
     }
+
+    @GetMapping(value = "/createAndAssignEq")
+    public void createAndAssignEq() {
+        log.info("createAndAssignEq start");
+        appleClient.createAndAssignEq();
+        log.info("createAndAssignEq end");
+
+    }
+
 }

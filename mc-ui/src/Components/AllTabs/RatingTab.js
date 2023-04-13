@@ -29,7 +29,7 @@ const RatingTab = () => {
             document.getElementById('artist').innerText = myJson.artist;
             document.getElementById('album').innerText = myJson.album;
             document.getElementById('track').innerText = myJson.name;
-            if (myJson.rating == 100) {
+            if (myJson.rating === 100) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
@@ -40,7 +40,7 @@ const RatingTab = () => {
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.remove("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingSelected");
-            } else if(myJson.rating == 80) {
+            } else if(myJson.rating === 80) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
@@ -51,7 +51,7 @@ const RatingTab = () => {
                 document.getElementById("rating4").classList.remove("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingSelected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
-            } else if (myJson.rating == 60) {
+            } else if (myJson.rating === 60) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
@@ -62,7 +62,7 @@ const RatingTab = () => {
                 document.getElementById("rating3").classList.add("ratingSelected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
-            } else if (myJson.rating == 40) {
+            } else if (myJson.rating === 40) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
@@ -73,7 +73,7 @@ const RatingTab = () => {
                 document.getElementById("rating3").classList.add("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
-            } else if(myJson.rating == 20) {
+            } else if(myJson.rating === 20) {
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
                 document.getElementById("rating4").classList.remove("ratingSelected");
@@ -84,7 +84,7 @@ const RatingTab = () => {
                 document.getElementById("rating3").classList.add("ratingUnselected");
                 document.getElementById("rating4").classList.add("ratingUnselected");
                 document.getElementById("rating5").classList.add("ratingUnselected");
-            } else if (myJson.rating == 0) {
+            } else if (myJson.rating === 0) {
                 document.getElementById("rating1").classList.remove("ratingSelected");
                 document.getElementById("rating2").classList.remove("ratingSelected");
                 document.getElementById("rating3").classList.remove("ratingSelected");
