@@ -164,6 +164,17 @@ const RatingTab = () => {
                     {<Equalizers />}
                 </ul>
                 <ul className="nav">
+                    <li onClick={() => {  }}>
+                        EQ Gender Saved
+                    </li>
+                    <li onClick={() => {  }}>
+                        EQ Artist Saved
+                    </li>
+                    <li onClick={() => {  }}>
+                        EQ Album Saved
+                    </li>
+                </ul>
+                <ul className="nav">
                     <li onClick={() => { setEqualizer('Rock'); }}>
                         Rock
                     </li>

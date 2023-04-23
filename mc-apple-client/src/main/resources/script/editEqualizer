@@ -1,0 +1,15 @@
+tell application "Music"
+	set e to current EQ preset
+	set preamp of e to ${preamp}
+	set band 1 of e to ${band1}
+	set band 2 of e to ${band2}
+	set band 3 of e to ${band3}
+	set band 4 of e to ${band4}
+	set band 5 of e to ${band5}
+	set band 6 of e to ${band6}
+	set band 7 of e to ${band7}
+	set band 8 of e to ${band8}
+	set band 9 of e to ${band9}
+	set band 10 of e to ${band10}
+	set EQ enabled to true
+end tell

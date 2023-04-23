@@ -3,4 +3,5 @@ tell application "Music"
 	if "${equalizer}" is in eqNames then
 		set current EQ preset to EQ preset "${equalizer}"
 	end if
+	set EQ enabled to true
 end tell
