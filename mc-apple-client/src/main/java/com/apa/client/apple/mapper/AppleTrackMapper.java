@@ -377,7 +377,8 @@ public class AppleTrackMapper {
             Object value = extractValue(attributeName, appleScriptObject);
             appleTrack.setSkippedDate((LocalDateTime) value);
         } else {
-            throw new RuntimeException("ish");
+            //todo map favorite
+            //throw new RuntimeException("ish");
         }
     }
 
@@ -404,6 +405,8 @@ public class AppleTrackMapper {
                 value = value.replace("at ", "");
                 value = value.replace("date ", "");
                 value = value.replace("\"", "");
+                value = value.replaceAll("\u202F", " ");
+                //value = value.replaceAll("\\p{Sc}", " ");
                 try {
                     Date date = DATE_FORMAT.parse(value);
 

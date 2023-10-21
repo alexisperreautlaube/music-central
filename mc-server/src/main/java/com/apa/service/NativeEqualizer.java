@@ -6,10 +6,11 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
-
 import com.sun.jna.Native;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NativeEqualizer {
 
     @Getter
@@ -57,8 +58,12 @@ public class NativeEqualizer {
                                        Pointer inQualifierData, int inDataSize, Pointer inData);
     }
 
+    public void print() {
+
+    }
+
     public void setEqualizer(String name) {
-        Presets preset = Presets.valueOf(name);
+        Presets preset = Presets.valueOf(name.toUpperCase());
         setEqualizer(preset.getBands());
     }
 

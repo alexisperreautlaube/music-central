@@ -82,7 +82,7 @@ public class ClientController {
     @GetMapping(value = "/getCurrentSong")
     public AppleTrack getCurrentSong() {
         AppleTrack currentTrack = client.getCurrentTrack();
-        client.setEqualizer(currentTrack.getEq());
+        //client.setEqualizer(currentTrack.getEq());
         return currentTrack;
     }
 }
