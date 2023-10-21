@@ -7,7 +7,7 @@ delay 2
 tell application "System Events"
 	set frontApp to first application process whose frontmost is true
 	set frontWindow to first window of frontApp
-
+	
 	if name of frontWindow is not "Equalizer" then
 		keystroke "e" using {command down, option down}
 		set frontApp to first application process whose frontmost is true
@@ -21,9 +21,14 @@ tell application "System Events"
 			delay 1
 			-- click menu item 1 of menu 1 of uiElement
 			-- set thePopUpButton to pop up button uiElement
-			click menu item ${eq_index} of menu 1 of uiElement
+			set menuItems to menu items of menu 1 of uiElement
+			set myReturn to {}
+			repeat with menuItem in menuItems
+				set end of myReturn to name of menuItem
+			end repeat
+			set realReturn to myReturn
 		end if
 	end repeat
-
+	
 end tell
 
