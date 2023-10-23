@@ -1,0 +1,59 @@
+-- Activate the Apple Music app
+tell application "Music" to activate
+
+-- Delay to give the app time to open
+delay 2
+
+
+tell application "System Events"
+	set frontApp to first application process whose frontmost is true
+	set frontWindows to windows of frontApp
+	set foundEQWindow to false
+	repeat with w in frontWindows
+		if title of w is equal to "Equalizer" then
+			set frontWindow to w
+			set foundEQWindow to true
+			exit repeat
+		end if
+	end repeat
+	if foundEQWindow then
+		log "found EQWindow"
+	else
+		keystroke "e" using {command down, option down}
+		repeat with w in frontWindows
+			if title of w is equal to "Equalizer" then
+				set frontWindow to w
+				set foundEQWindow to true
+				exit repeat
+			end if
+		end repeat
+	end if
+	
+	set myValue to value of pop up buttons of frontWindow
+end tell
+
+tell application "Music"
+	set eqPresets to EQ presets
+
+	repeat with eqPreset in eqPresets
+		set tempName to item 1 of myValue
+		if name of eqPreset is equal to tempName then
+			set band1 to band 1 of eqPreset
+			set band2 to band 2 of eqPreset
+			set band3 to band 3 of eqPreset
+			set band4 to band 4 of eqPreset
+			set band5 to band 5 of eqPreset
+			set band6 to band 6 of eqPreset
+			set band7 to band 7 of eqPreset
+			set band8 to band 8 of eqPreset
+			set band9 to band 9 of eqPreset
+			set band10 to band 10 of eqPreset
+			set myPreamp to preamp of eqPreset
+			exit repeat
+		end if
+	end repeat
+
+	set temp to {value:tempName, preamp:myPreamp, band1:band1, band2:band2, band3:band3, band4:band4, band5:band5, band6:band6, band7:band7, band8:band8, band9:band9, band10:band10}
+
+	set returnValue to temp
+end tell

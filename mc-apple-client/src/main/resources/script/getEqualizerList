@@ -4,31 +4,45 @@ tell application "Music" to activate
 -- Delay to give the app time to open
 delay 2
 
+
 tell application "System Events"
 	set frontApp to first application process whose frontmost is true
-	set frontWindow to first window of frontApp
-	
-	if name of frontWindow is not "Equalizer" then
+	set frontWindows to windows of frontApp
+	set foundEQWindow to false
+	repeat with w in frontWindows
+		if title of w is equal to "Equalizer" then
+			set frontWindow to w
+			set foundEQWindow to true
+			exit repeat
+		end if
+	end repeat
+	if foundEQWindow then
+		log "found EQWindow"
+	else
 		keystroke "e" using {command down, option down}
-		set frontApp to first application process whose frontmost is true
-		set frontWindow to first window of frontApp
+		repeat with w in frontWindows
+			if title of w is equal to "Equalizer" then
+				set frontWindow to w
+				set foundEQWindow to true
+				exit repeat
+			end if
+		end repeat
 	end if
-	set uiElements to entire contents of frontWindow
+
+	set uiElements to pop up buttons of frontWindow
 	repeat with uiElement in uiElements
 		set elementRole to role of uiElement
 		if elementRole is equal to "AXPopUpButton" then
+			--log "what"
 			click uiElement
 			delay 1
-			-- click menu item 1 of menu 1 of uiElement
-			-- set thePopUpButton to pop up button uiElement
-			set menuItems to menu items of menu 1 of uiElement
+
+			set menuItemNames to name of menu items of menu 1 of uiElement
 			set myReturn to {}
-			repeat with menuItem in menuItems
-				set end of myReturn to name of menuItem
-			end repeat
-			set realReturn to myReturn
+
+			exit repeat
 		end if
 	end repeat
-	
+	set realReturn to menuItemNames
 end tell
 

@@ -1,11 +1,14 @@
 package com.apa.client.apple;
 
+import com.apa.client.apple.entity.AppleEqualizer;
+import com.apa.client.apple.entity.AppleEqualizerAndBands;
 import com.apa.client.apple.entity.AppleTrack;
 import com.apa.client.apple.mapper.AppleTrackMapper;
 import com.github.pireba.applescript.AppleScript;
 import com.github.pireba.applescript.AppleScriptException;
 import com.github.pireba.applescript.AppleScriptObject;
 import com.google.common.base.Charsets;
+import com.google.common.util.concurrent.AtomicDouble;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -14,6 +17,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,6 +33,9 @@ public class AppleClient {
 
     @Value("classpath:script/getCurrentTrack")
     private Resource getCurrentTrack;
+
+    @Value("classpath:script/getCurrentEq")
+    private Resource getCurrentEq;
 
     @Value("classpath:script/search")
     private Resource search;
@@ -64,6 +73,9 @@ public class AppleClient {
     @Value("classpath:script/createAndAssignEq")
     private Resource createAndAssignEq;
 
+    @Value("classpath:script/getEqualizerList")
+    private Resource getEqualizerList;
+
     public void createAndAssignEq() {
         try {
             String text = new String(createAndAssignEq.getInputStream().readAllBytes(), Charsets.UTF_8);
@@ -75,10 +87,10 @@ public class AppleClient {
             throw new RuntimeException(e);
         }
     }
-    public void setEqualizer(String equalizer) {
+    public void setEqualizer(String index) {
         try {
             String text = new String(setEqualizer.getInputStream().readAllBytes(), Charsets.UTF_8);
-            text = text.replace("${equalizer}", equalizer);
+            text = text.replace("${eq_index}", index);
             AppleScript as = new AppleScript(text);
             as.execute();
         } catch (IOException e) {
@@ -156,6 +168,72 @@ public class AppleClient {
         }
     }
 
+    public AppleEqualizerAndBands getCurrentEq() {
+        try {
+            String text = new String(getCurrentEq.getInputStream().readAllBytes(), Charsets.UTF_8);
+            AppleScript as = new AppleScript(text);
+            AppleScriptObject appleScriptObject = as.executeAsObject();
+            AtomicReference<String> name = new AtomicReference<>();
+            AtomicDouble band1 = new AtomicDouble();
+            AtomicDouble band2 = new AtomicDouble();
+            AtomicDouble band3 = new AtomicDouble();
+            AtomicDouble band4 = new AtomicDouble();
+            AtomicDouble band5 = new AtomicDouble();
+            AtomicDouble band6 = new AtomicDouble();
+            AtomicDouble band7 = new AtomicDouble();
+            AtomicDouble band8 = new AtomicDouble();
+            AtomicDouble band9 = new AtomicDouble();
+            AtomicDouble band10 = new AtomicDouble();
+            AtomicDouble preamp = new AtomicDouble();
+            appleScriptObject.getList().stream().forEach(object -> {
+                String[] split = object.toString().split(":");
+                String key = split[0];
+                String value = split[1];
+                if (value.charAt(0) == '"') {
+                    value = value.substring(1);
+                }
+                if (value.charAt(value.length() - 1)== '"') {
+                    value = value.substring(0, value.length() - 1);
+                }
+                if (key.equals("value")) {
+                    name.set(value);
+                } else if (key.equals("band1")) {
+                    band1.set(getLongValue(value));
+                } else if (key.equals("band2")) {
+                    band2.set(getLongValue(value));
+                } else if (key.equals("band3")) {
+                    band3.set(getLongValue(value));
+                } else if (key.equals("band4")) {
+                    band4.set(getLongValue(value));
+                } else if (key.equals("band5")) {
+                    band5.set(getLongValue(value));
+                } else if (key.equals("band6")) {
+                    band6.set(getLongValue(value));
+                } else if (key.equals("band7")) {
+                    band7.set(getLongValue(value));
+                } else if (key.equals("band8")) {
+                    band8.set(getLongValue(value));
+                } else if (key.equals("band9")) {
+                    band9.set(getLongValue(value));
+                } else if (key.equals("band10")) {
+                    band10.set(getLongValue(value));
+                } else if (key.equals("preamp")) {
+                    preamp.set(getLongValue(value));
+                }
+            });
+            return new AppleEqualizerAndBands(name.get(), band1.get(), band2.get(), band3.get(), band4.get(), band5.get(),
+                    band6.get(), band7.get(), band8.get(), band9.get(), band10.get(), preamp.get());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Double getLongValue(String value) {
+        return Double.valueOf(value);
+    }
+
     public AppleTrack getAppleTrackById(int id) {
         try {
             String text = new String(getPropertiesOfTrack.getInputStream().readAllBytes(), Charsets.UTF_8);
@@ -187,6 +265,24 @@ public class AppleClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<AppleEqualizer> getAppleEqualizerList() {
+        try {
+            String text = new String(getEqualizerList.getInputStream().readAllBytes(), Charsets.UTF_8);
+
+            AppleScript as = new AppleScript(text);
+            AppleScriptObject result = as.executeAsObject();
+            List<AppleEqualizer> list  = new ArrayList<>();
+            AtomicInteger index = new AtomicInteger(1);
+            result.getList().stream().forEach( a-> {
+                list.add(AppleTrackMapper.fromAppleScriptMapToEq(index.get(), a));
+                index.getAndIncrement();
+            });
+            return list;
+        } catch (IOException | AppleScriptException e) {
             throw new RuntimeException(e);
         }
     }

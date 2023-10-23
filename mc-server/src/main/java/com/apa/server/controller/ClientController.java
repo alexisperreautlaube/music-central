@@ -4,6 +4,7 @@ package com.apa.server.controller;
 import com.apa.client.apple.AppleClient;
 import com.apa.client.apple.entity.AppleTrack;
 import com.apa.client.apple.service.AppleAvailableTrackService;
+import com.apa.client.apple.service.AppleEqService;
 import com.apa.client.apple.service.AppleTrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ClientController {
 
     @Autowired
     private AppleAvailableTrackService appleAvailableTrackService;
+
+    @Autowired
+    private AppleEqService appleEqService;
 
     @Autowired
     private AppleClient client;
@@ -82,7 +86,7 @@ public class ClientController {
     @GetMapping(value = "/getCurrentSong")
     public AppleTrack getCurrentSong() {
         AppleTrack currentTrack = client.getCurrentTrack();
-        //client.setEqualizer(currentTrack.getEq());
+        appleEqService.setEqualizer(currentTrack);
         return currentTrack;
     }
 }

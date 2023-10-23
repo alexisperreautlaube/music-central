@@ -1,5 +1,6 @@
 package com.apa.client.apple.mapper;
 
+import com.apa.client.apple.entity.AppleEqualizer;
 import com.apa.client.apple.entity.AppleTrack;
 import com.github.pireba.applescript.AppleScriptException;
 import com.github.pireba.applescript.AppleScriptObject;
@@ -179,6 +180,14 @@ public class AppleTrackMapper {
                 setAttribute(track, entry.getValue(), entry.getKey());
             });
             return track;
+        } catch (AppleScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static AppleEqualizer fromAppleScriptMapToEq(Integer index, AppleScriptObject appleScriptObject) {
+        try {
+            return new AppleEqualizer(index, appleScriptObject.getString());
         } catch (AppleScriptException e) {
             throw new RuntimeException(e);
         }

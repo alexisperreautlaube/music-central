@@ -1,7 +1,10 @@
 package com.apa.server.controller;
 
-import com.apa.client.apple.AppleClient;
-import com.apa.service.NativeClient;
+
+import com.apa.client.apple.entity.AppleEqualizerAndBands;
+import com.apa.common.entities.equalizer.entity.Equalizer;
+import com.apa.client.apple.service.AppleEqService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,32 +17,33 @@ import org.springframework.web.bind.annotation.*;
 public class EqualizerController {
 
     @Autowired
-    private AppleClient appleClient;
+    private AppleEqService appleEqService;
 
-    @Autowired
-    private NativeClient nativeEqualizer;
-
-    @PostMapping(value = "/eq/{equalizer}")
-    public void setEqualizer(@PathVariable("equalizer") String equalizer) {
-        log.info("equalizer={}", equalizer);
-        nativeEqualizer.setEqualizerPreset(equalizer);
+    @GetMapping(value = "eq/refresh")
+    public void updateEqualizer() {
+        appleEqService.getAndSaveAllEQ();
     }
-//
-//    @PostMapping(value = "/eq")
-//    public void updateEqualizer(@RequestBody Equalizer equalizer) {
-//        log.info("equalizer={}", equalizer);
-//        float[] floats = {equalizer.getF32(),
-//                equalizer.getF64(),
-//                equalizer.getF125(),
-//                equalizer.getF250(),
-//                equalizer.getF500(),
-//                equalizer.getF1000(),
-//                equalizer.getF2000(),
-//                equalizer.getF4000(),
-//                equalizer.getF8000(),
-//                equalizer.getF16000()
-//        };
-//        nativeEqualizer.setEqualizer(floats);
-//    }
 
+
+    @GetMapping(value = "eq/current")
+    public AppleEqualizerAndBands getCurrentEqualizer() {
+        return appleEqService.getCurrentEq();
+    }
+
+    @PostMapping(value = "/eq")
+    public void updateEqualizer(@RequestBody Equalizer equalizer) {
+        log.info("equalizer={}", equalizer);
+        float[] floats = {equalizer.getF32(),
+                equalizer.getF64(),
+                equalizer.getF125(),
+                equalizer.getF250(),
+                equalizer.getF500(),
+                equalizer.getF1000(),
+                equalizer.getF2000(),
+                equalizer.getF4000(),
+                equalizer.getF8000(),
+                equalizer.getF16000()
+        };
+        nativeEqualizer.setEqualizer(floats);
+    }
 }

@@ -1,7 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import './Equalizer.css';
 
-function Equalizer() {
+const Equalizer = forwardRef((props, ref) => {
+    useImperativeHandle(ref, () => ({
+        refreshEq(myJson) {
+            handleBandChange(1, parseFloat(myJson.band1))
+            handleBandChange(2, parseFloat(myJson.band2))
+            handleBandChange(3, parseFloat(myJson.band3))
+            handleBandChange(4, parseFloat(myJson.band4))
+            handleBandChange(5, parseFloat(myJson.band5))
+            handleBandChange(6, parseFloat(myJson.band6))
+            handleBandChange(7, parseFloat(myJson.band7))
+            handleBandChange(8, parseFloat(myJson.band8))
+            handleBandChange(9, parseFloat(myJson.band9))
+            handleBandChange(10, parseFloat(myJson.band10))
+        },
+    }));
+
+
     const [bands, setBands] = useState([
         { frequency: "V", gain: 0 },
         { frequency: 32, gain: 0 },
@@ -16,11 +32,13 @@ function Equalizer() {
         { frequency: 16000, gain: 0 }
     ]);
 
+
+
     const handleBandChange = (index, gain) => {
         const newBands = [...bands];
         newBands[index].gain = gain;
         setBands(newBands);
-        var lBands = {
+        return  {
           'preamp': bands[0].gain,
           'f32' : bands[1].gain,
           'f64' : bands[2].gain,
@@ -33,18 +51,22 @@ function Equalizer() {
           'f8000' : bands[9].gain,
           'f16000' : bands[10].gain,
         };
-        console.log(JSON.stringify(lBands));
-        fetch('/mc/eq', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(lBands)
-        })
-        .then(response => response.json())
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+    };
+    
+    const handleBandChangeAndPost = (index, gain) => {
+        handleBandChange(index, gain)
+        //console.log(JSON.stringify(lBands));
+        // fetch('/mc/eq', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(lBands)
+        // })
+        // .then(response => response.json())
+        // .catch((error) => {
+        //     console.error('Error:', error);
+        // });
     };
 
     const renderBandSliders = () => {
@@ -53,7 +75,7 @@ function Equalizer() {
                 <ul className="eq">
                     <ul key={band.frequency} className="band-slider">
                         <ul className="frequency-label">{
-                            `${band.frequency} Hz`
+                            `${band.frequency}`
                         }</ul>
                         <ul className="slider-container">
                             <input
@@ -65,7 +87,7 @@ function Equalizer() {
                                 onChange={(e) => handleBandChange(index, parseFloat(e.target.value))}
                             />
                         </ul>
-                        <ul className="gain-label">{`${band.gain} dB`}</ul>
+                        <ul className="gain-label">{`${band.gain}`}</ul>
                         <ul className="nav">
                             <li className="plusmoins" onClick={() => {
                                 let g = band.gain === 12 ? 12 : band.gain + 1;
@@ -91,6 +113,7 @@ function Equalizer() {
             </div>
         </ul>
     );
-}
+
+});
 
 export default Equalizer;

@@ -1,17 +1,18 @@
 // RatingTab.js
 
 import './RatingTab.css';
-import React from "react";
+import React, {useRef} from "react";
 import { properties } from '../../properties/properties.js';
-import Equalizers from "../equalizer/Equalizer";
-const RatingTab = () => {
+import Equalizer from "../equalizer/Equalizer";
+function RatingTab() {
+    const equalizerRef = useRef(null);
 
-    function startRefresh() {
+    const startRefresh = () => {
         getCurrentSong()
         setInterval(getCurrentSong, 5000);
     }
 
-    function getCurrentSong() {
+    const getCurrentSong = () => {
         console.log('getCurrentSong');
         fetch(properties.serverUrl+'/client/getCurrentSong', {
             method: 'GET',
@@ -97,8 +98,26 @@ const RatingTab = () => {
                 document.getElementById("rating5").classList.add("ratingUnselected");
             }
         });
+        console.log('getCurrentEq');
+
+        fetch(properties.serverUrl+'/eq/current', {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(function(response){
+            console.log(response)
+            return response.json();
+        }).then(function(myJson) {
+            console.log(myJson);
+            equalizerRef.current.refreshEq(myJson)
+        });
     }
-    function rate(i) {
+
+    const rate = (i) => {
         console.log('rate:' + i);
         fetch(properties.serverUrl+'/rate/' + i, {
             method: 'POST',
@@ -110,7 +129,7 @@ const RatingTab = () => {
             }
         });
     }
-    function setEqualizer(eq) {
+    const setEqualizer = (eq) => {
         console.log('eq:' + eq);
         fetch(properties.serverUrl+'/eq/' + eq, {
             method: 'POST',
@@ -123,7 +142,7 @@ const RatingTab = () => {
         });
     }
 
-    function playPause() {
+    const playPause = () => {
         console.log('createBestOf');
         fetch(properties.serverUrl + '/trigger/playPause', {
             method: 'GET',
@@ -161,17 +180,17 @@ const RatingTab = () => {
                     </li>
                 </ul>
                 <ul>
-                    {<Equalizers />}
+                    {<Equalizer ref={equalizerRef}/>}
                 </ul>
                 <ul className="nav">
-                    <li onClick={() => {  }}>
-                        EQ Gender Saved
-                    </li>
                     <li onClick={() => {  }}>
                         EQ Artist Saved
                     </li>
                     <li onClick={() => {  }}>
                         EQ Album Saved
+                    </li>
+                    <li onClick={() => {  }}>
+                        EQ Track Saved
                     </li>
                 </ul>
                 <ul className="nav">
