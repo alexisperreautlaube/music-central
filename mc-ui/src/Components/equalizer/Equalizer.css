@@ -25,29 +25,30 @@
 }
 
 .slider-container {
-    width: 90px;
-    height: 90%;
-    padding: 0px;
+    width: 100%;
+    height: 100%;
 }
 
 input {
-    margin-left: -23px;
 }
 
 .slider {
-    width: 170%;
+    width: 240%;
     height: 100%;
     transform: rotate(270deg);
+    margin-left: -80px;
 }
 
 .gain-label {
     margin-top: 5px;
+    padding: 0;
 }
+
 
 /* Tab Navigation */
 ul.eq {
     width: 6.5%;
-    margin: 0 auto 0rem;
+    margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,9 +60,14 @@ ul.eq {
     }
 }
 
+ul[name="V"] {
+    border: 2px solid yellow;
+}
+
 ul.nav {
     width: 90%;
     padding: 0px;
+    margin: 0;
 }
 li.plusmoins {
     height: 1px;

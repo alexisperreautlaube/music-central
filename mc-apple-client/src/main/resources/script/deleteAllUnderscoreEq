@@ -1,0 +1,24 @@
+tell application "Music"
+
+	set trouver to true
+	repeat while trouver
+		set trouver to false
+		set eqPresets to EQ presets
+
+		set itemIndex to -1
+		repeat with i from 1 to count of eqPresets
+			set eqName to name of item i of eqPresets
+			if eqName starts with "_" then
+				set itemIndex to i
+				set trouver to true
+				exit repeat
+			end if
+		end repeat
+
+		if itemIndex is not -1 then
+			-- Delete the item at the specified index
+			delete item itemIndex of EQ presets
+		end if
+	end repeat
+
+end tell

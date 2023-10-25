@@ -2,7 +2,7 @@
 tell application "Music" to activate
 
 -- Delay to give the app time to open
-delay 2
+delay 1
 
 
 tell application "System Events"

@@ -52,7 +52,7 @@ const Equalizer = forwardRef((props, ref) => {
           'f16000' : bands[10].gain,
         };
     };
-    
+
     const handleBandChangeAndPost = (index, gain) => {
         handleBandChange(index, gain)
         //console.log(JSON.stringify(lBands));
@@ -72,11 +72,15 @@ const Equalizer = forwardRef((props, ref) => {
     const renderBandSliders = () => {
         return bands.map((band, index) => {
             return (
-                <ul className="eq">
+                <ul className="eq" name={band.frequency}>
                     <ul key={band.frequency} className="band-slider">
-                        <ul className="frequency-label">{
-                            `${band.frequency}`
-                        }</ul>
+                        <ul className="gain-label">{`${band.gain}`}</ul>
+                        <ul className="nav">
+                            <li className="plusmoins" onClick={() => {
+                                let g = band.gain === 12 ? 12 : band.gain + 0.5;
+                                handleBandChange(index, g);
+                            }}>+</li>
+                        </ul>
                         <ul className="slider-container">
                             <input
                                 type="range"
@@ -87,16 +91,10 @@ const Equalizer = forwardRef((props, ref) => {
                                 onChange={(e) => handleBandChange(index, parseFloat(e.target.value))}
                             />
                         </ul>
-                        <ul className="gain-label">{`${band.gain}`}</ul>
+
                         <ul className="nav">
                             <li className="plusmoins" onClick={() => {
-                                let g = band.gain === 12 ? 12 : band.gain + 1;
-                                handleBandChange(index, g);
-                            }}>+</li>
-                        </ul>
-                        <ul className="nav">
-                            <li className="plusmoins" onClick={() => {
-                                let g = band.gain === -12 ? -12 : band.gain - 1;
+                                let g = band.gain === -12 ? -12 : band.gain - 0.5;
                                 handleBandChange(index, g);
                             }}>-</li>
                         </ul>

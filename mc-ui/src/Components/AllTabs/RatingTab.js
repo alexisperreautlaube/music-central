@@ -183,17 +183,6 @@ function RatingTab() {
                     {<Equalizer ref={equalizerRef}/>}
                 </ul>
                 <ul className="nav">
-                    <li onClick={() => {  }}>
-                        EQ Artist Saved
-                    </li>
-                    <li onClick={() => {  }}>
-                        EQ Album Saved
-                    </li>
-                    <li onClick={() => {  }}>
-                        EQ Track Saved
-                    </li>
-                </ul>
-                <ul className="nav">
                     <li onClick={() => { setEqualizer('Rock'); }}>
                         Rock
                     </li>

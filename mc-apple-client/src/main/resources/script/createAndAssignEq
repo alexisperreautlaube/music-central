@@ -5,7 +5,8 @@ tell application "Music"
 	set searchTrack to (tracks of playlist "Library")
 	repeat with aTrack in searchTrack
 		set artistName to album artist of aTrack
-		set eqName to "_" & artistName
+		set albumName to album of aTrack
+		set eqName to "_" & artistName & "_" & albumName
 		if eqName is not in knowEq then
 			set eqPresets to EQ presets
 			set eqPresetNames to {}
@@ -16,16 +17,16 @@ tell application "Music"
 			if eqName is not in eqPresetNames then
 				log "creating eq: " & eqName
 				set myEQPreset to make new EQ preset with properties {name:eqName}
-				set band 1 of myEQPreset to 5
-                set band 2 of myEQPreset to 4
-                set band 3 of myEQPreset to 3
-                set band 4 of myEQPreset to 1.5
-                set band 5 of myEQPreset to -0.5
-                set band 6 of myEQPreset to -1
-                set band 7 of myEQPreset to 0.5
-                set band 8 of myEQPreset to 2.5
-                set band 9 of myEQPreset to 3.5
-                set band 10 of eqPreset to 4.5
+				set band 1 of myEQPreset to 4.5
+				set band 2 of myEQPreset to 3.5
+				set band 3 of myEQPreset to 2.5
+				set band 4 of myEQPreset to 1
+				set band 5 of myEQPreset to 0
+				set band 6 of myEQPreset to -0.5
+				set band 7 of myEQPreset to 0
+				set band 8 of myEQPreset to 2
+				set band 9 of myEQPreset to 3
+				set band 10 of eqPreset to 4
 			end if
 			set end of knowEq to eqName
 		end if
